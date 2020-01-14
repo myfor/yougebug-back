@@ -28,7 +28,6 @@ namespace yougebug_back
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DB.YGBContext>();
@@ -39,6 +38,7 @@ namespace yougebug_back
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
            .AddJwtBearer(Auth.JWT.JwtBearerOption);
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(Auth.AuthPolicy.LOGIN_ONLY, policy =>
@@ -51,7 +51,6 @@ namespace yougebug_back
             services.AddControllers();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

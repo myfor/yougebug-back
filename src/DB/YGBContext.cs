@@ -11,6 +11,7 @@ namespace DB
         }
 
         public DbSet<Tables.File> Files { get; set; }
+        public DbSet<Tables.Admin> Admins { get; set; }
         public DbSet<Tables.User> Users { get; set; }
         public DbSet<Tables.Answer> Answers { get; set; }
         public DbSet<Tables.Question> Questions { get; set; }
