@@ -53,6 +53,12 @@ namespace Domain
         /// <returns></returns>
         public bool IsEmpty() => Id == EMPTY;
 
+        public void CheckEmpty()
+        {
+            if (IsEmpty())
+                throw new Exception("对象为空");
+        }
+
         /// <summary>
         /// 获取主题名字
         /// </summary>

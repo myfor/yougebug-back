@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common;
 using DB;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,9 +54,24 @@ namespace Domain.Administrators
             return Resp.Success(result);
         }
 
+        /// <summary>
+        /// 获取账号
+        /// </summary>
+        /// <returns></returns>
         public override string GetName()
         {
-            throw new NotImplementedException();
+            CheckEmpty();
+
+            string key = $"0d376d79-1049-4e0d-8562-896392539b2d_{Id}";
+            string name = Cache.Get<string>(key);
+            if (name is null)
+            {
+                using var db = new YGBContext();
+                var account = db.Admins.AsNoTracking().FirstOrDefault(a => a.Id == Id);
+                name = account?.Account ?? "";
+                Cache.Set(key, name);
+            }
+            return name;
         }
 
         /// <summary>
@@ -63,8 +80,13 @@ namespace Domain.Administrators
         public async Task<Resp> Logout()
         {
             using var db = new YGBContext();
-            DB.Tables.Admin account = await db.Admins.AsNoTracking().FirstOrDefaultAsync(a => a.Id == Id);
-            throw new NotImplementedException();
+            DB.Tables.Admin account = await db.Admins.FirstOrDefaultAsync(a => a.Id == Id);
+            if (account is null)
+                return Resp.Success(Resp.NONE);
+            account.Token = Guid.NewGuid();
+            if (await db.SaveChangesAsync() == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "退出登录失败");
         }
     }
 }
