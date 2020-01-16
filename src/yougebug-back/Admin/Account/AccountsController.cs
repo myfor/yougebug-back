@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace yougebug_back.Admin
+namespace yougebug_back.Admin.Account
 {
 
     [Route(Shared.Defaults.ADMIN_DEFAULT_ROUTE)]

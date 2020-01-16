@@ -8,7 +8,7 @@ using Domain.Administrators;
 using Microsoft.AspNetCore.Mvc;
 using yougebug_back.Shared;
 
-namespace yougebug_back.Admin
+namespace yougebug_back.Admin.Login
 {
     /// <summary>
     /// 
@@ -22,7 +22,7 @@ namespace yougebug_back.Admin
         [HttpPut]
         public async Task<ActionResult> Login([FromBody]Models.LoginInfo loginInfo)
         {
-            Resp result = await Account.Login(loginInfo);
+            Resp result = await Domain.Administrators.Account.Login(loginInfo);
 
             if (result.Data == Resp.NONE)
                 return Pack(result);
