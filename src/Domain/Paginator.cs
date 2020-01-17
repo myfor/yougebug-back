@@ -9,7 +9,7 @@
         /// <summary>
         /// 行数
         /// </summary>
-        public int Rows { get; set; }
+        public int Size { get; set; }
         /// <summary>
         /// 总页数
         /// </summary>
@@ -17,9 +17,9 @@
         {
             get
             {
-                if (TotalRows % Rows == 0)
-                    return TotalRows / Rows;
-                return TotalRows / Rows + 1;
+                if (TotalRows % Size == 0)
+                    return TotalRows / Size;
+                return TotalRows / Size + 1;
             }
         }
         /// <summary>
@@ -30,7 +30,7 @@
         /// 获取跳过的条数
         /// </summary>
         /// <returns></returns>
-        public int GetSkip() => Rows * (Index - 1);
+        public int GetSkip() => Size * (Index - 1);
         /// <summary>
         /// 返回数据列表
         /// </summary>

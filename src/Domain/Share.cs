@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace Domain
 {
@@ -11,6 +9,17 @@ namespace Domain
     {
         #region 枚举
         
+        public enum Platform
+        {
+            /// <summary>
+            /// 管理惯
+            /// </summary>
+            Admin,
+            /// <summary>
+            /// 客户端
+            /// </summary>
+            Client
+        }
 
         #endregion
 
