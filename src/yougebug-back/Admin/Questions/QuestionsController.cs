@@ -27,5 +27,17 @@ namespace yougebug_back.Admin.Questions
             Domain.Resp resp = await hub.GetList(pager, Domain.Share.Platform.Admin);
             return Pack(resp);
         }
+
+        /// <summary>
+        /// 退回一个问题
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="description">原因</param>
+        /// <returns></returns>
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> Back(int id, [FromBody]string description)
+        {
+
+        }
     }
 }

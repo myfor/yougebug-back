@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DB.Tables
@@ -36,5 +37,9 @@ namespace DB.Tables
         [Required]
         public DateTimeOffset Actived { get; set; } = DateTimeOffset.Now;
         public User Creator { get; set; }
+        /// <summary>
+        /// 退回记录
+        /// </summary>
+        public List<BackRecord> BackRecords { get; set; }
     }
 }

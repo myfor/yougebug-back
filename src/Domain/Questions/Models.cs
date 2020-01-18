@@ -13,5 +13,13 @@ namespace Domain.Questions
             public string Description { get; set; }
             public string CreateDate { get; set; }
         }
+
+        public struct QuestionDetail
+        {
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string CreateDate { get; set; }
+
+        }
     }
 }

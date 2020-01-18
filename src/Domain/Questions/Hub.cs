@@ -13,17 +13,17 @@ namespace Domain.Questions
         /// <summary>
         /// 获取问题
         /// </summary>
-        public async Task<Resp> GetList(Paginator page, Share.Platform platform)
+        public async Task<Resp> GetListAsync(Paginator page, Share.Platform platform)
         {
             Resp resp = platform switch
             { 
-                Share.Platform.Admin => await GetAdminList(page),
+                Share.Platform.Admin => await GetAdminListAsync(page),
                 _ => throw new ArgumentException(),
             };
             return resp;
         }
 
-        private async Task<Resp> GetAdminList(Paginator page)
+        private async Task<Resp> GetAdminListAsync(Paginator page)
         {
             using var db = new YGBContext();
             List<Models.QuestionItem_Admin> list = await db.Questions.AsNoTracking()
@@ -39,6 +39,16 @@ namespace Domain.Questions
                                                               })
                                                               .ToListAsync();
             return Resp.Success(list, "");
+        }
+
+        /// <summary>
+        /// 获取问题对象
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static Question GetQuestion(int id)
+        {
+            return new Question(id);
         }
     }
 }
