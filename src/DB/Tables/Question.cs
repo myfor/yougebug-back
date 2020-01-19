@@ -41,5 +41,6 @@ namespace DB.Tables
         /// 退回记录
         /// </summary>
         public List<BackRecord> BackRecords { get; set; }
+        public List<Answer> Answers { get; set; }
     }
 }
