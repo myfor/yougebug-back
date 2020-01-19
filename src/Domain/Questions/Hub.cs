@@ -22,23 +22,29 @@ namespace Domain.Questions
             };
             return resp;
         }
-
-        private async Task<Resp> GetAdminListAsync(Paginator page)
+        /// <summary>
+        /// 获取管理员端的问题列表
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <returns></returns>
+        private async Task<Resp> GetAdminListAsync(Paginator pager)
         {
             using var db = new YGBContext();
-            List<Models.QuestionItem_Admin> list = await db.Questions.AsNoTracking()
-                                                              .Skip(page.GetSkip())
-                                                              .Take(page.Size)
-                                                              .OrderByDescending(q => q.CreateDate)
-                                                              .Select(q => new Models.QuestionItem_Admin
-                                                              {
-                                                                  Id = q.Id,
-                                                                  Title = q.Title,
-                                                                  Description = q.Description.Length > 20 ? q.Description.Substring(0, 20) + "..." : q.Description,
-                                                                  CreateDate = q.CreateDate.ToStandardString()
-                                                              })
-                                                              .ToListAsync();
-            return Resp.Success(list, "");
+
+            pager.TotalRows = await db.Questions.CountAsync();
+            pager.List = await db.Questions.AsNoTracking()
+                                           .Skip(pager.GetSkip())
+                                           .Take(pager.Size)
+                                           .OrderByDescending(q => q.CreateDate)
+                                           .Select(q => new Models.QuestionItem_Admin
+                                           {
+                                               Id = q.Id,
+                                               Title = q.Title,
+                                               Description = q.Description.Length > 20 ? q.Description.Substring(0, 20) + "..." : q.Description,
+                                               CreateDate = q.CreateDate.ToStandardString()
+                                           })
+                                           .ToListAsync();
+            return Resp.Success(pager, "");
         }
 
         /// <summary>

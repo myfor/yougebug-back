@@ -9,7 +9,7 @@
         /// <summary>
         /// 行数
         /// </summary>
-        public int Size { get; set; }
+        public int Size { get; set; } = DEFAULT_SIZE;
         /// <summary>
         /// 每页默认页数
         /// </summary>

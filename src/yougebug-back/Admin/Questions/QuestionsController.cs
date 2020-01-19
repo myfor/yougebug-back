@@ -18,13 +18,41 @@ namespace yougebug_back.Admin.Questions
         public async Task<ActionResult> GetListAsync(int index, int size, string title)
         {
             Domain.Paginator pager = new Domain.Paginator
-            { 
+            {
                 Index = index,
                 Size = size
             };
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
             Domain.Resp resp = await hub.GetListAsync(pager, Domain.Share.Platform.Admin);
+            return Pack(resp);
+        }
+
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetDetailAsync(int id)
+        {
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Resp resp = await question.GetDetailAsync();
+            return Pack(resp);
+        }
+
+        /// <summary>
+        /// 获取答案列表
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult> GetAnswersAsync(int questionId, int index)
+        {
+            Domain.Paginator pager = new Domain.Paginator
+            { 
+                Index = index
+            };
+
+            Domain.Answers.Hub hub = new Domain.Answers.Hub();
+            Domain.Resp resp = await hub.GetAnswersAsync(pager, questionId);
             return Pack(resp);
         }
 
