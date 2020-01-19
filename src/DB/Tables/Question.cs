@@ -25,7 +25,7 @@ namespace DB.Tables
         /// 
         /// </summary>
         [Required]
-        public int Weights { get; set; } = 0;
+        public int Votes { get; set; } = 0;
         /// <summary>
         /// 
         /// </summary>

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DB.Tables
 {
     public class User : Entity
     {
+        public string Name { get; set; } = "";
         /// <summary>
         /// 邮箱，也是登录账号
         /// </summary>
@@ -15,7 +15,11 @@ namespace DB.Tables
         /// </summary>
         [Required, StringLength(64)]
         public string Password { get; set; } = "";
-        public List<Question> Questions { get; set; }
-        public List<Answer> Answers { get; set; }
+        /// <summary>
+        /// 头像
+        /// </summary>
+        [Required]
+        public int AvatarId { get; set; }
+        public File Avatar { get; set; }
     }
 }

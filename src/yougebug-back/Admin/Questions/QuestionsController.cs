@@ -15,7 +15,7 @@ namespace yougebug_back.Admin.Questions
     {
 
         [HttpGet]
-        public async Task<ActionResult> GetList(int index, int size, string title)
+        public async Task<ActionResult> GetListAsync(int index, int size, string title)
         {
             Domain.Paginator pager = new Domain.Paginator
             { 
@@ -24,7 +24,7 @@ namespace yougebug_back.Admin.Questions
             };
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
-            Domain.Resp resp = await hub.GetList(pager, Domain.Share.Platform.Admin);
+            Domain.Resp resp = await hub.GetListAsync(pager, Domain.Share.Platform.Admin);
             return Pack(resp);
         }
 
@@ -35,7 +35,7 @@ namespace yougebug_back.Admin.Questions
         /// <param name="description">原因</param>
         /// <returns></returns>
         [HttpPatch("{id}")]
-        public async Task<ActionResult> Back(int id, [FromBody]string description)
+        public async Task<ActionResult> BackAsync(int id, [FromBody]string description)
         {
 
         }

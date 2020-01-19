@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Domain.Questions
 {
@@ -13,7 +11,9 @@ namespace Domain.Questions
             public string Description { get; set; }
             public string CreateDate { get; set; }
         }
-
+        /// <summary>
+        /// 提问的详情
+        /// </summary>
         public struct QuestionDetail
         {
             public string Title { get; set; }
@@ -23,6 +23,7 @@ namespace Domain.Questions
             public Clients.Models.UserIntro User { get; set; }
             public string CreateDate { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
+            public List<Answers.Models.AnswerItem> Answers { get; set; }
         }
     }
 }
