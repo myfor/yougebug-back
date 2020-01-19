@@ -37,7 +37,9 @@ namespace yougebug_back.Admin.Questions
         [HttpPatch("{id}")]
         public async Task<ActionResult> BackAsync(int id, [FromBody]string description)
         {
-
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Resp resp = await question.BackAsync(description);
+            return Pack(resp);
         }
     }
 }

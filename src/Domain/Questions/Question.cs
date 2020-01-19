@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Questions
@@ -56,12 +55,14 @@ namespace Domain.Questions
         /// <summary>
         /// 退回一个提问
         /// </summary>
-        public async Task<Resp> BackAsync(int id, string description)
+        /// <param name="description">退回理由</param>
+        /// <returns></returns>
+        public async Task<Resp> BackAsync(string description)
         {
             CheckEmpty();
 
             using var db = new YGBContext();
-            DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == id);
+            DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
             if (question is null)
                 return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
             if (question.State != (int)QuestionState.Back)

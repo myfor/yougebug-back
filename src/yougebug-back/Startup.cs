@@ -14,6 +14,8 @@ using Common;
 using Microsoft.IdentityModel.Logging;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace yougebug_back
 {
@@ -59,6 +61,19 @@ namespace yougebug_back
             }
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory() + "/admin/"),
+                RequestPath = "/admin"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory() + "/files/"),
+                RequestPath = "/files"
+            });
+
             app.UseCookiePolicy();
 
             app.UseRouting();
