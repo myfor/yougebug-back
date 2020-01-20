@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DB.Tables
 {
@@ -15,6 +16,7 @@ namespace DB.Tables
         /// </summary>
         [Required, StringLength(64)]
         public string Password { get; set; } = "";
+        public Guid Token { get; set; }
         /// <summary>
         /// 头像
         /// </summary>
