@@ -10,7 +10,7 @@ namespace yougebug_back.Clients
     /// <summary>
     /// 客户端登录
     /// </summary>
-    [Route(Shared.Defaults.CLIENT_DEFAULT_ROUTE)]
+    [Route(Defaults.CLIENT_DEFAULT_ROUTE)]
     public class LoginController : YGBBaseController
     {
         /// <summary>
