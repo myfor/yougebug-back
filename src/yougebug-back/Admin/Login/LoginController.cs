@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Domain;
+﻿using Domain;
 using Domain.Administrators;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using yougebug_back.Shared;
 
 namespace yougebug_back.Admin.Login
 {
     /// <summary>
-    /// 
+    /// 管理员端登录
     /// </summary>
     [Route(Defaults.ADMIN_DEFAULT_ROUTE)]
     public class LoginController : YGBBaseController
@@ -19,7 +16,7 @@ namespace yougebug_back.Admin.Login
         /// <summary>
         /// 登录
         /// </summary>
-        [HttpPut]
+        [HttpPatch]
         public async Task<ActionResult> Login([FromBody]Models.LoginInfo loginInfo)
         {
             Resp result = await Domain.Administrators.Account.Login(loginInfo);

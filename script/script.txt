@@ -1,0 +1,10 @@
+insert into files 
+(id, State, CreatorId, CreateDate, ModifyId, ModifyDate, Name, ExtensionName, Size, Path, Thumbnail) 
+values 
+(1, 1, 0, '2020-01-01', 0, '2020-01-01', 'default.png', '.png', 40, '/files/default.png', '/files/default.png');
+
+insert into admins
+(id, State, CreatorId, CreateDate, ModifyId, ModifyDate, Account, Password, Token, Email)
+values
+(1, 1, 0, '2020-01-01', 0, '2020-01-01', 'admin', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', 'e7ec5470-84d6-442d-ab8f-31271de0693b', 'admin@yougebug.com');
+

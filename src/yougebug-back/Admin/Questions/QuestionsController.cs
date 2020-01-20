@@ -13,14 +13,19 @@ namespace yougebug_back.Admin.Questions
     [Route(Defaults.ADMIN_DEFAULT_ROUTE)]
     public class QuestionsController : AdminBaseController
     {
-
+        /// <summary>
+        /// 获取问题列表
+        /// </summary>
         [HttpGet]
-        public async Task<ActionResult> GetListAsync(int index, int size, string title)
+        public async Task<ActionResult> GetListAsync(int index, string title)
         {
             Domain.Paginator pager = new Domain.Paginator
             {
                 Index = index,
-                Size = size
+                Params = new Dictionary<string, string>
+                { 
+                    ["title"] = title
+                }
             };
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();

@@ -1,4 +1,7 @@
-﻿namespace Domain
+﻿using System.Collections.Generic;
+using System;
+
+namespace Domain
 {
     public class Paginator
     {
@@ -30,6 +33,11 @@
         /// 总数据数
         /// </summary>
         public int TotalRows { get; set; }
+        /// <summary>
+        /// 参数
+        /// </summary>
+        [NonSerialized]
+        public Dictionary<string, string> Params;
         /// <summary>
         /// 获取跳过的条数
         /// </summary>

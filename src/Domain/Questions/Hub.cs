@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,13 +30,18 @@ namespace Domain.Questions
         /// <returns></returns>
         private async Task<Resp> GetAdminListAsync(Paginator pager)
         {
+            string title = pager.Params["title"] ?? "";
+
+            Expression<Func<DB.Tables.Question, bool>> where = q => q.Title.Contains(title);
+
             using var db = new YGBContext();
 
-            pager.TotalRows = await db.Questions.CountAsync();
+            pager.TotalRows = await db.Questions.CountAsync(where);
             pager.List = await db.Questions.AsNoTracking()
                                            .Skip(pager.GetSkip())
                                            .Take(pager.Size)
                                            .OrderByDescending(q => q.CreateDate)
+                                           .Where(where)
                                            .Select(q => new Models.QuestionItem_Admin
                                            {
                                                Id = q.Id,
