@@ -11,14 +11,14 @@ namespace yougebug_back.Clients
     /// 客户端登录
     /// </summary>
     [Route(Shared.Defaults.CLIENT_DEFAULT_ROUTE)]
-    public class LoginController : Shared.YGBBaseController
+    public class LoginController : YGBBaseController
     {
         /// <summary>
         /// 登录
         /// </summary>
         [HttpPatch]
         public async Task<ActionResult> Login([FromBody]Models.LoginInfo loginInfo)
-        {
+        { 
             Resp result = await Domain.Clients.User.LoginAsync(loginInfo);
 
             if (result.Data == Resp.NONE)
@@ -38,4 +38,4 @@ namespace yougebug_back.Clients
             return Pack(result);
         }
     }
-}
+} 
