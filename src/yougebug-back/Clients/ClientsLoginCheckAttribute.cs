@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace yougebug_back.Admin
+namespace yougebug_back.Clients
 {
     public class ClientsLoginCheckAttribute : ActionFilterAttribute
     {
@@ -59,8 +59,8 @@ namespace yougebug_back.Admin
             if (!int.TryParse(idStr, out int id))
                 return false;
 
-            Domain.Administrators.Account account = Domain.Administrators.Hub.GetAccount(id, token);
-            return !account.IsEmpty();
+            Domain.Clients.User user = Domain.Clients.Hub.GetUser(id, token);
+            return !user.IsEmpty();
         }
     }
 }

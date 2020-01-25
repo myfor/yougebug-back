@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using yougebug_back.Shared;
 
-namespace yougebug_back.Clients
+namespace yougebug_back.Clients.Login
 {
     /// <summary>
     /// 客户端登录

@@ -1,20 +1,18 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using yougebug_back.Auth;
 
-namespace yougebug_back.Admin
+namespace yougebug_back.Clients
 {
     [ClientsLoginCheck]
     [Authorize]
-    public abstract class AdminBaseController : Shared.YGBBaseController
+    public abstract class ClientBaseController : Shared.YGBBaseController
     {
-        private Domain.Administrators.Account _currentAccount;
-        protected Domain.Administrators.Account CurrentAccount
+        private Domain.Clients.User _currentAccount;
+        protected Domain.Clients.User CurrentAccount
         {
             get
             {
@@ -29,7 +27,7 @@ namespace yougebug_back.Admin
                 if (string.IsNullOrWhiteSpace(token))
                     throw new Exception("未获取到用户有效凭证");
 
-                _currentAccount = Domain.Administrators.Hub.GetAccount(token);
+                _currentAccount = Domain.Clients.Hub.GetUser(token);
                 return _currentAccount;
             }
         }

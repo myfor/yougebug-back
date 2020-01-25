@@ -16,6 +16,12 @@ namespace Domain.Clients
         }
 
         /// <summary>
+        /// 获取一个空用户
+        /// </summary>
+        /// <returns></returns>
+        public static User GetEmpty() => new User(EMPTY);
+
+        /// <summary>
         /// 登录
         /// </summary>
         public static async Task<Resp> LoginAsync(Models.LoginInfo loginInfo)
