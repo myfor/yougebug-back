@@ -94,7 +94,7 @@ namespace Domain.Questions
             if (question is null)
                 return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
 
-            (List<Answers.Models.AnswerItem> answers, _)= await GetAnswersAsync(1, Paginator.DEFAULT_SIZE, question.Id);
+            (List<Answers.Models.AnswerItem> answers, _)= await GetAnswersAsync(1, Paginator.DEFAULT_SIZE);
 
             Models.QuestionDetail detail = new Models.QuestionDetail
             {
@@ -120,14 +120,13 @@ namespace Domain.Questions
         }
 
         /// <summary>
-        /// 
+        /// 获取问题的答案列表
         /// </summary>
-        /// <returns></returns>
-        private async Task<(List<Answers.Models.AnswerItem>, int)> GetAnswersAsync(int index, int size, int questionId)
+        private async Task<(List<Answers.Models.AnswerItem>, int)> GetAnswersAsync(int index, int size)
         {
             using var db = new YGBContext();
 
-            int totalSize = await db.Answers.CountAsync(a => a.QuestionId == questionId);
+            int totalSize = await db.Answers.CountAsync(a => a.QuestionId == Id);
             List<Answers.Models.AnswerItem> list = await db.Answers.AsNoTracking()
                                                                     .Skip((index - 1) * size).Take(size)
                                                                     .OrderByDescending(a => a.Votes)
