@@ -62,5 +62,14 @@ namespace Domain.Questions
         {
             return new Question(id);
         }
+
+        /// <summary>
+        /// 提一个问题
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Resp> AskQuestion(Models.PostQuestion questionParams)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

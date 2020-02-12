@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Clients
 {
+    /// <summary>
+    /// 代表一个用户对象
+    /// </summary>
     public class User : BaseEntity
     {
         public User(int id) : base(id)
@@ -72,7 +75,10 @@ namespace Domain.Clients
                 return Resp.Success(Resp.NONE);
             return Resp.Fault(Resp.NONE, "退出登录失败");
         }
-
+        /// <summary>
+        /// 获取这个用户的名字
+        /// </summary>
+        /// <returns></returns>
         public override string GetName()
         {
             CheckEmpty();
@@ -87,6 +93,15 @@ namespace Domain.Clients
                 Cache.Set(key, name);
             }
             return name;
+        }
+
+        /// <summary>
+        /// 提问
+        /// </summary>
+        public async Task<Resp> AskQuestion(Questions.Models.PostQuestion questionParams)
+        {
+            Questions.Hub hub = new Questions.Hub();
+            return await hub.AskQuestion(questionParams);
         }
     }
 }

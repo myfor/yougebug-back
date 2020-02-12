@@ -19,7 +19,7 @@ namespace Domain.Questions
             public string CreateDate { get; set; }
         }
         /// <summary>
-        /// 提问的详情
+        /// 问题的详情
         /// </summary>
         public struct QuestionDetail
         {
@@ -31,6 +31,28 @@ namespace Domain.Questions
             public string CreateDate { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
             public List<Answers.Models.AnswerItem> Answers { get; set; }
+        }
+        /// <summary>
+        /// 提一个问题要的参数
+        /// </summary>
+        public struct PostQuestion
+        {
+            /// <summary>
+            /// 问题标题
+            /// </summary>
+            public string Title { get; set; }
+            /// <summary>
+            /// 问题描述
+            /// </summary>
+            public string Description { get; set; }
+            /// <summary>
+            /// 问题标签
+            /// </summary>
+            public string[] Tags { get; set; }
+            /// <summary>
+            /// 提问这 ID
+            /// </summary>
+            public int UserId { get; set; }
         }
     }
 }
