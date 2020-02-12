@@ -23,6 +23,22 @@ namespace Domain.Clients
         }
 
         /// <summary>
+        /// 获取用户
+        /// </summary>
+        public static User GetUser(int id)
+        {
+            using var db = new YGBContext();
+
+            DB.Tables.User user = db.Users.AsNoTracking()
+                                          .Where(u => u.Id == id)
+                                          .FirstOrDefault();
+            if (user is null)
+                return User.GetEmpty();
+
+            return new User(user.Id);
+        }
+
+        /// <summary>
         /// 获取用户  
         /// </summary>
         public static User GetUser(string token)
