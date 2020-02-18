@@ -20,7 +20,9 @@ namespace yougebug_back.Clients.Login
         [HttpPatch]
         public async Task<ActionResult> Index()
         {
-            return Ok();
+            Domain.Resp resp = await CurrentAccount.LogoutAsync();
+
+            return Pack(resp);
         }
     }
 }

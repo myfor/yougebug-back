@@ -16,41 +16,13 @@ namespace Domain.Questions
         /// </summary>
         public async Task<Resp> GetListAsync(Paginator page, Share.Platform platform)
         {
-            Resp resp = platform switch
+            Domain.Questions.List.IGetQuestionListAsync questionList = platform switch
             { 
-                Share.Platform.Admin => await GetAdminListAsync(page),
+                Share.Platform.Admin => new List.FromAdmin(),
+                Share.Platform.Client => new List.FromClient(),
                 _ => throw new ArgumentException(),
             };
-            return resp;
-        }
-        /// <summary>
-        /// 获取管理员端的问题列表
-        /// </summary>
-        /// <param name="pager"></param>
-        /// <returns></returns>
-        private async Task<Resp> GetAdminListAsync(Paginator pager)
-        {
-            string title = pager.Params["title"] ?? "";
-
-            Expression<Func<DB.Tables.Question, bool>> where = q => q.Title.Contains(title);
-
-            using var db = new YGBContext();
-
-            pager.TotalRows = await db.Questions.CountAsync(where);
-            pager.List = await db.Questions.AsNoTracking()
-                                           .Skip(pager.GetSkip())
-                                           .Take(pager.Size)
-                                           .OrderByDescending(q => q.CreateDate)
-                                           .Where(where)
-                                           .Select(q => new Models.QuestionItem_Admin
-                                           {
-                                               Id = q.Id,
-                                               Title = q.Title,
-                                               Description = q.Description.Length > 20 ? q.Description.Substring(0, 20) + "..." : q.Description,
-                                               CreateDate = q.CreateDate.ToStandardString()
-                                           })
-                                           .ToListAsync();
-            return Resp.Success(pager, "");
+            return await questionList.GetListAsync(page);
         }
 
         /// <summary>
@@ -66,7 +38,6 @@ namespace Domain.Questions
         /// <summary>
         /// 提一个问题
         /// </summary>
-        /// <returns></returns>
         public async Task<Resp> AskQuestion(Models.PostQuestion questionParams)
         {
             (bool isValid, string msg) = questionParams.IsValid();
@@ -80,8 +51,12 @@ namespace Domain.Questions
                 Tags = string.Join(',', questionParams.Tags)
             };
 
-#warning 未实现
-            throw new NotImplementedException();
+            YGBContext db = new YGBContext();
+            db.Add(question);
+            if (await db.SaveChangesAsync() != 0)
+                return Resp.Success(Resp.NONE, "");
+
+            return Resp.Fault(Resp.NONE, "提交失败");
         }
     }
 }

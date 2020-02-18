@@ -63,8 +63,7 @@ namespace Domain.Clients
         /// <summary>
         /// 登出
         /// </summary>
-        /// <returns></returns>
-        public async Task<Resp> Logout()
+        public async Task<Resp> LogoutAsync()
         {
             using var db = new YGBContext();
             DB.Tables.User account = await db.Users.FirstOrDefaultAsync(a => a.Id == Id);

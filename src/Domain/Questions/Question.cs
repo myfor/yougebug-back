@@ -88,7 +88,7 @@ namespace Domain.Questions
 
             using var db = new YGBContext();
             DB.Tables.Question question = await db.Questions.AsNoTracking()
-                                                            .Include(q => q.Creator)
+                                                            .Include(q => q.Asker)
                                                             .FirstOrDefaultAsync(q => q.Id == Id);
 
             if (question is null)
@@ -110,9 +110,9 @@ namespace Domain.Questions
                 },
                 User = new Clients.Models.UserIntro
                 {
-                    Id = question.Creator.Id,
-                    Account = question.Creator.Name,
-                    Avatar = question.Creator.Avatar.Thumbnail
+                    Id = question.Asker.Id,
+                    Account = question.Asker.Name,
+                    Avatar = question.Asker.Avatar.Thumbnail
                 },
                 Answers = answers
             };

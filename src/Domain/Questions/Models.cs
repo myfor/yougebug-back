@@ -4,12 +4,39 @@ namespace Domain.Questions
 {
     public class Models
     {
+        /// <summary>
+        /// 客户端的问题列表
+        /// </summary>
         public struct QuentionItem_Client
         {
             public int Id { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
             public string CreateDate { get; set; }
+            /// <summary>
+            /// 赞同数
+            /// </summary>
+            public int VoteCounts { get; set; }
+            /// <summary>
+            /// 浏览数
+            /// </summary>
+            public int ViewCounts { get; set; }
+            /// <summary>
+            /// 回答数
+            /// </summary>
+            public int AnswerCounts { get; set; }
+            /// <summary>
+            /// 标签
+            /// </summary>
+            public string[] Tags { get; set; }
+            /// <summary>
+            /// 提问人
+            /// </summary>
+            public string AskerName { get; set; }
+            /// <summary>
+            /// 提问人头像
+            /// </summary>
+            public string AskerAvatar { get; set; }
         }
         public struct QuestionItem_Admin
         {

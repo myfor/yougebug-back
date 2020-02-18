@@ -7,6 +7,9 @@ using yougebug_back.Auth;
 
 namespace yougebug_back.Clients
 {
+    /// <summary>
+    /// 客户端基类，会检查登录
+    /// </summary>
     [ClientsLoginCheck]
     [Authorize]
     public abstract class ClientBaseController : Shared.YGBBaseController
