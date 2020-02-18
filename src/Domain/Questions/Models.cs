@@ -50,9 +50,24 @@ namespace Domain.Questions
             /// </summary>
             public string[] Tags { get; set; }
             /// <summary>
-            /// 提问这 ID
+            /// 提问者 ID
             /// </summary>
             public int UserId { get; set; }
+
+            /// <summary>
+            /// 检查参数是否有效
+            /// </summary>
+            /// <returns></returns>
+            public (bool, string) IsValid()
+            {
+                if (string.IsNullOrWhiteSpace(Title))
+                    return (false, "问题标题不能为空");
+                if (string.IsNullOrWhiteSpace(Description))
+                    return (false, "问题描述不能为空");
+                if (Tags.Length <= 0)
+                    return (false, "请输入至少一个问题标签");
+                return (true, "");
+            }
         }
     }
 }

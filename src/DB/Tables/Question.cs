@@ -7,32 +7,32 @@ namespace DB.Tables
     public class Question : Entity
     {
         /// <summary>
-        /// 
+        /// 标题
         /// </summary>
         [Required, StringLength(64)]
         public string Title { get; set; } = "";
         /// <summary>
-        /// 
+        /// 描述
         /// </summary>
         [Required]
         public string Description { get; set; } = "";
         /// <summary>
-        /// 
+        /// 标签
         /// </summary>
         [Required, StringLength(64)]
         public string Tags { get; set; } = "";
         /// <summary>
-        /// 
+        /// 点赞数
         /// </summary>
         [Required]
         public int Votes { get; set; } = 0;
         /// <summary>
-        /// 
+        /// 浏览人数
         /// </summary>
         [Required]
         public int Views { get; set; } = 0;
         /// <summary>
-        /// 
+        /// 最近活跃时间
         /// </summary>
         [Required]
         public DateTimeOffset Actived { get; set; } = DateTimeOffset.Now;

@@ -69,6 +69,18 @@ namespace Domain.Questions
         /// <returns></returns>
         public async Task<Resp> AskQuestion(Models.PostQuestion questionParams)
         {
+            (bool isValid, string msg) = questionParams.IsValid();
+            if (!isValid)
+                return Resp.Fault(Resp.NONE, msg);
+
+            DB.Tables.Question question = new DB.Tables.Question
+            {
+                Title = questionParams.Title,
+                Description = questionParams.Description,
+                Tags = string.Join(',', questionParams.Tags)
+            };
+
+#warning 未实现
             throw new NotImplementedException();
         }
     }
