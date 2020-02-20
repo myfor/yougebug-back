@@ -48,5 +48,6 @@ namespace DB.Tables
         /// 回答列表
         /// </summary>
         public List<Answer> Answers { get; set; }
+        public List<QuestionReportRecord> QuestionReportRecords { get; set; }
     }
 }

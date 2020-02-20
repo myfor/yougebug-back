@@ -14,10 +14,14 @@ namespace DB.Tables
         [Required]
         public string Content { get; set; } = "";
         public int Votes { get; set; } = 0;
+        /// <summary>
+        /// 回答者
+        /// </summary>
         public User Creator { get; set; }
         [Required]
         public int QuestionId { get; set; }
         public Question Question { get; set; }
         public List<AnswerBackRecord> AnswerBackRecords { get; set; }
+        public List<AnswerReportRecord> AnswerReportRecords { get; set; }
     }
 }

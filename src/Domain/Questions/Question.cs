@@ -15,12 +15,15 @@ namespace Domain.Questions
 
         public enum QuestionState
         {
+            All = 0,
             [Description("退回")]
             Back,
             [Description("启用")]
             Enabled,
             [Description("移除")]
-            Remove
+            Remove,
+            [Description("待审核")]
+            ToAudit
         }
 
         public Question(int id) : base(id)
@@ -52,12 +55,52 @@ namespace Domain.Questions
         }
 
         /// <summary>
+        /// 举报这个提问
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Resp> ReportAsync(string reason, string description)
+        {
+            /*
+             * 举报这个提问，变成待审核状态
+             * 添加一条提问举报记录
+             */
+
+            if (string.IsNullOrWhiteSpace(reason))
+                return Resp.Fault(Resp.NONE, "请填写举报原因");
+
+            CheckEmpty();
+
+            using var db = new YGBContext();
+            DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
+            if (question is null)
+                return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
+            if (question.State != (int)QuestionState.ToAudit)
+                question.State = (int)QuestionState.ToAudit;
+
+            DB.Tables.QuestionReportRecord record = new DB.Tables.QuestionReportRecord
+            {
+                QuestionId = Id,
+                Reason = reason,
+                Description = description ?? ""
+            };
+            db.QuestionReportRecords.Add(record);
+            if (await db.SaveChangesAsync() > 0)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "操作失败");
+        }
+
+        /// <summary>
         /// 退回一个提问
         /// </summary>
         /// <param name="description">退回理由</param>
         /// <returns></returns>
         public async Task<Resp> BackAsync(string description)
         {
+            /*
+             * 退回这个提问，该提问变成退回状态
+             * 添加一条提问退回记录
+             */
+
             CheckEmpty();
 
             using var db = new YGBContext();
@@ -69,14 +112,37 @@ namespace Domain.Questions
 
             DB.Tables.QuestionBackRecord record = new DB.Tables.QuestionBackRecord
             { 
+                QuestionId = Id,
                 Description = description
             };
-            db.BackRecords.Add(record);
+            db.QuestionBackRecords.Add(record);
             if (await db.SaveChangesAsync() > 0)
-                return Resp.Success(Resp.NONE, "");
-            return Resp.Fault(Resp.NONE, "撤回失败");
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "退回失败");
         }
 
+        /// <summary>
+        /// 提交审核
+        /// </summary>
+        public async Task<Resp> ToAudit(string description)
+        {
+            if (string.IsNullOrWhiteSpace(description))
+                return Resp.Fault(Resp.NONE, "提问内容不能为空");
+
+            using var db = new YGBContext();
+
+            DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
+            if (question is null)
+                return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
+            if (question.Description == description)
+                return Resp.Fault(Resp.NONE, "提问内容未修改");
+            question.State = (int)QuestionState.ToAudit;
+            question.Description = description;
+            if (await db.SaveChangesAsync() == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "提交失败");
+        }
+        
         /// <summary>
         /// 获取详情
         /// </summary>
@@ -116,6 +182,21 @@ namespace Domain.Questions
                 Answers = answers
             };
             return Resp.Success(detail, "");
+        }
+
+        /// <summary>
+        /// 新回答
+        /// </summary>
+        /// <param name="answererId">回答人ID</param>
+        /// <param name="content">回答内容</param>
+        /// <returns></returns>
+        public async Task<Resp> AddAnswerAsync(int answererId, string content)
+        {
+            Answers.Hub answerHub = new Answers.Hub();
+            (bool isSuccess, string msg) = await answerHub.NewAnswerAsync(Id, content, answererId);
+            if (isSuccess)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, msg);
         }
 
         /// <summary>

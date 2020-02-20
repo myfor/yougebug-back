@@ -33,5 +33,15 @@ namespace yougebug_back.Clients.Questions
             return Pack(resp);
         }
 
+        /// <summary>
+        /// 举报一个问题
+        /// </summary>
+        [HttpPatch("{id}/report")]
+        public async Task<IActionResult> ReportAsync(int id, [FromForm]string reason, [FromForm]string description)
+        {
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Resp r = await question.ReportAsync(reason, description);
+            return Pack(r);
+        }
     }
 }

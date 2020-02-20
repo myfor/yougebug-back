@@ -31,5 +31,30 @@ namespace Domain.Answers
                                          .ToListAsync();
             return Resp.Success(pager, "");
         }
+
+        /// <summary>
+        /// 新回答
+        /// </summary>
+        /// <param name="questionId"></param>
+        /// <param name="content"></param>
+        /// <param name="answererId"></param>
+        /// <returns></returns>
+        internal async Task<(bool, string)> NewAnswerAsync(int questionId, string content, int answererId)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+                return (false, "回答内容不能为空");
+
+            using var db = new YGBContext();
+            DB.Tables.Answer answer = new DB.Tables.Answer
+            { 
+                QuestionId = questionId,
+                Content = content,
+                CreatorId = answererId
+            };
+            db.Answers.Add(answer);
+            if (await db.SaveChangesAsync() == 1)
+                return (true, "");
+            return (false, "回答失败");
+        }
     }
 }
