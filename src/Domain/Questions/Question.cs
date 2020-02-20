@@ -29,14 +29,13 @@ namespace Domain.Questions
         /// <summary>
         /// 获取空对象
         /// </summary>
-        /// <returns></returns>
         public static Question GetEmpty() => new Question(EMPTY);
 
         /// <summary>
         /// 获取标题
         /// </summary>
         /// <returns></returns>
-        public override string GetName()
+        public string GetTitle()
         {
             CheckEmpty();
 
@@ -68,7 +67,7 @@ namespace Domain.Questions
             if (question.State != (int)QuestionState.Back)
                 question.State = (int)QuestionState.Back;
 
-            DB.Tables.BackRecord record = new DB.Tables.BackRecord
+            DB.Tables.QuestionBackRecord record = new DB.Tables.QuestionBackRecord
             { 
                 Description = description
             };
@@ -122,6 +121,9 @@ namespace Domain.Questions
         /// <summary>
         /// 获取问题的答案列表
         /// </summary>
+        /// <param name="index">第几页</param>
+        /// <param name="size">几条</param>
+        /// <returns></returns>
         private async Task<(List<Answers.Models.AnswerItem>, int)> GetAnswersAsync(int index, int size)
         {
             using var db = new YGBContext();

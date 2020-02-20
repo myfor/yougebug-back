@@ -3,11 +3,11 @@
 namespace DB.Tables
 {
     /// <summary>
-    /// 退回记录
+    /// 回答的退回记录
     /// </summary>
-    public class BackRecord : Entity
+    public class AnswerBackRecord : Entity
     {
-        public int QuestionId { get; set; }
+        public int AnswerId { get; set; }
         /// <summary>
         /// 描述
         /// </summary>

@@ -60,12 +60,6 @@ namespace Domain
         }
 
         /// <summary>
-        /// 获取主题名字
-        /// </summary>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        public abstract string GetName();
-
-        /// <summary>
         /// 实例化当前对象实体
         /// </summary>
         /// <param name="id"></param>

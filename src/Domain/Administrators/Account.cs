@@ -58,7 +58,7 @@ namespace Domain.Administrators
         /// 获取账号
         /// </summary>
         /// <returns></returns>
-        public override string GetName()
+        public string GetAccount()
         {
             CheckEmpty();
 

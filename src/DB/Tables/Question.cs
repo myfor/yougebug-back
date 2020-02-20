@@ -43,7 +43,7 @@ namespace DB.Tables
         /// <summary>
         /// 退回记录
         /// </summary>
-        public List<BackRecord> BackRecords { get; set; }
+        public List<QuestionBackRecord> QuestionBackRecords { get; set; }
         /// <summary>
         /// 回答列表
         /// </summary>

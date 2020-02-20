@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DB.Tables
 {
@@ -17,5 +18,6 @@ namespace DB.Tables
         [Required]
         public int QuestionId { get; set; }
         public Question Question { get; set; }
+        public List<AnswerBackRecord> AnswerBackRecords { get; set; }
     }
 }

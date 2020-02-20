@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Questions
 {
+    /// <summary>
+    /// 问题仓库
+    /// </summary>
     public class Hub
     {
         /// <summary>

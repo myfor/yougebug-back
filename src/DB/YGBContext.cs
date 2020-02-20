@@ -16,6 +16,7 @@ namespace DB
         public DbSet<Tables.Answer> Answers { get; set; }
         public DbSet<Tables.Question> Questions { get; set; }
         public DbSet<Tables.Tag> Tags { get; set; }
-        public DbSet<Tables.BackRecord> BackRecords { get; set; }
+        public DbSet<Tables.QuestionBackRecord> QuestionBackRecords { get; set; }
+        public DbSet<Tables.AnswerBackRecord> AnswerBackRecords { get; set; }
     }
 }

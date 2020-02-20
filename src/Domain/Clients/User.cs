@@ -78,7 +78,7 @@ namespace Domain.Clients
         /// 获取这个用户的名字
         /// </summary>
         /// <returns></returns>
-        public override string GetName()
+        public string GetName()
         {
             CheckEmpty();
 
