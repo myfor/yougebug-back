@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using yougebug_back.Auth;
 
 namespace yougebug_back.Admin
 {
+    /// <summary>
+    /// 管理端控制器基类
+    /// </summary>
     [ClientsLoginCheck]
     [Authorize]
     public abstract class AdminBaseController : Shared.YGBBaseController

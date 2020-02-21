@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace yougebug_back.Clients
 {
+    /// <summary>
+    /// 检查客户端用户是否已登录
+    /// </summary>
     public class ClientsLoginCheckAttribute : ActionFilterAttribute
     {
         public override Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

@@ -1,4 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+/*
+ * 客户端控制器基类
+ * 默认会进行 Authorize 验证
+ * 不需要验证的控制器或者 Action 要加上 AllowAnonymous 特性
+ * 如果控制器或 Action 需要保证用户登录，则要加上 ClientsLoginCheck 特性
+ */
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +14,8 @@ using yougebug_back.Auth;
 namespace yougebug_back.Clients
 {
     /// <summary>
-    /// 客户端基类，会检查登录
+    /// 客户端控制器基类
     /// </summary>
-    [ClientsLoginCheck]
     [Authorize]
     public abstract class ClientBaseController : Shared.YGBBaseController
     {

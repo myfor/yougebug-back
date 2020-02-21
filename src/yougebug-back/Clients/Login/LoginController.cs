@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Clients;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,14 +12,15 @@ namespace yougebug_back.Clients.Login
     /// 客户端登录
     /// </summary>
     [Route(Defaults.CLIENT_DEFAULT_ROUTE)]
-    public class LoginController : YGBBaseController
+    [AllowAnonymous]
+    public class LoginController : ClientBaseController
     {
         /// <summary>
         /// 登录
         /// </summary>
         [HttpPatch]
         public async Task<ActionResult> Login([FromBody]Models.LoginInfo loginInfo)
-        { 
+        {
             Resp result = await Domain.Clients.User.LoginAsync(loginInfo);
 
             if (result.Data == Resp.NONE)
@@ -38,4 +40,4 @@ namespace yougebug_back.Clients.Login
             return Pack(result);
         }
     }
-} 
+}
