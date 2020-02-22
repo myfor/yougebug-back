@@ -52,9 +52,10 @@ namespace yougebug_back.Clients.Questions
         /// </summary>
         [HttpPost]
         [ClientsLoginCheck]
-        public async Task<IActionResult> AskAsync()
+        public async Task<IActionResult> AskAsync(Domain.Questions.Models.PostQuestion model)
         {
-
+            var r = await CurrentAccount.AskQuestion(model);
+            return Pack(r);
         }
 
         /// <summary>

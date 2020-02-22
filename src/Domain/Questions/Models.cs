@@ -38,6 +38,9 @@ namespace Domain.Questions
             /// </summary>
             public string AskerAvatar { get; set; }
         }
+        /// <summary>
+        /// 管理端问题列表单项
+        /// </summary>
         public struct QuestionItem_Admin
         {
             public int Id { get; set; }
@@ -60,7 +63,7 @@ namespace Domain.Questions
             public List<Answers.Models.AnswerItem> Answers { get; set; }
         }
         /// <summary>
-        /// 提一个问题要的参数
+        /// 提一个提问要的参数
         /// </summary>
         public struct PostQuestion
         {
