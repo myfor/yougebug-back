@@ -5,6 +5,14 @@ namespace Domain
 {
     public class Paginator
     {
+        public static Paginator New(int index, int size)
+        {
+            return new Paginator
+            {
+                Index = index,
+                Size = size
+            };
+        }
         /// <summary>
         /// 当前页码
         /// </summary>
