@@ -81,8 +81,6 @@ namespace yougebug_back
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
