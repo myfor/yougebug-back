@@ -23,7 +23,7 @@ namespace yougebug_back.Clients.Login
         {
             Resp result = await Domain.Clients.User.LoginAsync(loginInfo);
 
-            if (result.Data == Resp.NONE)
+            if (!result.IsSuccess)
                 return Pack(result);
 
             Claim[] claims = new Claim[]

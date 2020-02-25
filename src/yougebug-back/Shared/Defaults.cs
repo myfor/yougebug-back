@@ -19,7 +19,7 @@
         /// </summary>
         public const string CLIENT_DEFAULT_ROUTE_PREFIX = "client/api/";
         /// <summary>
-        /// 客户端默认路由
+        /// 客户端默认路由 client/api/
         /// </summary>
         public const string CLIENT_DEFAULT_ROUTE = CLIENT_DEFAULT_ROUTE_PREFIX + "[controller]";
         /// <summary>

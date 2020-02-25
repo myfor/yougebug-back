@@ -1,4 +1,6 @@
-﻿namespace Domain.Clients
+﻿using System;
+
+namespace Domain.Clients
 {
     public class Results
     {
@@ -8,6 +10,10 @@
         public struct LoggedInInfo
         {
             public string Name { get; set; }
+            [NonSerialized]
+            public Guid Token;
+            [NonSerialized]
+            public int Id;
         }
     }
 }

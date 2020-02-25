@@ -55,7 +55,9 @@ namespace Domain.Clients
 
             Results.LoggedInInfo result = new Results.LoggedInInfo
             {
-                Name = user.Name
+                Name = string.IsNullOrWhiteSpace(user.Name) ? user.Email : user.Name,
+                Id = user.Id,
+                Token = user.Token
             };
             return Resp.Success(result);
         }

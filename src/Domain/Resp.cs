@@ -25,7 +25,12 @@ namespace Domain
         /// 状态码
         /// </summary>
         [NonSerialized]
-        public Code StatusCode;
+        public readonly Code StatusCode;
+        /// <summary>
+        /// 是否为成功的请求
+        /// </summary>
+        [NonSerialized]
+        public readonly bool IsSuccess = false;
         /// <summary>
         /// 信息
         /// </summary>
@@ -51,13 +56,20 @@ namespace Domain
             Message = msg ?? "";
             Data = data;
         }
+        private Resp(Code code, string msg, dynamic data, bool isSuccess)
+        {
+            StatusCode = code;
+            Message = msg ?? "";
+            Data = data;
+            IsSuccess = isSuccess;
+        }
         /// <summary>
         /// 成功
         /// </summary>
         /// <param name="data"></param>
         /// <param name="msg"></param>
         /// <returns></returns>
-        public static Resp Success(dynamic data = NONE, string msg = "") => new Resp(Code.Success, msg, data);
+        public static Resp Success(dynamic data = NONE, string msg = "") => new Resp(Code.Success, msg, data, true);
         /// <summary>
         /// 失败
         /// </summary>
