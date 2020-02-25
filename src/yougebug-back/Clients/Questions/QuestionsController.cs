@@ -36,14 +36,26 @@ namespace yougebug_back.Clients.Questions
         }
 
         /// <summary>
+        /// 获取问题详情
+        /// </summary>
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetQuestionDetail(int id)
+        {
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Resp detail = await question.GetDetailAsync();
+            return Pack(detail);
+        }
+
+        /// <summary>
         /// 举报一个提问
         /// </summary>
         [HttpPatch("{id}/report")]
         [AllowAnonymous]
-        public async Task<IActionResult> ReportAsync(int id, [FromForm]string reason, [FromForm]string description)
+        public async Task<IActionResult> ReportAsync(int id, Domain.Questions.Models.NewReport report)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp r = await question.ReportAsync(reason, description);
+            Domain.Resp r = await question.ReportAsync(report.Reason, report.Description);
             return Pack(r);
         }
 

@@ -25,15 +25,6 @@ namespace Domain
 
         #region 模型
 
-        /// <summary>
-        /// 键值对模型
-        /// </summary>
-        public class KeyValue<K, V>
-        {
-            public K Key { get; set; }
-            public V Value { get; set; }
-        }
-
         public class KeyValueChlid<K, V>
         {
             public K Key { get; set; }

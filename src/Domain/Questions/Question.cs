@@ -168,11 +168,7 @@ namespace Domain.Questions
                 Tags = question.Tags.Split(','),
                 Votes = question.Votes,
                 CreateDate = question.CreateDate.ToStandardString(),
-                State = new Share.KeyValue<int, string>
-                {
-                    Key = question.State,
-                    Value = question.State.GetDescription<QuestionState>()
-                },
+                State = KeyValuePair.Create(question.State, question.State.GetDescription<QuestionState>()),
                 User = new Clients.Models.UserIntro
                 {
                     Id = question.Asker.Id,
@@ -204,7 +200,7 @@ namespace Domain.Questions
         /// </summary>
         /// <param name="index">第几页</param>
         /// <param name="size">几条</param>
-        /// <returns></returns>
+        /// <returns>返货答案列表和总条数</returns>
         private async Task<(List<Answers.Models.AnswerItem>, int)> GetAnswersAsync(int index, int size)
         {
             using var db = new YGBContext();

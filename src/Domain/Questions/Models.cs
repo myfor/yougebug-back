@@ -59,7 +59,7 @@ namespace Domain.Questions
             public int Votes { get; set; }
             public Clients.Models.UserIntro User { get; set; }
             public string CreateDate { get; set; }
-            public Share.KeyValue<int, string> State { get; set; }
+            public KeyValuePair<int, string> State { get; set; }
             public List<Answers.Models.AnswerItem> Answers { get; set; }
         }
         /// <summary>
@@ -98,6 +98,14 @@ namespace Domain.Questions
                     return (false, "请输入至少一个问题标签");
                 return (true, "");
             }
+        }
+        /// <summary>
+        /// 举报一个问题需要的参数
+        /// </summary>
+        public struct NewReport
+        {
+            public string Reason { get; set; }
+            public string Description { get; set; }
         }
     }
 }
