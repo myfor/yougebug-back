@@ -5,7 +5,7 @@ namespace DB.Tables
     /// <summary>
     /// 问题举报记录
     /// </summary>
-    public class QuestionReportRecord
+    public class QuestionReportRecord : Entity
     {
         [Required]
         public int QuestionId { get; set; }

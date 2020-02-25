@@ -40,7 +40,7 @@ namespace yougebug_back.Clients.Questions
         /// </summary>
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetQuestionDetail(int id)
+        public async Task<IActionResult> GetQuestionDetailAsync(int id)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
             Domain.Resp detail = await question.GetDetailAsync();
