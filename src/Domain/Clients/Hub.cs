@@ -1,6 +1,7 @@
 ﻿using DB;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Domain.Clients
 {
@@ -52,6 +53,32 @@ namespace Domain.Clients
                 return User.GetEmpty();
 
             return new User(user.Id);
+        }
+
+        /// <summary>
+        /// 注册
+        /// </summary>
+        public async Task<Resp> Register(Models.RegisterInfo register)
+        {
+            (bool isValid, string msg) = register.IsValid();
+            if (!isValid)
+                return Resp.Fault(Resp.NONE, msg);
+
+            using var db = new YGBContext();
+            if (await db.Users.AnyAsync(u => u.Email == register.Email))
+                return Resp.Fault(Resp.NONE, "该邮箱已被注册");
+
+            DB.Tables.User newUser = new DB.Tables.User
+            { 
+                Email = register.Email,
+                Password = register.Password,
+                AvatarId = File.DEFAULT_IMG_ID,
+                Token = System.Guid.NewGuid()
+            };
+            db.Users.Add(newUser);
+            if (await db.SaveChangesAsync() == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "注册失败，请重试");
         }
     }
 }
