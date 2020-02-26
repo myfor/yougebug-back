@@ -9,9 +9,15 @@ namespace Domain.Clients
         /// </summary>
         public struct LoggedInInfo
         {
-            public string Name { get; set; }
+            public string Avatar { get; set; }
+            /// <summary>
+            /// JWT，不序列化
+            /// </summary>
             [NonSerialized]
             public Guid Token;
+            /// <summary>
+            /// ID，不序列化
+            /// </summary>
             [NonSerialized]
             public int Id;
         }

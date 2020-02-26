@@ -43,7 +43,8 @@ namespace Domain.Clients
 
             using var db = new YGBContext();
 
-            DB.Tables.User user = await db.Users.FirstOrDefaultAsync(a => (a.Name == loginInfo.Account || a.Email == loginInfo.Account) && a.Password == loginInfo.Password);
+            DB.Tables.User user = await db.Users.Include(u => u.Avatar)
+                                                .FirstOrDefaultAsync(a => (a.Name == loginInfo.Account || a.Email == loginInfo.Account) && a.Password == loginInfo.Password);
 
             if (user is null)
                 return Resp.Fault(Resp.NONE, "账号不存在或密码错误");
@@ -55,7 +56,7 @@ namespace Domain.Clients
 
             Results.LoggedInInfo result = new Results.LoggedInInfo
             {
-                Name = string.IsNullOrWhiteSpace(user.Name) ? user.Email : user.Name,
+                Avatar = user.Avatar.Thumbnail,
                 Id = user.Id,
                 Token = user.Token
             };

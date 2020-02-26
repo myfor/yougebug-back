@@ -65,8 +65,8 @@ namespace yougebug_back
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory() + "/admin/"),
-                RequestPath = "/admin"
+                FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory() + "/adminwwwroot/"),
+                RequestPath = "/adminwwwroot"
             });
             app.UseStaticFiles(new StaticFileOptions
             {
