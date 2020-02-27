@@ -16,6 +16,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace yougebug_back
 {
@@ -61,6 +62,8 @@ namespace yougebug_back
             }
 
             app.UseHttpsRedirection();
+
+            app.UseRewriter(new RewriteOptions().AddRewrite("^$", "/index.html", true));
 
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions

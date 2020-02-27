@@ -66,7 +66,8 @@ namespace yougebug_back.Clients.Questions
         [ClientsLoginCheck]
         public async Task<IActionResult> AskAsync(Domain.Questions.Models.PostQuestion model)
         {
-            var r = await CurrentAccount.AskQuestion(model);
+            model.UserId = CurrentAccount.Id;
+            Domain.Resp r = await CurrentAccount.AskQuestion(model);
             return Pack(r);
         }
 
