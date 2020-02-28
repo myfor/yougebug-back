@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <base href="/" />
+    <link href="~/favicon.ico" rel="icon" type="image/x-icon" />
+    <link href="~/lib/bootstrap-4.4.1-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+
+    </header>
+    <div class="container">
+        @RenderBody()
+    </div>
+    
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

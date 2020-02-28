@@ -51,7 +51,7 @@ namespace yougebug_back
                 });
             });
 
-            services.AddControllers();
+            services.AddControllersWithViews();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -62,8 +62,6 @@ namespace yougebug_back
             }
 
             app.UseHttpsRedirection();
-
-            app.UseRewriter(new RewriteOptions().AddRewrite("^$", "/index.html", true));
 
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
@@ -86,7 +84,9 @@ namespace yougebug_back
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}");
             });
         }
     }

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DB", "DB\DB.csproj", "{EF2983F7-6847-44BE-B32F-FA3743AA018F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SEO", "SEO\SEO.csproj", "{1C464723-A6EE-4BA2-9EBC-44D21994C490}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SEO", "SEO\SEO.csproj", "{1C464723-A6EE-4BA2-9EBC-44D21994C490}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
