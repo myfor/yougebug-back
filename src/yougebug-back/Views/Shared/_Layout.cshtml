@@ -6,20 +6,32 @@
     <title>@ViewBag.Title</title>
     <base href="/" />
     <link href="~/favicon.ico" rel="icon" type="image/x-icon" />
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/lib/materialize/css/materialize.min.css" rel="stylesheet" media="screen,projection" />
+    <link href="~/lib/bootstrap-4.4.1-dist/css/bootstrap.min.css" rel="stylesheet" media="screen,projection" />
 </head>
 <body>
-    <header>
-
+    <header class="header-top top-bar">
+        <div class="row w-100">
+            <div class="col-2 col-sm-2 col-lg-3 mt-2 text-right">
+                <img src="~/img/有个bug.png" alt="有个bug LOGO" height="30" />
+            </div>
+            <form action="/" method="post" class="col-10 col-sm-7 col-lg-6 d-flex">
+                <img src="~/icons/search.svg" class="mt-2 mr-1" alt="搜索" width="30" height="30" />
+                <input class="form-control search-box" type="search" placeholder="按回车搜索..." required />
+            </form>
+            <div class="col-sm-3 mt-1 text-left">
+                <button type="button" class="btn btn-primary">登录</button>
+                <button type="button" class="btn btn-outline-primary">注册</button>
+            </div>
+        </div>
     </header>
-    <div class="container">
+
+    <div class="container mt-5">
         @RenderBody()
     </div>
-    
+
     <script src="~/js/jquery.min.js"></script>
-    <script src="~/lib/materialize/js/materialize.min.js"></script>
+    <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

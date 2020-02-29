@@ -1,3 +1,24 @@
 ﻿/*
     全局 css
 */
+.header-top {
+    display: flex;
+    box-shadow: 0 1px 0 rgba(12, 13, 14, 0.1), 0 1px 6px rgba(60, 65, 70, 0.1);
+}
+
+.top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background-color: #fafafb;
+    transition: box-shadow cubic-bezier(.165, .84, .44, 1) .25s;
+    height: 50px;
+    box-sizing: border-box;
+    border-top: 3px solid #3f51b5;
+}
+
+.search-box {
+    margin-top: 4px;
+}
