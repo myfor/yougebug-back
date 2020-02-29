@@ -1,6 +1,15 @@
 ﻿/*
     全局 css
 */
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
 .header-top {
     display: flex;
     box-shadow: 0 1px 0 rgba(12, 13, 14, 0.1), 0 1px 6px rgba(60, 65, 70, 0.1);
