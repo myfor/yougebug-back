@@ -13,10 +13,13 @@
 <body>
     <header class="header-top top-bar">
         <div class="row w-100">
-            <div class="col-2 col-sm-2 col-lg-3 mt-2 text-right">
+            <div class="col-2 col-sm-2 col-lg-3 mt-2 d-none d-md-block text-right">
                 <img src="~/img/有个bug.png" alt="有个bug LOGO" height="30" />
             </div>
-            <form action="/" method="post" class="col-10 col-sm-7 col-lg-6 d-flex">
+            <div class="col-2 col-sm-2 col-lg-3 mt-2 d-md-none text-right">
+                <img src="~/img/B.png" alt="有个bug LOGO" height="30" />
+            </div>
+            <form action="/" method="post" class="col-7 col-sm-7 col-lg-6 d-flex">
                 <img src="~/icons/search.svg" class="mt-2 mr-1" alt="搜索" width="30" height="30" />
                 <input class="form-control search-box" type="search" placeholder="按回车搜索..." required />
             </form>
