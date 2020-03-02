@@ -3,25 +3,35 @@
 }
 
 
+<div class="row">
 
-<div class="w-100 h-100">
-    <div class="d-flex border-bottom border-secondary pt-4 pb-4">
-        <h2 class="flex-grow-1">最新提问</h2>
-        <a class="btn btn-primary btn-lg" href="/ask">我要提问</a>
-        <a class="btn btn-danger btn-lg" href="/ask">我要提问</a>
+    <div class="col-2 d-none d-lg-block">
+        @await Html.PartialAsync("_LeftNav")
     </div>
-    <div>
-        list
+    <div class="col-sm-12 col-lg-8 h-100" style="max-width: 1300px">
+        <div class="d-flex border-bottom border-secondary pt-4 pb-4">
+            <h2 class="flex-grow-1 pl-4">最新提问</h2>
+            <div class="pr-4">
+                <a class="btn btn-primary btn-lg" href="/ask">我要提问</a>
+            </div>
+        </div>
+        <div>
+            <div class="border-bottom border-secondary pt-3 pb-2 d-flex">
+                <div>
+                    左边数值
+                </div>
+                <div>
+                    右边表述
+                </div>
+            </div>
+            <div class="border-bottom border-secondary pt-3 pb-2">
+                question
+            </div>
+        </div>
     </div>
-    <div class="row">
-        <div class="col-6 d-none d-sm-block">
-            <a class="btn btn-primary btn-lg" href="/ask">我要提问</a>
 
-        </div>
-        <div class="col-6">
-            <a class="btn btn-danger btn-lg" href="/ask">我要提问</a>
-
-        </div>
+    <div class="col-2 d-none d-lg-block">
+        @await  Html.PartialAsync("_RightNav")
     </div>
 </div>
 
