@@ -49,7 +49,6 @@ namespace Domain
         /// <summary>
         /// 获取跳过的条数
         /// </summary>
-        /// <returns></returns>
         public int GetSkip() => Size * (Index - 1);
         /// <summary>
         /// 返回数据列表
@@ -58,6 +57,31 @@ namespace Domain
         public List<T> GetList<T>()
         {
             return List;
+        }
+
+        /// <summary>
+        /// 分页的上一页是否禁用
+        /// </summary>
+        public string PrePageDisabled() => Index <= 1 ? "disabled" : "";
+        /// <summary>
+        /// 获取上一页页码
+        /// </summary>
+        /// <returns></returns>
+        public int GetPreIndex()
+        {
+            if (string.IsNullOrWhiteSpace(PrePageDisabled()))
+                return Index - 1;
+            return 1;
+        }
+        /// <summary>
+        /// 分页的下一页是否禁用
+        /// </summary>
+        public string NextPageDisablid() => TotalPages <= Index ? "disabled" : "";
+        public int GetNextIndex()
+        {
+            if (string.IsNullOrWhiteSpace(NextPageDisablid()))
+                return Index + 1;
+            return Index;
         }
     }
 }

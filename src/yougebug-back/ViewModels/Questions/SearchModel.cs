@@ -9,10 +9,5 @@ namespace yougebug_back.ViewModels.Questions
     {
         public string Search { get; set; }
         public Domain.Paginator Page { get; set; }
-        /// <summary>
-        /// 分页的上一页是否禁用
-        /// </summary>
-        public string PrePageDisabled => Page.Index == 1 ? "disabled" : "";
-
     }
 }
