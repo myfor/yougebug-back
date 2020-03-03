@@ -31,3 +31,9 @@ body {
 .search-box {
     margin-top: 4px;
 }
+
+.statistics {
+    margin: 0 24px 0 12px;
+    width: 60px;
+}
+
