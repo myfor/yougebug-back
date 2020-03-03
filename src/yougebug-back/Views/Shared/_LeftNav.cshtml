@@ -1,10 +1,10 @@
-﻿@{
-}
+﻿
 <style>
     .nav {
         height: 36px;
         width: 100%;
         display: block;
+        margin-left: -15px;
     }
 
         .nav > a {
@@ -24,7 +24,7 @@
 
 <div class="d-flex flex-column pt-3 h-100 border-right border-secondary">
     <h5 class="mt-2 mb-2">导航</h5>
-    <ul>
+    <ul class="pl-2">
         <li class="nav">
             <a href="/questions" id="a_questions">
                 <img src="~/icons/question-fill.svg" class="mb-1" id="a_questions_icon" alt="提问" width="20" height="20" hidden="hidden" />
@@ -53,18 +53,19 @@
 <script>
 
     $(function () {
-        const path = location.pathname;
-        switch (path) {
+        const PATH = location.pathname;
+        const ACTIVE_CSS = 'nav-active';
+        switch (PATH) {
             case 'tags': {
-                document.getElementById('a_tags').classList.add('nav-active');
+                document.getElementById('a_tags').classList.add(ACTIVE_CSS);
                 document.getElementById('a_tags_icon').removeAttribute('hidden');
             }; break;
             case 'users': {
-                document.getElementById('a_users').classList.add('nav-active');
+                document.getElementById('a_users').classList.add(ACTIVE_CSS);
                 document.getElementById('a_users_icon').removeAttribute('hidden');
             }; break;
             default: {
-                document.getElementById('a_questions').classList.add('nav-active');
+                document.getElementById('a_questions').classList.add(ACTIVE_CSS);
                 document.getElementById('a_questions_icon').removeAttribute('hidden');
             }; break;
         }

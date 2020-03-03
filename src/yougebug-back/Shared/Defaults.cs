@@ -26,5 +26,9 @@
         /// 客户端登录保存 JWT 的 cookie
         /// </summary>
         public const string CLIENT_AUTH_COOKIE_KEY = "cceeb7f6-02ee-41e2-b843-20e33f85d40e";
+        /// <summary>
+        /// 页面默认的 title
+        /// </summary>
+        public const string PAGE_DEFAULT_TITLE = "有个bug，程序员的技术问答社区";
     }
 }
