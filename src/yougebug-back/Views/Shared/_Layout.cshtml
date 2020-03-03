@@ -14,10 +14,14 @@
     <header class="header-top top-bar">
         <div class="row w-100">
             <div class="col-2 col-sm-2 col-lg-3 mt-2 d-none d-md-block text-right">
-                <img src="~/img/有个bug.png" class="img-fluid" alt="有个bug" />
+                <a href="/">
+                    <img src="~/img/有个bug.png" class="img-fluid" alt="有个bug" />
+                </a>
             </div>
             <div class="col-2 col-sm-2 col-lg-3 mt-2 d-md-none text-right">
-                <img src="~/img/B.png" class="img-fluid" alt="有个bug LOGO" />
+                <a href="/">
+                    <img src="~/img/B.png" class="img-fluid" alt="有个bug LOGO" />
+                </a>
             </div>
             <form action="/questions/search" id="fom_search" method="get" onsubmit="return search()" class="col-7 col-sm-7 col-lg-6 d-flex">
                 <label for="txt_search">
@@ -63,7 +67,7 @@
         }
 
         function search() {
-            const searchContent = document.getElementById('txt_search').value;
+            const searchContent = document.getElementById('txt_search').value.trim();
             if (!searchContent)
                 return false;
 

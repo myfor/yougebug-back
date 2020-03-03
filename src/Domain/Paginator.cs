@@ -55,7 +55,7 @@ namespace Domain
         /// 返回数据列表
         /// </summary>
         public dynamic List { get; set; }
-        public T GetList<T>()
+        public List<T> GetList<T>()
         {
             return List;
         }

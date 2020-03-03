@@ -42,6 +42,41 @@ namespace Domain.Questions
         }
 
         /// <summary>
+        /// 获取最新的提问分页
+        /// </summary>
+        public async Task<Paginator> GetNewestQuestionsPager(Paginator pager)
+        {
+            using var db = new YGBContext();
+
+            Expression<Func<DB.Tables.Question, bool>> where = q => q.State == (int)Question.QuestionState.Enabled;
+
+            pager.TotalRows = await db.Questions.CountAsync(where);
+            pager.List = await db.Questions.AsNoTracking()
+                                            .Include(q => q.Answers)
+                                            .Include(q => q.Asker)
+                                            .ThenInclude(asker => asker.Avatar)
+                                            .Skip(pager.GetSkip())
+                                            .Take(pager.Size)
+                                            .OrderByDescending(q => q.CreateDate)
+                                            .Where(where)
+                                            .Select(q => new Models.QuentionItem_Client
+                                            {
+                                                Id = q.Id,
+                                                Title = q.Title,
+                                                Description = q.Description.Length > 20 ? q.Description.Substring(0, 20) + "..." : q.Description,
+                                                CreateDate = q.CreateDate.ToStandardString(),
+                                                VoteCounts = q.Votes,
+                                                ViewCounts = q.Views,
+                                                AnswerCounts = q.Answers.Count(),
+                                                Tags = q.Tags.SplitOfChar(','),
+                                                AskerName = q.Asker.Name,
+                                                AskerAvatar = q.Asker.Avatar.Thumbnail
+                                            })
+                                            .ToListAsync();
+            return pager;
+        }
+
+        /// <summary>
         /// 获取问题对象
         /// </summary>
         /// <param name="id"></param>
