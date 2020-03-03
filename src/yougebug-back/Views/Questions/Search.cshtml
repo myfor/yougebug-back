@@ -1,0 +1,69 @@
+﻿@{
+    //  ViewBag.Title = "有个bug，程序员的技术问答社区";
+}
+@model yougebug_back.ViewModels.Questions.SearchModel;
+
+
+<div class="row">
+
+    <div class="col-2 d-none d-lg-block" style="width: 150px;">
+        @await Html.PartialAsync("_LeftNav")
+    </div>
+    <div class="col-sm-12 col-lg-8 h-100" style="max-width: 1300px">
+        <div class="d-flex pt-4 pb-4">
+            <h2 class="flex-grow-1 pl-4">搜索结果</h2>
+            <div class="pr-4">
+                <a class="btn btn-primary btn-lg" href="/ask">我要提问</a>
+            </div>
+        </div>
+        <div class="d-flex flex-column border-bottom border-secondary pb-4">
+            <div class="pb-2">
+                <strong>关于 @Model.Search 的搜索</strong>
+            </div>
+            <div class="pb-2">
+                <form action="/questions/search" id="fom_searchIn" method="get" onsubmit="return searchIn()" class="d-flex align-items-center">
+                    <label for="txt_search">
+                        <img src="~/icons/search.svg" class="mt-2 mr-1" alt="搜索" width="30" height="30" />
+                    </label>
+                    <input class="form-control search-box" type="search" id="txt_searchIn" placeholder="按回车搜索..." required value="@Model.Search" />
+                    <button class="btn btn-primary btn-sm flex-grow-1 ml-3" type="submit" style="width: 55px;height : 35px;">搜索</button>
+                </form>
+            </div>
+            <div class="pb-2">
+                <strong>有 @Model.Page.TotalRows 条结果</strong>
+            </div>
+        </div>
+        <div>
+            <div class="border-bottom border-secondary pt-3 pb-2 d-flex">
+                <div>
+                    左边数值
+                </div>
+                <div>
+                    右边表述
+                </div>
+            </div>
+            <div class="border-bottom border-secondary pt-3 pb-2">
+                question
+            </div>
+        </div>
+    </div>
+
+    <div class="col-2 d-none d-lg-block">
+        @await Html.PartialAsync("_RightNav")
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        function searchIn() {
+            const searchContent = document.getElementById('txt_searchIn').value;
+            if (!searchContent)
+                return false;
+            const fom = document.getElementById('fom_searchIn');
+            fom.action += `/${searchContent}`;
+            fom.submit();
+        }
+
+    </script>
+}

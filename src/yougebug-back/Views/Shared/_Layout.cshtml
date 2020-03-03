@@ -19,9 +19,11 @@
             <div class="col-2 col-sm-2 col-lg-3 mt-2 d-md-none text-right">
                 <img src="~/img/B.png" class="img-fluid" alt="有个bug LOGO" />
             </div>
-            <form action="/questions" method="get" class="col-7 col-sm-7 col-lg-6 d-flex">
-                <img src="~/icons/search.svg" class="mt-2 mr-1" alt="搜索" width="30" height="30" />
-                <input class="form-control search-box" type="search" name="search" id="txt_search" placeholder="按回车搜索..." required />
+            <form action="/questions/search" id="fom_search" method="get" onsubmit="return search()" class="col-7 col-sm-7 col-lg-6 d-flex">
+                <label for="txt_search">
+                    <img src="~/icons/search.svg" class="mt-2 mr-1" alt="搜索" width="30" height="30" />
+                </label>
+                <input class="form-control search-box" type="search" id="txt_search" placeholder="按回车搜索..." required />
             </form>
             <div class="col-sm-3 mt-1 text-left">
                 <div id="d-login" hidden="hidden">
@@ -58,6 +60,17 @@
             $.ajax({
                 url: 'logout'
             });
+        }
+
+        function search() {
+            const searchContent = document.getElementById('txt_search').value;
+            if (!searchContent)
+                return false;
+
+            const fom = document.getElementById('fom_search');
+            fom.action += `/${searchContent}`;
+
+            fom.submit();
         }
 
     </script>
