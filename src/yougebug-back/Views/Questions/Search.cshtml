@@ -1,5 +1,5 @@
 ﻿@{
-    //  ViewBag.Title = "有个bug，程序员的技术问答社区";
+//  ViewBag.Title = "有个bug，程序员的技术问答社区";
 }
 @model yougebug_back.ViewModels.Questions.SearchModel;
 
@@ -86,6 +86,24 @@
                     <h6 class="text-secondary small ml-2">@item.ViewCounts 人浏览</h6>
                 </div>
             }
+
+            <nav class="mt-4 ml-3" aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item" @Model.PrePageDisabled>
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
         </div>
     </div>
