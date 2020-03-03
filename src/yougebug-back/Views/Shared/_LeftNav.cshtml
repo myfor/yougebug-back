@@ -1,6 +1,73 @@
 ﻿@{
 }
+<style>
+    .nav {
+        height: 36px;
+        width: 100%;
+        display: block;
+    }
 
-    <div class="d-flex flex-column pt-3 h-100 border-right border-secondary">
-        左边左边左边
-    </div>
+        .nav > a {
+            display: block;
+            color: #131415;
+            padding: 8px 6px 8px 24px;
+            margin-left: -12px;
+        }
+
+    .nav-active {
+        font-weight: bold;
+        background: rgba(12, 13, 14, 0.05);
+        color: #0c0d0e;
+        border-right: 3px solid #3c55e0;
+    }
+</style>
+
+<div class="d-flex flex-column pt-3 h-100 border-right border-secondary">
+    <h5 class="mt-2 mb-2">导航</h5>
+    <ul>
+        <li class="nav">
+            <a href="/questions" id="a_questions">
+                <img src="~/icons/question-fill.svg" class="mb-1" id="a_questions_icon" alt="提问" width="20" height="20" hidden="hidden" />
+                &nbsp;
+                提问列表
+            </a>
+        </li>
+        <li class="nav">
+            <a href="/tags" id="a_tags">
+                <img src="~/icons/tag-fill.svg" class="mb-1" id="a_tags_icon" alt="标签" width="20" height="20" hidden="hidden" />
+                &nbsp;
+                标签
+            </a>
+        </li>
+        <li class="nav">
+            <a href="/users" id="a_users">
+                <img src="~/icons/person-fill.svg" class="mb-1" id="a_users_icon" alt="用户" width="20" height="20" hidden="hidden" />
+                &nbsp;
+                用户
+            </a>
+        </li>
+    </ul>
+</div>
+
+<script src="~/js/jquery.min.js"></script>
+<script>
+
+    $(function () {
+        const path = location.pathname;
+        switch (path) {
+            case 'tags': {
+                document.getElementById('a_tags').classList.add('nav-active');
+                document.getElementById('a_tags_icon').removeAttribute('hidden');
+            }; break;
+            case 'users': {
+                document.getElementById('a_users').classList.add('nav-active');
+                document.getElementById('a_users_icon').removeAttribute('hidden');
+            }; break;
+            default: {
+                document.getElementById('a_questions').classList.add('nav-active');
+                document.getElementById('a_questions_icon').removeAttribute('hidden');
+            }; break;
+        }
+    });
+
+</script>

@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="adminwwwroot\" />
-    <Folder Include="wwwroot\js\views\home\" />
   </ItemGroup>
 
 
