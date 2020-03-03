@@ -19,7 +19,7 @@ namespace yougebug_back.Controllers.Questions
         [HttpGet]
         public IActionResult Newest()
         {
-            ViewBag.Title =  "有个bug，最新提问";
+            ViewBag.Title = "有个bug，最新提问";
 
             return View("Newest");
         }
@@ -28,7 +28,7 @@ namespace yougebug_back.Controllers.Questions
         搜索
          */
         [HttpGet("search/{s}")]
-        public IActionResult SearchResult(string s, int index, int size)
+        public async Task<IActionResult> SearchResult(string s, int index, int size)
         {
             if (string.IsNullOrWhiteSpace(s))
                 return Newest();
@@ -36,11 +36,15 @@ namespace yougebug_back.Controllers.Questions
             ViewBag.Title = "有个bug，提问 - " + s;
 
             Domain.Paginator page = Domain.Paginator.New(index, size);
-            page.TotalRows = 100;
 
-            SearchModel model = new SearchModel();
-            model.Search = s;
-            model.Page = page;
+            Domain.Questions.Hub hub = new Domain.Questions.Hub();
+            page = await hub.GetClientQuestionPager(page);
+
+            SearchModel model = new SearchModel
+            {
+                Search = s,
+                Page = page
+            };
 
             return View("Search", model);
         }

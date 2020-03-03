@@ -14,7 +14,7 @@ namespace Domain.Questions.List
     {
         public async Task<Resp> GetListAsync(Paginator pager)
         {
-            string search = pager.Params["title"] ?? "";
+            string search = pager.Params?["title"] ?? "";
 
             Expression<Func<DB.Tables.Question, bool>> where = q =>
                 q.Title.Contains(search) || q.Description.Contains(search);
@@ -39,7 +39,7 @@ namespace Domain.Questions.List
                                                 VoteCounts = q.Votes,
                                                 ViewCounts = q.Views,
                                                 AnswerCounts = q.Answers.Count(),
-                                                Tags = q.Tags.Split(new char[] { ',' }),
+                                                Tags = q.Tags.SplitOfChar(','),
                                                 AskerName = q.Asker.Name,
                                                 AskerAvatar = q.Asker.Avatar.Thumbnail
                                             })

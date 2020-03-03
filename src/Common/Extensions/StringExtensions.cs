@@ -22,5 +22,15 @@ namespace System
             }
             return list;
         }
+
+        /// <summary>
+        /// 将字符串根据字符切割成字符串数组
+        /// </summary>
+        /// <param name="separator"></param>
+        /// <returns></returns>
+        public static string[] SplitOfChar(this string value, char separator)
+        {
+            return value.Split(separator);
+        }
     }
 }

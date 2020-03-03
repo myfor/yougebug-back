@@ -29,6 +29,19 @@ namespace Domain.Questions
         }
 
         /// <summary>
+        /// 获取客户端的提问分页列表
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public async Task<Paginator> GetClientQuestionPager(Paginator page)
+        {
+            Resp r = await GetListAsync(page, Share.Platform.Client);
+            Paginator pager = r.GetData<Paginator>();
+
+            return pager;
+        }
+
+        /// <summary>
         /// 获取问题对象
         /// </summary>
         /// <param name="id"></param>

@@ -9,8 +9,8 @@ namespace Domain
         {
             return new Paginator
             {
-                Index = index,
-                Size = size
+                Index = index <= 0 ? 1 : index,
+                Size = size <= 0 ? DEFAULT_SIZE : size
             };
         }
         /// <summary>
@@ -55,5 +55,9 @@ namespace Domain
         /// 返回数据列表
         /// </summary>
         public dynamic List { get; set; }
+        public T GetList<T>()
+        {
+            return List;
+        }
     }
 }
