@@ -1,7 +1,7 @@
 ﻿@{
     //  ViewBag.Title = "有个bug，程序员的技术问答社区";
 }
-
+@model yougebug_back.ViewModels.Questions.NewestModel;
 
 <div class="row">
 
@@ -15,19 +15,65 @@
                 <a class="btn btn-primary btn-lg" href="/ask">我要提问</a>
             </div>
         </div>
+
         <div>
-            <div class="border-bottom border-secondary pt-3 pb-2 d-flex">
-                <div>
-                    左边数值
+            @foreach (var item in Model.Page.GetList<Domain.Questions.Models.QuentionItem_Client>())
+            {
+                <div class="border-bottom border-secondary pt-3 pb-2 d-flex flex-column">
+                    <div class="d-flex">
+                        <div class="d-flex flex-column statistics">
+                            <div class="d-flex flex-column p-2 text-center">
+                                <span class="h5 text-secondary font-weight-bold">
+                                    @item.VoteCounts
+                                </span>
+                                <span class="h6 text-secondary">
+                                    推荐
+                                </span>
+                            </div>
+                            <div class="d-flex flex-column p-2 text-center">
+                                <span class="h5 text-secondary font-weight-bold">
+                                    @item.AnswerCounts
+                                </span>
+                                <span class="h6 text-secondary">
+                                    回答
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column pl-3 pr-3 statement">
+                            <a href="/questions/@item.Id" class="pt-2 pb-2" target="_blank">@item.Title</a>
+                            <dav class="small">@item.Description</dav>
+                            <div class="d-flex">
+                                <div>
+                                    @foreach (string tag in item.Tags)
+                                    {
+                                        <a class="tag" href="/tags?name=@tag" target="_blank">@tag</a>
+                                    }
+                                </div>
+                                <div class="flex-grow-1 d-flex flex-row-reverse mr-4">
+                                    <div class="d-flex flex-column">
+                                        提问于：@item.CreateDate
+                                        <div class="d-flex mt-2">
+                                            <a href="/users/@item.AskerName" target="_blank">
+                                                <img src="@item.AskerAvatar" alt="名字" width="35" height="35" class="img-thumbnail mr-2" />
+                                            </a>
+                                            <div class="d-flex flex-column">
+                                                <a href="/users/@item.AskerName" target="_blank">@item.AskerName</a>
+                                                <span>--</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="text-secondary small ml-2">@item.ViewCounts 人浏览</h6>
                 </div>
-                <div>
-                    右边表述
-                </div>
-            </div>
-            <div class="border-bottom border-secondary pt-3 pb-2">
-                question
-            </div>
+            }
+
+            @await Html.PartialAsync("_Paginator", Model.Page)
+
         </div>
+
     </div>
 
     <div class="col-2 d-none d-lg-block">

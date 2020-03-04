@@ -25,8 +25,12 @@ namespace yougebug_back.Controllers.Questions
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
             page = await hub.GetNewestQuestionsPager(page);
+            NewestModel model = new NewestModel
+            { 
+                Page = page
+            };
 
-            return View("Newest", page);
+            return View("Newest", model);
         }
 
         /*

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
+using Microsoft.AspNetCore.Http;
+using System.Text;
 
 namespace Domain
 {
@@ -59,6 +61,7 @@ namespace Domain
             return List;
         }
 
+
         /// <summary>
         /// 分页的上一页是否禁用
         /// </summary>
@@ -82,6 +85,58 @@ namespace Domain
             if (string.IsNullOrWhiteSpace(NextPageDisablid()))
                 return Index + 1;
             return Index;
+        }
+        /// <summary>
+        /// 开始的页码
+        /// </summary>
+        public int GetStartIndex()
+        {
+            const int BASE_NUMBER = 5;
+
+            if (Index == TotalPages)
+                return TotalPages;
+
+            if (Index <= BASE_NUMBER)
+                return 1;
+
+            return Index - BASE_NUMBER;
+        }
+
+        /// <summary>
+        /// 获取技术的页码
+        /// </summary>
+        public int GetEndIndex()
+        {
+            const int BASE_NUMBER = 5;
+
+            if (TotalPages <= 0)
+                return 1;
+            if (TotalPages - Index <= BASE_NUMBER)
+                return TotalPages;
+
+            return BASE_NUMBER + GetStartIndex();
+        }
+        /// <summary>
+        /// 获取跳转链接
+        /// </summary>
+        public string GetLink(HttpRequest request, int index)
+        {
+            StringBuilder router = new StringBuilder(request.Path, 50)
+                .Append("?");
+
+            string indexKey = nameof(Index).ToLower();
+            string sizeKey = nameof(Size).ToLower();
+
+            foreach (var item in request.Query)
+            {
+                string key = item.Key.ToLower();
+                if (key == indexKey || key == sizeKey)
+                    continue;
+                router.Append(key).Append("=").Append(item.Value).Append("&");
+            }
+            router.Append($"{indexKey}={index}&{sizeKey}={Size}");
+
+            return router.ToString();
         }
     }
 }
