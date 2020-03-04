@@ -1,25 +1,51 @@
 ﻿
 <div class="w-100 h-100 pt-5" style="padding-top: 20%;">
     <h3 class="text-center mb-5">注册</h3>
-    <form action="/register" method="post" class="m-auto p-4 shadow rounded" style="width: 400px;">
+    <form action="/register" method="post" class="m-auto p-4 shadow rounded" onsubmit="return register()" style="width: 400px;">
         <div class="form-group">
-            <label for="txt_account">账号</label>
-            <input type="text" class="form-control" name="account" id="txt_account" required placeholder="请输入账号" />
+            <label for="txt_email">邮箱</label>
+            <input type="text" class="form-control" name="email" id="txt_email" required placeholder="请输入邮箱" />
         </div>
         <div class="form-group">
             <label for="txt_password">密码</label>
             <input type="password" class="form-control" name="password" id="txt_password" required placeholder="请输入密码" />
         </div>
         <div class="form-group">
-            <label for="txt_confirm">再次输入密码</label>
+            <label for="txt_confirm">确认密码密码</label>
             <input type="password" class="form-control" name="password" id="txt_confirm" required placeholder="确认密码" />
         </div>
-        <button type="submit" class="btn btn-primary btn-block">注册</button>
+        <button type="submit" class="btn btn-primary btn-block" id="btn_register">注册</button>
     </form>
 </div>
 
 @section Scripts {
+    <script src="~/js/common.js"></script>
     <script>
+        function register() {
+            const DOC = document;
 
+            const EMAIL = DOC.getElementById('txt_email');
+            const PASSWORD = DOC.getElementById('txt_password');
+            const CONFIRM = DOC.getElementById('txt_confirm');
+
+            if (!checkEmail(EMAIL.value.trim())) {
+                alert('邮箱格式有误');
+                EMAIL.focus();
+                return false;
+            }
+
+            const PASSWORDVALUE = PASSWORD.value.trim();
+            if (PASSWORDVALUE.length < 6) {
+                alert('密码最少 6 位');
+                PASSWORD.focus();
+                return false;
+            }
+            if (CONFIRM.value.trim() !== PASSWORDVALUE) {
+                alert('两次密码不一致');
+                return false;
+            }
+
+            return true;
+        }
     </script>
 }
