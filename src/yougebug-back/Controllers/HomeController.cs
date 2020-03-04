@@ -9,5 +9,20 @@ namespace yougebug_back.Controllers
         {
             return Redirect("questions");
         }
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        [HttpGet("login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpGet("register")]
+        public IActionResult Register()
+        {
+            return View();
+        }
     }
 }

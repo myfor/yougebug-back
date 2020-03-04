@@ -31,8 +31,20 @@
             </form>
             <div class="col-sm-3 mt-1 text-left">
                 <div id="d-login" hidden="hidden">
-                    <button type="button" class="btn btn-primary" onclick="javascript: location.href = 'login';">登录</button>
-                    <button type="button" class="btn btn-outline-primary" onclick="javascript: location.href = 'register';">注册</button>
+                    <div class="d-none d-md-block">
+                        <button type="button" class="btn btn-primary" onclick="javascript: location.href = 'login';">登录</button>
+                        <button type="button" class="btn btn-outline-primary" onclick="javascript: location.href = 'register';">注册</button>
+                    </div>
+                    <div class="dropdown d-md-none">
+                        <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="~/icons/list.svg" alt="更多" height="40" />
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="login">登录</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="register">注册</a>
+                        </div>
+                    </div>
                 </div>
                 <div id="d-logout" hidden="hidden">
                     <button type="button" class="btn btn-outline-primary" onclick="logout()">退出登录</button>
@@ -51,7 +63,9 @@
     </blockquote>
 
     <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
     <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(function () {
             const current = localStorage.getItem('____');
@@ -62,9 +76,8 @@
         });
 
         function logout() {
-            $.ajax({
-                url: 'logout'
-            });
+            localStorage.removeItem('____');
+            location.reload();
         }
 
         function search() {
