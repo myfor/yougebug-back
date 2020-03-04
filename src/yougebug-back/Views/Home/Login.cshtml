@@ -1,4 +1,17 @@
 ﻿
-<div class="row">
-    LOGIN
+<div class="w-100 h-100 pt-5" style="padding-top: 10%;">
+    <form action="/login" method="put" class="m-auto p-4 shadow rounded" style="width: 400px;">
+        <div class="form-group">
+            <label for="txt_account">账号</label>
+            <input type="text" class="form-control" name="account" id="txt_account" required placeholder="请输入账号" />
+        </div>
+        <div class="form-group">
+            <label for="txt_password">账号</label>
+            <input type="password" class="form-control" name="password" id="txt_password" required placeholder="请输入账号" />
+        </div>
+        <button type="submit" class="btn btn-primary">登录</button>
+    </form>
 </div>
+
+@section Scripts {
+}

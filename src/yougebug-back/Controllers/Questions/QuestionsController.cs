@@ -10,7 +10,7 @@ using yougebug_back.ViewModels.Questions;
 namespace yougebug_back.Controllers.Questions
 {
     [Route("questions")]
-    public class QuestionsController : Controller
+    public class QuestionsController : ClientsContorller
     {
         /*
         最新问题列表
@@ -19,7 +19,7 @@ namespace yougebug_back.Controllers.Questions
         [HttpGet]
         public async Task<IActionResult> Newest(int index, int size)
         {
-            ViewBag.Title = "有个bug，最新提问";
+            SetTitle("有个bug，最新提问");
 
             Domain.Paginator page = Domain.Paginator.New(index, size);
 
@@ -42,7 +42,7 @@ namespace yougebug_back.Controllers.Questions
             if (string.IsNullOrWhiteSpace(s))
                 return await Newest(0, 0);
 
-            ViewBag.Title = "有个bug，提问 - " + s;
+            SetTitle("有个bug，提问 - " + s);
 
             Domain.Paginator page = Domain.Paginator.New(index, size);
 

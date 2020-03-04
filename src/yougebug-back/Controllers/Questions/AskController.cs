@@ -8,12 +8,12 @@ namespace yougebug_back.Controllers.Questions
     /// 提问
     /// </summary>
     [Route("Ask")]
-    public class AskController : Controller
+    public class AskController : ClientsContorller
     {
         [HttpGet]
         public IActionResult Index()
         {
-            ViewBag.Title = "有个bug - 提问";
+            SetTitle("有个bug - 提问");
 
             return View("Ask");
         }
