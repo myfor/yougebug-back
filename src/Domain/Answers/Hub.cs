@@ -24,7 +24,7 @@ namespace Domain.Answers
 
             pager.TotalRows = await db.Answers.CountAsync(a => a.QuestionId == questionId);
             pager.List = await db.Answers.AsNoTracking()
-                                         .Skip(pager.GetSkip())
+                                         .Skip(pager.Skip)
                                          .Take(pager.Size)
                                          .OrderByDescending(a => a.Votes)
                                          .Where(whereStatement)

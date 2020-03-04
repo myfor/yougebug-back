@@ -1,14 +1,17 @@
-﻿@model Domain.Paginator;
+﻿<!--
+    分页视图    
+-->>
+@model Domain.Paginator;
 
 <nav class="mt-4 ml-3" aria-label="Page navigation">
     <ul class="pagination">
-        <li class="page-item @Model.PrePageDisabled()">
+        <li class="page-item @Model.PrePageDisabled">
             <a class="page-link" href="#" aria-label="Previous">
                 <span aria-hidden="true">上一页</span>
             </a>
         </li>
 
-        @for (int i = Model.GetStartIndex(); i <= Model.GetEndIndex(); ++i)
+        @for (int i = Model.StartIndex; i <= Model.EndIndex; ++i)
         {
             if (i == Model.Index)
             {
@@ -27,7 +30,7 @@
             }
         }
 
-        <li class="page-item @Model.NextPageDisablid()">
+        <li class="page-item @Model.NextPageDisablid">
             <a class="page-link" href="#" aria-label="Next">
                 <span aria-hidden="true">下一页</span>
             </a>

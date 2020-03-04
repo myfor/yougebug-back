@@ -51,7 +51,8 @@ namespace Domain
         /// <summary>
         /// 获取跳过的条数
         /// </summary>
-        public int GetSkip() => Size * (Index - 1);
+        [System.Text.Json.Serialization.JsonIgnore]
+        public int Skip => Size * (Index - 1);
         /// <summary>
         /// 返回数据列表
         /// </summary>
@@ -61,82 +62,87 @@ namespace Domain
             return List;
         }
 
-
         /// <summary>
         /// 分页的上一页是否禁用
         /// </summary>
-        public string PrePageDisabled() => Index <= 1 ? "disabled" : "";
-        /// <summary>
-        /// 获取上一页页码
-        /// </summary>
-        /// <returns></returns>
-        public int GetPreIndex()
-        {
-            if (string.IsNullOrWhiteSpace(PrePageDisabled()))
-                return Index - 1;
-            return 1;
-        }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string PrePageDisabled => Index <= 1 ? "disabled" : "";
+
         /// <summary>
         /// 分页的下一页是否禁用
         /// </summary>
-        public string NextPageDisablid() => TotalPages <= Index ? "disabled" : "";
-        public int GetNextIndex()
-        {
-            if (string.IsNullOrWhiteSpace(NextPageDisablid()))
-                return Index + 1;
-            return Index;
-        }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string NextPageDisablid => TotalPages <= Index ? "disabled" : "";
+
         /// <summary>
         /// 开始的页码
         /// </summary>
-        public int GetStartIndex()
+        [System.Text.Json.Serialization.JsonIgnore]
+        public int StartIndex
         {
-            const int BASE_NUMBER = 5;
+            get
+            {
+                const int BASE_NUMBER = 5;
 
-            if (Index == TotalPages)
-                return TotalPages;
+                if (Index == TotalPages)
+                    return TotalPages;
 
-            if (Index <= BASE_NUMBER)
-                return 1;
+                if (Index <= BASE_NUMBER)
+                    return 1;
 
-            return Index - BASE_NUMBER;
+                return Index - BASE_NUMBER;
+            }
         }
 
         /// <summary>
         /// 获取技术的页码
         /// </summary>
-        public int GetEndIndex()
+        [System.Text.Json.Serialization.JsonIgnore]
+        public int EndIndex
         {
-            const int BASE_NUMBER = 5;
+            get
+            {
+                const int BASE_NUMBER = 5;
 
-            if (TotalPages <= 0)
-                return 1;
-            if (TotalPages - Index <= BASE_NUMBER)
-                return TotalPages;
+                if (TotalPages <= 0)
+                    return 1;
+                if (TotalPages - Index <= BASE_NUMBER)
+                    return TotalPages;
 
-            return BASE_NUMBER + GetStartIndex();
+                return BASE_NUMBER + StartIndex;
+            }
         }
+
+        /// <summary>
+        /// 分页的路由缓存
+        /// </summary>
+        private string routerCache;
+
         /// <summary>
         /// 获取跳转链接
         /// </summary>
         public string GetLink(HttpRequest request, int index)
         {
-            StringBuilder router = new StringBuilder(request.Path, 50)
-                .Append("?");
-
-            string indexKey = nameof(Index).ToLower();
-            string sizeKey = nameof(Size).ToLower();
-
-            foreach (var item in request.Query)
+            if (routerCache == null)
             {
-                string key = item.Key.ToLower();
-                if (key == indexKey || key == sizeKey)
-                    continue;
-                router.Append(key).Append("=").Append(item.Value).Append("&");
-            }
-            router.Append($"{indexKey}={index}&{sizeKey}={Size}");
+                StringBuilder router = new StringBuilder(request.Path, 50)
+                    .Append("?");
 
-            return router.ToString();
+                string indexKey = nameof(Index).ToLower();
+                string sizeKey = nameof(Size).ToLower();
+
+                foreach (var item in request.Query)
+                {
+                    string key = item.Key.ToLower();
+                    if (key == indexKey || key == sizeKey)
+                        continue;
+                    router.Append(key).Append("=").Append(item.Value).Append("&");
+                }
+                router.Append($"{indexKey}={{0}}&{sizeKey}={{1}}");
+
+                routerCache = router.ToString();
+            }
+            return string.Format(routerCache, index, Size);
         }
     }
 }

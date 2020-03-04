@@ -57,5 +57,14 @@ namespace yougebug_back.Controllers.Questions
 
             return View("Search", model);
         }
+
+        /*
+         * 获取一个提问的详情
+         */ 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

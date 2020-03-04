@@ -59,7 +59,7 @@ namespace Domain.Questions
             public int Votes { get; set; }
             public Clients.Models.UserIntro User { get; set; }
             public string CreateDate { get; set; }
-            public KeyValuePair<int, string> State { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
             public List<Answers.Models.AnswerItem> Answers { get; set; }
         }
         /// <summary>

@@ -1,0 +1,33 @@
+﻿
+
+<div class="row">
+    <div class="col-12 col-md-9 mb-3">
+        <div class="shadow h-100 w-100 mt-5 rounded">
+            <form action="/ask" method="post" class="d-flex flex-column p-3">
+                <div class="form-group">
+                    <label for="txt_title">标题，要求 4 个字以上，简明扼要</label>
+                    <input type="text" class="form-control" name="title" id="txt_title" aria-describedby="title" required placeholder="请输入标题" />
+                </div>
+                <div class="form-group">
+                    <label for="txt_description">请描述具体要提问的内容，参考 </label><a href="ask#how-to-ask">提问要点</a>
+                    <textarea class="form-control" id="txt_description" name="description" rows="15" required placeholder="描述内容"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="txt_tags">标签</label>
+                    <input type="text" class="form-control" id="txt_tags" name="tags" required placeholder="写上合适的标签" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">提交问题</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-12 col-md-3 mb-3 mt-5">
+        <div id="how-to-ask">
+            <h3 class="font-weight-bold">提问要点 !</h3>
+
+            <p>
+                更详细的介绍请参考 -
+                <a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md#%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7" target="_blank">提问的智慧</a>
+            </p>
+        </div>
+    </div>
+</div>

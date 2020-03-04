@@ -44,11 +44,12 @@
     <div class="container mt-5 h-100">
         @RenderBody()
     </div>
-    <footer class="w-100 row bg-dark" style="margin: auto;">
-        <div class="col-12 text-center">
-            有个bug，程序员的技术问答社区
-        </div>
-    </footer>
+
+    <blockquote class="blockquote text-center">
+        @*<p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>*@
+        <footer class="blockquote-footer"><cite title="有个bug">有个bug，</cite>程序员的问答社区</footer>
+    </blockquote>
+
     <script src="~/js/jquery.min.js"></script>
     <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
     <script>

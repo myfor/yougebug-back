@@ -55,7 +55,7 @@ namespace Domain.Questions
                                             .Include(q => q.Answers)
                                             .Include(q => q.Asker)
                                             .ThenInclude(asker => asker.Avatar)
-                                            .Skip(pager.GetSkip())
+                                            .Skip(pager.Skip)
                                             .Take(pager.Size)
                                             .OrderByDescending(q => q.CreateDate)
                                             .Where(where)

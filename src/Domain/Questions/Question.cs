@@ -168,7 +168,7 @@ namespace Domain.Questions
                 Tags = question.Tags.Split(','),
                 Votes = question.Votes,
                 CreateDate = question.CreateDate.ToStandardString(),
-                State = KeyValuePair.Create(question.State, question.State.GetDescription<QuestionState>()),
+                State = Share.KeyValue<int, string>.Create(question.State, question.State.GetDescription<QuestionState>()),
                 User = new Clients.Models.UserIntro
                 {
                     Id = question.Asker.Id,

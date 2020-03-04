@@ -8,7 +8,7 @@ namespace Domain
     public class Share
     {
         #region 枚举
-        
+
         public enum Platform
         {
             /// <summary>
@@ -25,6 +25,19 @@ namespace Domain
 
         #region 模型
 
+        public class KeyValue<KT, VT>
+        {
+            public static KeyValue<K, V> Create<K, V>(K key, V value)
+            {
+                return new KeyValue<K, V>
+                {
+                    Key = key,
+                    Value = value
+                };
+            }
+            public KT Key { get; set; }
+            public VT Value { get; set; }
+        }
         public class KeyValueChlid<K, V>
         {
             public K Key { get; set; }
