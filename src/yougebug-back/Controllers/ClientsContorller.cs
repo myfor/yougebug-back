@@ -11,6 +11,16 @@ namespace yougebug_back.Controllers
     /// </summary>
     public abstract class ClientsContorller : Controller
     {
+        /// <summary>
+        /// 警告提示
+        /// </summary>
+        protected const string ALERT_WARNING = "alert_warning={0}";
+        ///// <summary>
+        ///// 警告提示
+        ///// </summary>
+        //protected const string ALERT_DANGER = "alert_danger={0}";
+
+
         protected void SetTitle(string title)
         {
             if (string.IsNullOrWhiteSpace(title))

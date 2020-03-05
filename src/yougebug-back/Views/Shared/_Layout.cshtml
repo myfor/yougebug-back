@@ -52,7 +52,7 @@
             </div>
         </div>
     </header>
-
+    <div id="d_alert" style="margin-top: 27px;"></div>
     <div class="container mt-5 h-100">
         @RenderBody()
     </div>
@@ -62,17 +62,23 @@
         <footer class="blockquote-footer"><cite title="有个bug">有个bug，</cite>程序员的问答社区</footer>
     </blockquote>
 
+    <script src="~/js/common.js"></script>
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/popper.min.js"></script>
     <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
     <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
         $(function () {
-            const current = localStorage.getItem('____');
+            checkAlert();
+
+            const current = isLogged();
             if (current)
                 document.getElementById('d-logout').removeAttribute('hidden');
             else
                 document.getElementById('d-login').removeAttribute('hidden');
+
+
         });
 
         function logout() {

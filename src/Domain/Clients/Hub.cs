@@ -58,7 +58,7 @@ namespace Domain.Clients
         /// <summary>
         /// 注册
         /// </summary>
-        public async Task<Resp> Register(Models.RegisterInfo register)
+        public async Task<Resp> RegisterAsync(Models.RegisterInfo register)
         {
             (bool isValid, string msg) = register.IsValid();
             if (!isValid)

@@ -5,23 +5,26 @@
         <div class="form-group">
             <label for="txt_email">邮箱</label>
             <input type="text" class="form-control" name="email" id="txt_email" required placeholder="请输入邮箱" />
+            <input type="text" hidden name="password" id="password" />
         </div>
         <div class="form-group">
             <label for="txt_password">密码</label>
-            <input type="password" class="form-control" name="password" id="txt_password" required placeholder="请输入密码" />
+            <input type="password" class="form-control" id="txt_password" required placeholder="请输入密码" />
         </div>
         <div class="form-group">
-            <label for="txt_confirm">确认密码密码</label>
-            <input type="password" class="form-control" name="password" id="txt_confirm" required placeholder="确认密码" />
+            <label for="txt_confirm">确认密码</label>
+            <input type="password" class="form-control" id="txt_confirm" required placeholder="确认密码" />
         </div>
         <button type="submit" class="btn btn-primary btn-block" id="btn_register">注册</button>
     </form>
 </div>
 
 @section Scripts {
-    <script src="~/js/common.js"></script>
+    <script src="~/lib/CryptoJS v3.1.2/rollups/sha256.js"></script>
     <script>
+
         function register() {
+
             const DOC = document;
 
             const EMAIL = DOC.getElementById('txt_email');
@@ -31,6 +34,7 @@
             if (!checkEmail(EMAIL.value.trim())) {
                 alert('邮箱格式有误');
                 EMAIL.focus();
+                enabled('btn_register');
                 return false;
             }
 
@@ -38,13 +42,18 @@
             if (PASSWORDVALUE.length < 6) {
                 alert('密码最少 6 位');
                 PASSWORD.focus();
+                enabled('btn_register');
                 return false;
             }
             if (CONFIRM.value.trim() !== PASSWORDVALUE) {
                 alert('两次密码不一致');
+                enabled('btn_register');
                 return false;
             }
 
+            $('#password').val(CryptoJS.SHA256(PASSWORDVALUE).toString());
+
+            disabled('btn_register')
             return true;
         }
     </script>

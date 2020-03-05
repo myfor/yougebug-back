@@ -21,7 +21,7 @@ namespace yougebug_back.Clients.Login
             if (!isValid)
                 return Pack(Resp.Fault(Resp.NONE, msg));
             Domain.Clients.Hub clientHub = new Domain.Clients.Hub();
-            Resp r = await clientHub.Register(register);
+            Resp r = await clientHub.RegisterAsync(register);
             return Pack(r);
         }
     }

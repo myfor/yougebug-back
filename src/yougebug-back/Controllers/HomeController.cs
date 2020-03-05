@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System;
+using Domain;
 
 namespace yougebug_back.Controllers
 {
@@ -49,10 +50,22 @@ namespace yougebug_back.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync()
+        public async Task<IActionResult> RegisterAsync([FromForm]string email, [FromForm]string password)
         {
-#warning 未实现
-            throw new NotImplementedException();
+            const string REDIRECT = "register?" + ALERT_WARNING;
+
+            Domain.Clients.Models.RegisterInfo register = new Domain.Clients.Models.RegisterInfo
+            {
+                Email = email,
+                Password = password
+            };
+
+            Domain.Clients.Hub clientHub = new Domain.Clients.Hub();
+            Resp r = await clientHub.RegisterAsync(register);
+            if (r.IsSuccess)
+                //  去登录页面
+                return Login();
+            return Redirect(string.Format(REDIRECT, r.Message));
         }
     }
 }
