@@ -47,7 +47,13 @@
                     </div>
                 </div>
                 <div id="d-logout" hidden="hidden">
-                    <button type="button" class="btn btn-outline-primary" onclick="logout()">退出登录</button>
+                    <a class="dropdown-toggle" id="avatar_DDL" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="/files/default.png" id="img_avatar" alt="头像" height="40" style="cursor: pointer;" />
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="avatar_DDL">
+                        <a class="dropdown-item" href="javascript:;" onclick="logout()">退出登录</a>
+                    </div>
+                    @*<button type="button" class="btn btn-outline-primary" onclick="logout()">退出登录</button>*@
                 </div>
             </div>
         </div>
@@ -78,7 +84,7 @@
             else
                 document.getElementById('d-login').removeAttribute('hidden');
 
-
+            setUserAvatar(current);
         });
 
         function logout() {

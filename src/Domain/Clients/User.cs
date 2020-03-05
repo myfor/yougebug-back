@@ -58,7 +58,8 @@ namespace Domain.Clients
             {
                 Avatar = user.Avatar.Thumbnail,
                 Id = user.Id,
-                Token = user.Token
+                Token = user.Token,
+                Name = user.Name
             };
             return Resp.Success(result);
         }

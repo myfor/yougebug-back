@@ -24,6 +24,11 @@ namespace yougebug_back.Controllers.Questions
         [HttpPost]
         public async Task<IActionResult> NewAskAsync()
         {
+            //Domain.Questions.Models.PostQuestion question = new Domain.Questions.Models.PostQuestion
+            //{ 
+
+            //};
+            //CurrentUser.AskQuestion(question);
 
             throw new NotImplementedException();
             return Redirect($"questions/");

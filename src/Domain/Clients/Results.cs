@@ -10,6 +10,7 @@ namespace Domain.Clients
         public struct LoggedInInfo
         {
             public string Avatar { get; set; }
+            public string Name { get; set; }
             /// <summary>
             /// JWT，不序列化
             /// </summary>

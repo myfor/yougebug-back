@@ -1,4 +1,5 @@
-﻿
+﻿const REDIRECT_TO = 'redirect-to';
+
 function getQueryString(name) {
     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
     var r = window.location.search.substr(1).match(reg);
@@ -16,7 +17,7 @@ function checkEmail(email) {
 }
 
 //  设置元素 disabled
-function disabled(selector) {
+function disabled(selector, value = undefined) {
     const DISABLED = 'disabled';
     const ELE = document.getElementById(selector);
     if (ELE.hasAttribute(DISABLED))
@@ -29,24 +30,45 @@ function enabled(selector) {
     const DISABLED = 'disabled';
     document.getElementById(selector).removeAttribute(DISABLED);
 }
+
+const LOGGED_KEY = '____';
 //  当前是否有登录
 function isLogged() {
-    const current = localStorage.getItem('____');
+    const current = localStorage.getItem(LOGGED_KEY);
     return current;
 }
+//  设置登录状态
+function setLogged(value) {
+    localStorage.setItem(LOGGED_KEY, value);
+    setUserAvatar(value);
+}
+function setUserAvatar(value) {
+    if (!isLogged())
+        return;
+    const INFO = JSON.parse(value);
+    const AVATAR = $('#img_avatar');
+    AVATAR.src = INFO.avatar;
+    AVATAR.alt = INFO.name;
+}
+
+const ALERT_PRIMARY = 'alert-primary';
+const ALERT_WARNING = 'alert-warning';
 //  检查是否有警告
 function checkAlert() {
-    const MSG = getQueryString('alert_warning');
-    if (!MSG)
-        return;
-
-    let alertElement = `
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-${MSG}
+    let MSG = getQueryString('alert-primary');
+    if (MSG)
+        $('#d_alert').html($('#d_alert').html() + getAlertMode('primary', MSG));
+    MSG = getQueryString('alert-warning');
+    if (MSG)
+        $('#d_alert').html($('#d_alert').html() + getAlertMode('warning', MSG));
+}
+function getAlertMode(type, msg) {
+    return `
+<div class="alert alert-${type} alert-dismissible fade show" role="alert" style="margin-bottom: auto;">
+${msg}
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 `;
-    $('#d_alert').html(alertElement);
 }

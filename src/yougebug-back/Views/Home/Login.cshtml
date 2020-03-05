@@ -32,10 +32,12 @@
             })
                 .then(function (resp) {
                     if (resp.status === 200) {
-                        let redirect = getQueryString('redirect-to');
+                        //  重定向路由
+                        let redirect = getQueryString(REDIRECT_TO);
                         if (!redirect)
                             redirect = '/';
-                        location.href = redirect;
+                        setLogged(JSON.stringify(resp.data.data));
+                        location.href = `${redirect}?${ALERT_PRIMARY}=登录成功`;
                     } else {
                         alert(resp.data.message);
                     }

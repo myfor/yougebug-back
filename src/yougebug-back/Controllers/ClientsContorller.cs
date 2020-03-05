@@ -17,7 +17,7 @@ namespace yougebug_back.Controllers
         /// <summary>
         /// 警告提示
         /// </summary>
-        protected const string ALERT_WARNING = "alert_warning={0}";
+        protected const string ALERT_WARNING = "alert-warning={0}";
         ///// <summary>
         ///// 警告提示
         ///// </summary>
