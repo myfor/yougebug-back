@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using yougebug_back.Auth;
 
 namespace yougebug_back.Controllers
 {
@@ -27,6 +30,47 @@ namespace yougebug_back.Controllers
                 ViewBag.Title = "有个bug，程序员的问答社区";
             else
                 ViewBag.Title = title;
+        }
+
+        /// <summary>
+        /// 打包响应数据
+        /// </summary>
+        /// <returns></returns>
+        protected ActionResult Pack(Resp resp)
+        {
+            ActionResult result = resp.StatusCode switch
+            {
+                Resp.Code.Success => Ok(resp),
+                Resp.Code.Fault => Accepted(resp),
+                Resp.Code.NeedLogin => Unauthorized(resp),
+                _ => throw new ArgumentException("无效的返回数据")
+            };
+
+            return result;
+        }
+
+        private Domain.Clients.User _currentUser;
+        /// <summary>
+        /// 当前登录用户
+        /// </summary>
+        protected Domain.Clients.User CurrentUser
+        {
+            get
+            {
+                if (_currentUser != null)
+                    return _currentUser;
+
+                string jwt = JWT.GetJwtInHeader(Request.Headers);
+
+                List<Claim> claims = JWT.GetClaims(jwt).ToList();
+                
+                string token = claims.First(c => c.Type == ClaimTypes.Authentication).Value.Trim();
+                if (string.IsNullOrWhiteSpace(token))
+                    throw new Exception("未获取到用户有效凭证");
+
+                _currentUser = Domain.Clients.Hub.GetUser(token);
+                return _currentUser;
+            }
         }
     }
 }

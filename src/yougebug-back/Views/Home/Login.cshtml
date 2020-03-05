@@ -1,18 +1,52 @@
 ﻿
 <div class="w-100 h-100 pt-5" style="padding-top: 15%;">
     <h3 class="text-center mb-5">登录</h3>
-    <form action="/login" method="put" class="m-auto p-4 shadow rounded" style="width: 400px;">
+    <form action="/" method="put" class="m-auto p-4 shadow rounded" onsubmit="return login()" style="width: 400px;">
         <div class="form-group">
             <label for="txt_account">账号</label>
-            <input type="text" class="form-control" name="account" id="txt_account" required placeholder="请输入账号" />
+            <input type="text" class="form-control" id="account" required placeholder="请输入账号" />
         </div>
         <div class="form-group">
             <label for="txt_password">密码</label>
-            <input type="password" class="form-control" name="password" id="txt_password" required placeholder="请输入密码" />
+            <input type="password" class="form-control" id="password" required placeholder="请输入密码" />
         </div>
-        <button type="submit" class="btn btn-primary">登录</button>
+        <button type="submit" id="btn_login" class="btn btn-primary">登录</button>
     </form>
 </div>
 
 @section Scripts {
+    <script src="~/js/common.js"></script>
+    <script src="~/lib/CryptoJS v3.1.2/rollups/sha256.js"></script>
+    <script src="~/lib/axios/axios.min.js"></script>
+    <script>
+
+        function login() {
+            disabled('btn_login');
+
+            const PASSWORD = CryptoJS.SHA256($('#password').val()).toString();
+            const ACCOUNT = $('#account').val();
+
+            axios.put('/login', {
+                account: ACCOUNT,
+                password: PASSWORD
+            })
+                .then(function (resp) {
+                    if (resp.status === 200) {
+                        let redirect = getQueryString('redirect-to');
+                        if (!redirect)
+                            redirect = '/';
+                        location.href = redirect;
+                    } else {
+                        alert(resp.data.message);
+                    }
+                })
+                .catch(function (err) {
+                    alert('服务器繁忙');
+                })
+
+            disabled('btn_login');
+
+            return false;
+        }
+    </script>
 }

@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using System;
 using Domain;
+using System.Security.Claims;
+using yougebug_back.Shared;
 
 namespace yougebug_back.Controllers
 {
@@ -28,10 +30,25 @@ namespace yougebug_back.Controllers
         /// 用户登录
         /// </summary>
         [HttpPut("login")]
-        public async Task<IActionResult> LoginAsync()
+        public async Task<IActionResult> LoginAsync([FromBody]Domain.Clients.Models.LoginInfo loginInfo)
         {
-#warning 未实现
-            throw new NotImplementedException();
+            Resp result = await Domain.Clients.User.LoginAsync(loginInfo);
+
+            if (!result.IsSuccess)
+                return Pack(result);
+
+            Claim[] claims = new Claim[]
+            {
+                //  token
+                new Claim(ClaimTypes.Authentication, result.Data.Token.ToString()),
+                //  人员 ID
+                new Claim(ClaimTypes.PrimarySid, result.Data.Id.ToString())
+            };
+
+            string jwt = Auth.JWT.CreateJwtToken(claims);
+            Response.Cookies.Append(Defaults.ADMIN_AUTH_COOKIE_KEY, jwt);
+
+            return Pack(result);
         }
 
         /// <summary>
@@ -64,7 +81,7 @@ namespace yougebug_back.Controllers
             Resp r = await clientHub.RegisterAsync(register);
             if (r.IsSuccess)
                 //  去登录页面
-                return Login();
+                return Redirect("/login");
             return Redirect(string.Format(REDIRECT, r.Message));
         }
     }
