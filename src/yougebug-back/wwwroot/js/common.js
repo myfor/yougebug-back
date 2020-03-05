@@ -55,12 +55,19 @@ const ALERT_PRIMARY = 'alert-primary';
 const ALERT_WARNING = 'alert-warning';
 //  检查是否有警告
 function checkAlert() {
-    let MSG = getQueryString('alert-primary');
-    if (MSG)
+    let MSG = getQueryString(ALERT_PRIMARY);
+    let hasAlert = false;
+    if (MSG) {
         $('#d_alert').html($('#d_alert').html() + getAlertMode('primary', MSG));
-    MSG = getQueryString('alert-warning');
-    if (MSG)
+        hasAlert = true;
+    }
+    MSG = getQueryString(ALERT_WARNING);
+    if (MSG) {
         $('#d_alert').html($('#d_alert').html() + getAlertMode('warning', MSG));
+        hasAlert = true;
+    }
+    if (hasAlert)
+        history.replaceState(null, '', location.pathname);
 }
 function getAlertMode(type, msg) {
     return `

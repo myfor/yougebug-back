@@ -21,7 +21,7 @@ namespace yougebug_back.Auth
         /// 密钥
         /// 在配置文件中配置，没有配置则为空值
         /// </summary>
-        public static readonly byte[] SecretKey = Encoding.UTF8.GetBytes("PWQBLASD54N8AsD35H7as3GB45AS*FD354Z35ASD4AER6");
+        public static readonly byte[] SecretKey = Encoding.UTF8.GetBytes("PWQBLASD54N8AsD35-*F");
         /// <summary>
         /// iss
         /// 在配置文件中配置，没有配置则为空值
