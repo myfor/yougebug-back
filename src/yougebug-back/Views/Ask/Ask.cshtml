@@ -54,22 +54,37 @@
             if (!TITLE.value || TITLE.value.length < 4) {
                 alert('标题，要求 4 个字以上');
                 TITLE.focus();
+                enabled('btn_post');
                 return false;
             }
             DESCRIPTION.value = DESCRIPTION.value.trim();
             if (!DESCRIPTION.value || DESCRIPTION.value.length < 15) {
                 alert('请描述具体要提问的内容，至少 15 个字');
                 DESCRIPTION.focus();
+                enabled('btn_post');
                 return false;
             }
             TAGS.value = TAGS.value.trim();
-            if (!TAGS.value || TAGS.value.length < 4) {
-                alert('标题，要求 4 个字以上');
-                TAGS.focus();
-                return false;
-            }
 
-            return true;
+            axios.post('/ask', {
+                title: TITLE.value,
+                description: DESCRIPTION.value,
+                tags: TAGS.value.split(',')
+            })
+                .then(function (resp) {
+                    if (resp.status === 200) {
+                        alert('提问成功');
+                        location.href = 'questions/' + resp.data.data;
+                    } else {
+                        alert(resp.data.data);
+                    }
+                })
+                .catch(function (err) {
+                    catchErr(err);
+                });
+
+            enabled('btn_post');
+            return false;
         }
 
     </script>

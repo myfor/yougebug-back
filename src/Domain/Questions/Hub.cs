@@ -87,7 +87,7 @@ namespace Domain.Questions
         }
 
         /// <summary>
-        /// 提一个问题
+        /// 提一个问题，会返回新提问的 ID
         /// </summary>
         public async Task<Resp> AskQuestion(Models.PostQuestion questionParams)
         {
@@ -122,7 +122,7 @@ namespace Domain.Questions
 
             db.Add(question);
             if (await db.SaveChangesAsync() != 0)
-                return Resp.Success(Resp.NONE, "");
+                return Resp.Success(question.Id, "");
 
             return Resp.Fault(Resp.NONE, "提交失败");
         }

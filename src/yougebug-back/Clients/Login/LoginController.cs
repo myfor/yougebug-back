@@ -35,7 +35,7 @@ namespace yougebug_back.Clients.Login
             };
 
             string jwt = Auth.JWT.CreateJwtToken(claims);
-            Response.Cookies.Append(Defaults.ADMIN_AUTH_COOKIE_KEY, jwt);
+            Response.Cookies.Append(Defaults.CLIENT_AUTH_COOKIE_KEY, jwt);
 
             return Pack(result);
         }

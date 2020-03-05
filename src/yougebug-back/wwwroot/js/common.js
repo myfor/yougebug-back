@@ -37,6 +37,11 @@ function isLogged() {
     const current = localStorage.getItem(LOGGED_KEY);
     return current;
 }
+//  登出
+function setLogout() {
+    localStorage.removeItem('____');
+    location.reload();
+}
 //  设置登录状态
 function setLogged(value) {
     localStorage.setItem(LOGGED_KEY, value);
@@ -78,4 +83,15 @@ ${msg}
   </button>
 </div>
 `;
+}
+
+function catchErr(err) {
+    if (err.response) {
+        if (err.response.status === 401) {
+            setLogout();
+            alert('请先登录');
+        }
+    } else {
+        alert('系统错误，请重试');
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace yougebug_back.Controllers.Questions
 {
@@ -22,16 +23,13 @@ namespace yougebug_back.Controllers.Questions
         新的提问
          */
         [HttpPost]
-        public async Task<IActionResult> NewAskAsync()
+        [Authorize]
+        public async Task<IActionResult> NewAskAsync([FromBody]Domain.Questions.Models.PostQuestion model)
         {
-            //Domain.Questions.Models.PostQuestion question = new Domain.Questions.Models.PostQuestion
-            //{ 
+            model.UserId = CurrentUser.Id;
+            Domain.Resp r = await CurrentUser.AskQuestion(model);
 
-            //};
-            //CurrentUser.AskQuestion(question);
-
-            throw new NotImplementedException();
-            return Redirect($"questions/");
+            return Pack(r); ;
         }
     }
 }

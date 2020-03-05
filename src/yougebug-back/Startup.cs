@@ -76,6 +76,7 @@ namespace yougebug_back
             });
 
             app.UseCookiePolicy();
+            app.UseMiddleware<Middleware.JWTToHeader>();
 
             app.UseRouting();
 
