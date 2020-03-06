@@ -7,41 +7,45 @@
 
     <div class="col-sm-12 col-lg-8 pb-3 h-100" style="max-width: 1300px">
         <div class="d-flex pt-4 pb-4">
-            <h3 class="flex-grow-1 pl-4">标题</h3>
+            <h3 class="flex-grow-1 pl-4">@Model.Title</h3>
             <div class="pr-4">
                 <a class="btn btn-primary" href="/ask">我要提问</a>
             </div>
         </div>
         <div class="border-bottom border-light pb-1">
-            <span class="text-secondary">提问于：</span>2020
-            <span class="text-secondary ml-2">最后活跃于：</span>2020
-            <span class="text-secondary ml-2">浏览：</span>123次
+            <span class="text-secondary">提问于：</span>@Model.CreateDate
+            <span class="text-secondary ml-2">最后活跃于：</span>@Model.Actived
+            <span class="text-secondary ml-2">浏览：</span>@Model.Views 次
         </div>
         <div class="mt-3 d-flex">
             <div class="d-flex flex-column text-center" style="width: 50px;">
                 <div>
                     <img src="~/icons/chevron-up.svg" class="pointer rounded shadow-hov" alt="赞同" height="40" />
                 </div>
-                <span class="h3 text-secondary">12</span>
+                <span class="h3 text-secondary">@Model.Votes</span>
                 <div>
                     <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" />
                 </div>
             </div>
             <div class="d-flex flex-column mt-2 ml-4 w-100">
-                <dav>ntoehot oetuhsac,哈哈</dav>
+                <dav>
+                    @Model.Description
+                </dav>
                 <div class="d-flex mt-2">
                     <div>
-                        <a class="tag" href="/tags/tag" target="_blank">tag</a>
+                        @foreach (string tag in Model.Tags)
+                        {
+                            <a class="tag" href="/tags/@tag" target="_blank">@tag</a>
+                        }
                     </div>
                     <div class="flex-grow-1 d-flex flex-row-reverse mr-4">
                         <div class="d-flex flex-column">
-                            提问于：CreateDate
                             <div class="d-flex mt-2">
-                                <a href="/users/AskerName" target="_blank">
-                                    <img src="AskerAvatar" alt="名字" width="35" height="35" class="img-thumbnail mr-2" />
+                                <a href="/users/@Model.User.Account" target="_blank">
+                                    <img src="@Model.User.Avatar" alt="名字" width="35" height="35" class="img-thumbnail mr-2" />
                                 </a>
                                 <div class="d-flex flex-column">
-                                    <a href="/users/AskerName" target="_blank">AskerName</a>
+                                    <a href="/users/@Model.User.Account" target="_blank">@Model.User.Account</a>
                                     <span>--</span>
                                 </div>
                             </div>
@@ -62,34 +66,44 @@
                 <div>
                     @await Html.PartialAsync("_Paginator", Model.Page)
                 </div>
-                <div class="d-flex border-bottom border-secondary pt-3 pb-3">
-                    <div class="d-flex flex-column text-center">
-                        <div>
-                            <img src="~/icons/chevron-up.svg" class="pointer rounded shadow-hov" alt="赞同" height="40" />
+
+                @foreach (var answer in Model.Page.GetList<Domain.Answers.Models.AnswerItem>())
+                {
+                    <div class="flex-column">
+                        <div class="d-flex pt-3 pb-3">
+                            <div class="d-flex flex-column text-center">
+                                <div>
+                                    <img src="~/icons/chevron-up.svg" class="pointer rounded shadow-hov" alt="赞同" height="40" />
+                                </div>
+                                <span class="h3 text-secondary">@answer.Votes</span>
+                                <div>
+                                    <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" />
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column ml-4">
+                                <div>
+                                    @answer.Content
+                                </div>
+                                <div class="d-flex flex-row-reverse mr-4 mt-3">
+                                    <div class="d-flex flex-column">
+                                        <small>回答于：@answer.CreateDate</small>
+                                        <div class="d-flex mt-2">
+                                            <a href="/users/@answer.User.Account" target="_blank">
+                                                <img src="@answer.User.Avatar" alt="名字" width="35" height="35" class="img-thumbnail mr-2" />
+                                            </a>
+                                            <div class="d-flex flex-column">
+                                                <a href="/users/@answer.User.Account" target="_blank">@answer.User.Account</a>
+                                                <span>--</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <span class="h3 text-secondary">12</span>
-                        <div>
-                            <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" />
-                        </div>
+                        <div class="dropdown-divider"></div>
                     </div>
-                    <div class="ml-4">
-                        noa哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊
-                    </div>
-                </div>
-                <div class="d-flex border-bottom border-secondary pt-3 pb-3">
-                    <div class="d-flex flex-column text-center">
-                        <div>
-                            <img src="~/icons/chevron-up.svg" class="pointer rounded shadow-hov" alt="赞同" height="40" />
-                        </div>
-                        <span class="h3 text-secondary">12</span>
-                        <div>
-                            <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" />
-                        </div>
-                    </div>
-                    <div class="ml-4">
-                        noa哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊哎哟哎哟啊
-                    </div>
-                </div>
+                }
+
                 <div>
                     @await Html.PartialAsync("_Paginator", Model.Page)
                 </div>

@@ -14,6 +14,8 @@ namespace Domain.Answers
             public int Id { get; set; }
             public string Content { get; set; }
             public int Votes { get; set; }
+            public string CreateDate { get; set; }
+            public Clients.Models.UserIntro User { get; set; }
         }
     }
 }

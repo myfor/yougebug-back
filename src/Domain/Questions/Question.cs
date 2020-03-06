@@ -170,6 +170,8 @@ namespace Domain.Questions
                 Description = question.Description,
                 Tags = question.Tags.Split(','),
                 Votes = question.Votes,
+                Views = question.Views,
+                Actived = question.Actived.ToStandardString(),
                 CreateDate = question.CreateDate.ToStandardString(),
                 State = Share.KeyValue<int, string>.Create(question.State, question.State.GetDescription<QuestionState>()),
                 User = new Clients.Models.UserIntro
@@ -210,13 +212,22 @@ namespace Domain.Questions
 
             int totalSize = await db.Answers.CountAsync(a => a.QuestionId == Id);
             List<Answers.Models.AnswerItem> list = await db.Answers.AsNoTracking()
+                                                                    .Include(a => a.Creator)
+                                                                    .ThenInclude(a => a.Avatar)
                                                                     .Skip((index - 1) * size).Take(size)
                                                                     .OrderByDescending(a => a.Votes)
                                                                     .Select(a => new Answers.Models.AnswerItem
                                                                     { 
                                                                         Id = a.Id,
                                                                         Votes = a.Votes,
-                                                                        Content = a.Content
+                                                                        Content = a.Content,
+                                                                        CreateDate = a.CreateDate.ToStandardString(),
+                                                                        User = new Clients.Models.UserIntro
+                                                                        { 
+                                                                            Id = a.Creator.Id,
+                                                                            Account = a.Creator.Name,
+                                                                            Avatar = a.Creator.Avatar.Thumbnail
+                                                                        }
                                                                     })
                                                                     .ToListAsync();
             return (list, totalSize);
