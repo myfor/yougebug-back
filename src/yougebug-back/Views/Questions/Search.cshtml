@@ -56,14 +56,14 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="d-flex flex-column pl-3 pr-3 statement">
-                            <a href="/questions/@item.Id" class="pt-2 pb-2" target="_blank">@item.Title</a>
+                        <div class="d-flex flex-column pl-3 pr-3 statement w-100">
+                            <a href="/questions/@item.Id/@item.Title" class="pt-2 pb-2" target="_blank">@item.Title</a>
                             <dav class="small">@item.Description</dav>
                             <div class="d-flex">
                                 <div>
                                     @foreach (string tag in item.Tags)
                                     {
-                                        <a class="tag" href="/tags?name=@tag" target="_blank">@tag</a>
+                                        <a class="tag" href="/tags/@tag" target="_blank">@tag</a>
                                     }
                                 </div>
                                 <div class="flex-grow-1 d-flex flex-row-reverse mr-4">
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <h6 class="text-secondary small ml-2">@item.ViewCounts 人浏览</h6>
+                    <h6 class="text-secondary small ml-3">@item.ViewCounts 人浏览</h6>
                 </div>
             }
 

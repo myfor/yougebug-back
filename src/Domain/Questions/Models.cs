@@ -60,7 +60,8 @@ namespace Domain.Questions
             public Clients.Models.UserIntro User { get; set; }
             public string CreateDate { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
-            public List<Answers.Models.AnswerItem> Answers { get; set; }
+            //  public List<Answers.Models.AnswerItem> Answers { get; set; }
+            public Paginator Page { get; set; }
         }
         /// <summary>
         /// 提一个提问要的参数

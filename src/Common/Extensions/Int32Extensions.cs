@@ -7,8 +7,7 @@
         /// </summary>
         public static string GetDescription<TEnum>(this int value) where TEnum: Enum
         {
-            TEnum t = (TEnum)Convert.ChangeType(value, typeof(TEnum));
-            return t.GetDescription();
+            return ((TEnum)(object)value).GetDescription();
         }
     }
 }

@@ -40,6 +40,7 @@ namespace DB.Tables
         /// 提问人
         /// </summary>
         public User Asker { get; set; }
+        public int AskerId { get; set; }
         /// <summary>
         /// 退回记录
         /// </summary>

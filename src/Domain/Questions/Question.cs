@@ -154,12 +154,15 @@ namespace Domain.Questions
             using var db = new YGBContext();
             DB.Tables.Question question = await db.Questions.AsNoTracking()
                                                             .Include(q => q.Asker)
+                                                            .ThenInclude(asker => asker.Avatar)
                                                             .FirstOrDefaultAsync(q => q.Id == Id);
 
             if (question is null)
                 return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
 
-            (List<Answers.Models.AnswerItem> answers, _)= await GetAnswersAsync(1, Paginator.DEFAULT_SIZE);
+            //  获取第一页的答案分页
+            Paginator page = Paginator.New(1, Paginator.DEFAULT_SIZE);
+            (page.List, page.TotalRows)= await GetAnswersAsync(1, Paginator.DEFAULT_SIZE);
 
             Models.QuestionDetail detail = new Models.QuestionDetail
             {
@@ -175,7 +178,7 @@ namespace Domain.Questions
                     Account = question.Asker.Name,
                     Avatar = question.Asker.Avatar.Thumbnail
                 },
-                Answers = answers
+                Page = page
             };
             return Resp.Success(detail, "");
         }

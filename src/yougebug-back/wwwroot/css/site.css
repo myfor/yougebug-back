@@ -46,3 +46,16 @@ body {
     padding: 2px 6px;
     margin-top: 12px;
 }
+
+.pointer {
+    cursor: pointer;
+}
+
+.shadow-hov:hover {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+}
+
+.tab {
+    border-top: 3px solid #3c55e0;
+    border-radius: 3px;
+}

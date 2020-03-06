@@ -99,7 +99,9 @@ namespace Domain.Questions
             {
                 Title = questionParams.Title,
                 Description = questionParams.Description,
-                Tags = string.Join(',', questionParams.Tags)
+                Tags = string.Join(',', questionParams.Tags),
+                State = (int)Question.QuestionState.Enabled,
+                AskerId = questionParams.UserId
             };
 
             YGBContext db = new YGBContext();
