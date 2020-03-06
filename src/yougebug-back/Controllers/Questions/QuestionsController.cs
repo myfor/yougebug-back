@@ -62,9 +62,13 @@ namespace yougebug_back.Controllers.Questions
          * 获取一个提问的详情
          */ 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id)
+        public async Task<IActionResult> GetQuestionDetailAsync(int id)
         {
-            throw new NotImplementedException();
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Resp resp = await question.GetDetailAsync();
+            Domain.Questions.Models.QuestionDetail model = resp.GetData<Domain.Questions.Models.QuestionDetail>();
+
+            return View("QuestionDetail", model);
         }
     }
 }
