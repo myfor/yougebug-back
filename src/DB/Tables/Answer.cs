@@ -23,5 +23,6 @@ namespace DB.Tables
         public Question Question { get; set; }
         public List<AnswerBackRecord> AnswerBackRecords { get; set; }
         public List<AnswerReportRecord> AnswerReportRecords { get; set; }
+        public string NickName { get; set; } = "";
     }
 }
