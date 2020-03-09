@@ -81,13 +81,12 @@ namespace yougebug_back.Controllers.Questions
         public async Task<IActionResult> PostAnswerAsync(int id, [FromForm]string content, [FromForm]string nickName)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp r;
 
             if (IsLogged)
-                r = await question.AddAnswerAsync(CurrentUser.Id, content);
+                _ = await question.AddAnswerAsync(CurrentUser.Id, content);
             else
-                r = await question.AddAnswerAsync(nickName, content);
-            return Pack(r);
+                _ = await question.AddAnswerAsync(nickName, content);
+            return Redirect($"/questions/{id}/{question.GetTitle()}");
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Domain.Clients
     /// </summary>
     public class User : BaseEntity
     {
+
         public User(int id) : base(id)
         {
         }

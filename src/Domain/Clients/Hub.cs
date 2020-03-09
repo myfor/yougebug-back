@@ -1,5 +1,6 @@
 ﻿using DB;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -70,6 +71,7 @@ namespace Domain.Clients
 
             DB.Tables.User newUser = new DB.Tables.User
             { 
+                Name = Guid.NewGuid().ToString(),
                 Email = register.Email,
                 Password = register.Password,
                 AvatarId = File.DEFAULT_IMG_ID,

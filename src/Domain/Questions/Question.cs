@@ -161,11 +161,12 @@ namespace Domain.Questions
                 return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
 
             //  获取第一页的答案分页
-            Paginator page = Paginator.New(1, Paginator.DEFAULT_SIZE);
+            Paginator page = Paginator.New(1, 10);
             (page.List, page.TotalRows) = await GetAnswersAsync(1, Paginator.DEFAULT_SIZE);
 
             Models.QuestionDetail detail = new Models.QuestionDetail
             {
+                Id = question.Id,
                 Title = question.Title,
                 Description = question.Description,
                 Tags = question.Tags.Split(','),
@@ -234,14 +235,14 @@ namespace Domain.Questions
                                                                         CreateDate = a.CreateDate.ToStandardString(),
                                                                         User = a.AnswererId.HasValue ? new Clients.Models.UserIntro
                                                                         {
-                                                                            Id = 0,
-                                                                            Account = a.NickName,
-                                                                            Avatar = File.DEFAULT_AVATAR
-                                                                        } : new Clients.Models.UserIntro
-                                                                        {
                                                                             Id = a.Id,
                                                                             Account = a.Answerer.Name,
                                                                             Avatar = a.Answerer.Avatar.Thumbnail
+                                                                        } : new Clients.Models.UserIntro
+                                                                        {
+                                                                            Id = 0,
+                                                                            Account = a.NickName,
+                                                                            Avatar = File.DEFAULT_AVATAR
                                                                         }
                                                                     })
                                                                     .ToListAsync();
