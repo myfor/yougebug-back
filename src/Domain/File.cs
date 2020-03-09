@@ -18,6 +18,10 @@ namespace Domain
         /// </summary>
         public const int DEFAULT_IMG_ID = 1;
         /// <summary>
+        /// 默认头像
+        /// </summary>
+        public const string DEFAULT_AVATAR = "/files/default.png";
+        /// <summary>
         /// 没有文件, 使用 0 是因为方便存数据库
         /// </summary>
         public const int NOT_FILES = 0;

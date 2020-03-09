@@ -111,7 +111,7 @@ namespace Domain.Questions
                 question.State = (int)QuestionState.Back;
 
             DB.Tables.QuestionBackRecord record = new DB.Tables.QuestionBackRecord
-            { 
+            {
                 QuestionId = Id,
                 Description = description
             };
@@ -142,7 +142,7 @@ namespace Domain.Questions
                 return Resp.Success(Resp.NONE);
             return Resp.Fault(Resp.NONE, "提交失败");
         }
-        
+
         /// <summary>
         /// 获取详情
         /// </summary>
@@ -162,7 +162,7 @@ namespace Domain.Questions
 
             //  获取第一页的答案分页
             Paginator page = Paginator.New(1, Paginator.DEFAULT_SIZE);
-            (page.List, page.TotalRows)= await GetAnswersAsync(1, Paginator.DEFAULT_SIZE);
+            (page.List, page.TotalRows) = await GetAnswersAsync(1, Paginator.DEFAULT_SIZE);
 
             Models.QuestionDetail detail = new Models.QuestionDetail
             {
@@ -212,21 +212,26 @@ namespace Domain.Questions
 
             int totalSize = await db.Answers.CountAsync(a => a.QuestionId == Id);
             List<Answers.Models.AnswerItem> list = await db.Answers.AsNoTracking()
-                                                                    .Include(a => a.Creator)
+                                                                    .Include(a => a.Answerer)
                                                                     .ThenInclude(a => a.Avatar)
                                                                     .Skip((index - 1) * size).Take(size)
                                                                     .OrderByDescending(a => a.Votes)
                                                                     .Select(a => new Answers.Models.AnswerItem
-                                                                    { 
+                                                                    {
                                                                         Id = a.Id,
                                                                         Votes = a.Votes,
                                                                         Content = a.Content,
                                                                         CreateDate = a.CreateDate.ToStandardString(),
-                                                                        User = new Clients.Models.UserIntro
-                                                                        { 
-                                                                            Id = a.Creator.Id,
-                                                                            Account = a.Creator.Name,
-                                                                            Avatar = a.Creator.Avatar.Thumbnail
+                                                                        User = a.AnswererId.HasValue ? new Clients.Models.UserIntro
+                                                                        {
+                                                                            Id = 0,
+                                                                            Account = a.NickName,
+                                                                            Avatar = File.DEFAULT_AVATAR
+                                                                        } : new Clients.Models.UserIntro
+                                                                        {
+                                                                            Id = a.Id,
+                                                                            Account = a.Answerer.Name,
+                                                                            Avatar = a.Answerer.Avatar.Thumbnail
                                                                         }
                                                                     })
                                                                     .ToListAsync();
