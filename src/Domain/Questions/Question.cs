@@ -200,6 +200,15 @@ namespace Domain.Questions
             return Resp.Fault(Resp.NONE, msg);
         }
 
+        public async Task<Resp> AddAnswerAsync(string nickName, string content)
+        {
+            Answers.Hub answerHub = new Answers.Hub();
+            (bool isSuccess, string msg) = await answerHub.NewAnswerAsync(Id, content, nickName);
+            if (isSuccess)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, msg);
+        }
+
         /// <summary>
         /// 获取问题的答案列表
         /// </summary>
@@ -214,7 +223,8 @@ namespace Domain.Questions
             List<Answers.Models.AnswerItem> list = await db.Answers.AsNoTracking()
                                                                     .Include(a => a.Answerer)
                                                                     .ThenInclude(a => a.Avatar)
-                                                                    .Skip((index - 1) * size).Take(size)
+                                                                    .Skip((index - 1) * size)
+                                                                    .Take(size)
                                                                     .OrderByDescending(a => a.Votes)
                                                                     .Select(a => new Answers.Models.AnswerItem
                                                                     {

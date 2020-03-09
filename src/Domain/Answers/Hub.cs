@@ -49,7 +49,26 @@ namespace Domain.Answers
             { 
                 QuestionId = questionId,
                 Content = content,
-                CreatorId = answererId
+                AnswererId = answererId
+            };
+            db.Answers.Add(answer);
+            if (await db.SaveChangesAsync() == 1)
+                return (true, "");
+            return (false, "回答失败");
+        }
+        internal async Task<(bool, string)> NewAnswerAsync(int questionId, string content, string nickName)
+        {
+            if (string.IsNullOrWhiteSpace(nickName))
+                nickName = "匿名";
+            if (string.IsNullOrWhiteSpace(content))
+                return (false, "回答内容不能为空");
+
+            using var db = new YGBContext();
+            DB.Tables.Answer answer = new DB.Tables.Answer
+            {
+                QuestionId = questionId,
+                Content = content,
+                NickName = nickName
             };
             db.Answers.Add(answer);
             if (await db.SaveChangesAsync() == 1)

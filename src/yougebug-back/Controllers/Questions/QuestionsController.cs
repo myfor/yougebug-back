@@ -71,5 +71,23 @@ namespace yougebug_back.Controllers.Questions
 
             return View("QuestionDetail", model);
         }
+
+        /// <summary>
+        /// 提交一个答案
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost("{id}/answer")]
+        public async Task<IActionResult> PostAnswerAsync(int id, [FromForm]string content, [FromForm]string nickName)
+        {
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Resp r;
+
+            if (IsLogged)
+                r = await question.AddAnswerAsync(CurrentUser.Id, content);
+            else
+                r = await question.AddAnswerAsync(nickName, content);
+            return Pack(r);
+        }
     }
 }

@@ -63,13 +63,28 @@ namespace yougebug_back.Controllers
                 string jwt = JWT.GetJwtInHeader(Request.Headers);
 
                 List<Claim> claims = JWT.GetClaims(jwt).ToList();
-                
+
                 string token = claims.First(c => c.Type == ClaimTypes.Authentication).Value.Trim();
                 if (string.IsNullOrWhiteSpace(token))
                     throw new Exception("未获取到用户有效凭证");
 
                 _currentUser = Domain.Clients.Hub.GetUser(token);
                 return _currentUser;
+            }
+        }
+        protected bool IsLogged
+        {
+            get
+            {
+                try
+                {
+                    _ = CurrentUser;
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
         }
     }
