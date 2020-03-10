@@ -20,11 +20,11 @@
         <div class="mt-3 d-flex">
             <div class="d-flex flex-column text-center" style="width: 50px;">
                 <div>
-                    <img src="~/icons/chevron-up.svg" class="pointer rounded shadow-hov" alt="赞同" height="40" />
+                    <img src="~/icons/chevron-up.svg" class="pointer rounded shadow-hov" alt="赞同" height="40" name="questionVotes" onclick="questionVotesUp(@Model.Id)" />
                 </div>
                 <span class="h3 text-secondary" id="spn_questionVotes">@Model.Votes</span>
                 <div>
-                    <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" />
+                    <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" name="questionVotes" onclick="questionVotesDown(@Model.Id)" />
                 </div>
             </div>
             <div class="d-flex flex-column mt-2 ml-4 w-100">
@@ -81,14 +81,14 @@
                         <div class="d-flex pt-3 pb-3">
                             <div class="d-flex flex-column text-center">
                                 <div>
-                                    <img src="~/icons/chevron-up.svg" class="pointer rounded shadow-hov" alt="赞同" height="40" />
+                                    <img src="~/icons/chevron-up.svg" class="pointer rounded shadow-hov" alt="赞同" height="40" name="answerVotes_@answer.Id" onclick="answerVotesUp(@answer.Id)" />
                                 </div>
                                 <span class="h3 text-secondary" id="spn_answerVotes_@answer.Id">@answer.Votes</span>
                                 <div>
-                                    <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" />
+                                    <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" name="answerVotes_@answer.Id" onclick="answerVotesDown(@answer.Id)" />
                                 </div>
                             </div>
-                            <div class="d-flex flex-column ml-4">
+                            <div class="d-flex flex-column ml-4 w-100">
                                 <div>
                                     @answer.Content
                                 </div>
@@ -151,6 +151,7 @@
     </div>
 </div>
 @section Scripts {
+    <script src="~/lib/axios/axios.min.js"></script>
     <script>
         $(function () {
             if (isLogged())
@@ -164,19 +165,61 @@
         }
 
         function questionVotesUp(id) {
+            disabledQuestionVotes();
 
+            const VOTES_STR = document.getElementById('spn_questionVotes');
+            const VOTES = parseInt(VOTES_STR.innerHTML);
+            VOTES_STR.innerHTML = VOTES + 1;
+
+            axios.patch(`/questions/${id}/like`);
         }
 
         function questionVotesDown(id) {
+            disabledQuestionVotes();
 
+            const VOTES_STR = document.getElementById('spn_questionVotes');
+            const VOTES = parseInt(VOTES_STR.innerHTML);
+            VOTES_STR.innerHTML = VOTES - 1;
+
+            axios.patch(`/questions/${id}/unlike`);
+        }
+        function disabledQuestionVotes() {
+            const ELE_VOTES = document.getElementsByName('questionVotes');
+            for (var i = 0; i < ELE_VOTES.length; i++) {
+                const _this = ELE_VOTES[i];
+                _this.removeAttribute('onclick');
+                _this.classList.remove('shadow-hov');
+                _this.style.cursor = 'default';
+            }
         }
 
         function answerVotesUp(id) {
+            disabledAnswerVotes(id);
 
+            const VOTES_STR = document.getElementById('spn_answerVotes_' + id);
+            const VOTES = parseInt(VOTES_STR.innerHTML);
+            VOTES_STR.innerHTML = VOTES + 1;
+
+            axios.patch(`/answers/${id}/like`);
         }
 
-        function answerVotesDown(id) {
+        function answerVotesDown(id, _this) {
+            disabledAnswerVotes(id);
 
+            const VOTES_STR = document.getElementById('spn_answerVotes_' + id);
+            const VOTES = parseInt(VOTES_STR.innerHTML);
+            VOTES_STR.innerHTML = VOTES + 1;
+
+            axios.patch(`/answers/${id}/unlike`);
+        }
+        function disabledAnswerVotes(id) {
+            const ELE_VOTES = document.getElementsByName('answerVotes_' + id);
+            for (var i = 0; i < ELE_VOTES.length; i++) {
+                const _this = ELE_VOTES[i];
+                _this.removeAttribute('onclick');
+                _this.classList.remove('shadow-hov');
+                _this.style.cursor = 'default';
+            }
         }
 
     </script>
