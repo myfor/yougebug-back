@@ -37,7 +37,10 @@
                         if (!redirect)
                             redirect = '/';
                         setLogged(JSON.stringify(resp.data.data));
-                        location.href = `${redirect}?${ALERT_PRIMARY}=登录成功`;
+                        if (redirect.indexOf('?') === -1)
+                            location.href = `${redirect}?${ALERT_PRIMARY}=登录成功`;
+                        else
+                            location.href = `${redirect}&${ALERT_PRIMARY}=登录成功`;
                     } else {
                         alert(resp.data.message);
                     }

@@ -149,20 +149,33 @@ namespace Domain.Questions
         /// <returns></returns>
         public async Task<Resp> GetDetailAsync()
         {
+            return await GetDetailAsync(1, 10);
+        }
+
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="index">提问回答的页数</param>
+        /// <param name="size">回答的行数</param>
+        /// <returns></returns>
+        public async Task<Resp> GetDetailAsync(int index, int size)
+        {
             CheckEmpty();
 
             using var db = new YGBContext();
-            DB.Tables.Question question = await db.Questions.AsNoTracking()
-                                                            .Include(q => q.Asker)
+            DB.Tables.Question question = await db.Questions.Include(q => q.Asker)
                                                             .ThenInclude(asker => asker.Avatar)
                                                             .FirstOrDefaultAsync(q => q.Id == Id);
 
             if (question is null)
                 return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
 
+            question.Views++;
+            await db.SaveChangesAsync();
+
             //  获取第一页的答案分页
-            Paginator page = Paginator.New(1, 10);
-            (page.List, page.TotalRows) = await GetAnswersAsync(1, Paginator.DEFAULT_SIZE);
+            Paginator page = Paginator.New(index, size);
+            (page.List, page.TotalRows) = await GetAnswersAsync(index, size);
 
             Models.QuestionDetail detail = new Models.QuestionDetail
             {

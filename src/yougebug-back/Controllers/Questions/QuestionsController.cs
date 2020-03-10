@@ -62,11 +62,14 @@ namespace yougebug_back.Controllers.Questions
          * 获取一个提问的详情
          */ 
         [HttpGet("{id}/{title}")]
-        public async Task<IActionResult> GetQuestionDetailAsync(int id, string title)
+        public async Task<IActionResult> GetQuestionDetailAsync(int id, string title, int index, int size)
         {
             SetTitle("有个bug - " + title);
+            index = index == 0 ? 1 : index;
+            size = size == 0 ? 10 : size;
+
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp resp = await question.GetDetailAsync();
+            Domain.Resp resp = await question.GetDetailAsync(index, size);
             Domain.Questions.Models.QuestionDetail model = resp.GetData<Domain.Questions.Models.QuestionDetail>();
 
             return View("QuestionDetail", model);

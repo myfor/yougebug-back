@@ -84,11 +84,10 @@ namespace Domain
             {
                 const int BASE_NUMBER = 5;
 
-                if (Index == TotalPages)
-                    return TotalPages;
-
                 if (Index <= BASE_NUMBER)
                     return 1;
+                if (Index == TotalPages)
+                    return TotalPages;
 
                 return Index - BASE_NUMBER;
             }
@@ -143,6 +142,21 @@ namespace Domain
                 routerCache = router.ToString();
             }
             return string.Format(routerCache, index, Size);
+        }
+
+        public string GetPreLink(HttpRequest request)
+        {
+            if (Index <= 1)
+                return "javascript:;";
+
+            return GetLink(request, Index - 1);
+        }
+        public string GetNextLink(HttpRequest request)
+        {
+            if (Index >= TotalPages)
+                return "javascript:;";
+
+            return GetLink(request, Index + 1);
         }
     }
 }
