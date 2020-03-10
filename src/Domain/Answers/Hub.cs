@@ -58,6 +58,8 @@ namespace Domain.Answers
         }
         internal async Task<(bool, string)> NewAnswerAsync(int questionId, string content, string nickName)
         {
+            //  匿名的要审核
+
             if (string.IsNullOrWhiteSpace(nickName))
                 nickName = "匿名";
             if (string.IsNullOrWhiteSpace(content))
@@ -68,7 +70,8 @@ namespace Domain.Answers
             {
                 QuestionId = questionId,
                 Content = content,
-                NickName = nickName
+                NickName = nickName,
+                State = (int)Answer.AnswerState.ToAudit
             };
             db.Answers.Add(answer);
             if (await db.SaveChangesAsync() == 1)
