@@ -49,7 +49,8 @@ namespace Domain.Answers
             { 
                 QuestionId = questionId,
                 Content = content,
-                AnswererId = answererId
+                AnswererId = answererId,
+                State = (int)Answer.AnswerState.Pass
             };
             db.Answers.Add(answer);
             if (await db.SaveChangesAsync() == 1)

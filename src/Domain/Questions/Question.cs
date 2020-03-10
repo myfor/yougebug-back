@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Domain.Questions
@@ -233,8 +234,10 @@ namespace Domain.Questions
         {
             using var db = new YGBContext();
 
-            int totalSize = await db.Answers.CountAsync(a => a.QuestionId == Id);
+            Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.QuestionId == Id && a.State == (int)Answers.Answer.AnswerState.Pass;
+            int totalSize = await db.Answers.CountAsync(whereStatement);
             List<Answers.Models.AnswerItem> list = await db.Answers.AsNoTracking()
+                                                                    .Where(whereStatement)
                                                                     .Include(a => a.Answerer)
                                                                     .ThenInclude(a => a.Avatar)
                                                                     .Skip((index - 1) * size)
