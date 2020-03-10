@@ -261,5 +261,39 @@ namespace Domain.Questions
                                                                     .ToListAsync();
             return (list, totalSize);
         }
+
+        /// <summary>
+        /// 同意提问
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Resp> LikeAsync()
+        {
+            using YGBContext db = new YGBContext();
+
+            DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(a => a.Id == Id);
+            if (question is null)
+                return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
+            question.Votes++;
+            if (await db.SaveChangesAsync() == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "请求失败");
+        }
+
+        /// <summary>
+        /// 不同意提问
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Resp> UnLikeAsync()
+        {
+            using YGBContext db = new YGBContext();
+
+            DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(a => a.Id == Id);
+            if (question is null)
+                return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
+            question.Votes--;
+            if (await db.SaveChangesAsync() == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "请求失败");
+        }
     }
 }

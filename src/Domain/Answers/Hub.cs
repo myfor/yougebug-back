@@ -75,5 +75,10 @@ namespace Domain.Answers
                 return (true, "");
             return (false, "回答失败");
         }
+
+        public static Answer GetAnswer(int id)
+        {
+            return new Answer(id);
+        }
     }
 }

@@ -22,7 +22,7 @@
                 <div>
                     <img src="~/icons/chevron-up.svg" class="pointer rounded shadow-hov" alt="赞同" height="40" />
                 </div>
-                <span class="h3 text-secondary">@Model.Votes</span>
+                <span class="h3 text-secondary" id="spn_questionVotes">@Model.Votes</span>
                 <div>
                     <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" />
                 </div>
@@ -83,7 +83,7 @@
                                 <div>
                                     <img src="~/icons/chevron-up.svg" class="pointer rounded shadow-hov" alt="赞同" height="40" />
                                 </div>
-                                <span class="h3 text-secondary">@answer.Votes</span>
+                                <span class="h3 text-secondary" id="spn_answerVotes_@answer.Id">@answer.Votes</span>
                                 <div>
                                     <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" />
                                 </div>
@@ -162,5 +162,22 @@
         function writeYourAnswer() {
             document.getElementById('txt_answer').focus();
         }
+
+        function questionVotesUp(id) {
+
+        }
+
+        function questionVotesDown(id) {
+
+        }
+
+        function answerVotesUp(id) {
+
+        }
+
+        function answerVotesDown(id) {
+
+        }
+
     </script>
 }

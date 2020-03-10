@@ -127,5 +127,39 @@ namespace Domain.Answers
                 return Resp.Success(Resp.NONE, "提交成功，待审核");
             return Resp.Success(Resp.NONE, "提交失败，请重试");
         }
+
+        /// <summary>
+        /// 同意回答
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Resp> LikeAsync()
+        {
+            using YGBContext db = new YGBContext();
+
+            DB.Tables.Answer answer = await db.Answers.FirstOrDefaultAsync(a => a.Id == Id);
+            if (answer is null)
+                return Resp.Fault(Resp.NONE, NOT_EXIST_ANSWER);
+            answer.Votes++;
+            if (await db.SaveChangesAsync() == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "请求失败");
+        }
+
+        /// <summary>
+        /// 不同意回答
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Resp> UnLikeAsync()
+        {
+            using YGBContext db = new YGBContext();
+
+            DB.Tables.Answer answer = await db.Answers.FirstOrDefaultAsync(a => a.Id == Id);
+            if (answer is null)
+                return Resp.Fault(Resp.NONE, NOT_EXIST_ANSWER);
+            answer.Votes--;
+            if (await db.SaveChangesAsync() == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "请求失败");
+        }
     }
 }

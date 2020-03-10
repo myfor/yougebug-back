@@ -91,5 +91,27 @@ namespace yougebug_back.Controllers.Questions
                 _ = await question.AddAnswerAsync(nickName, content);
             return Redirect($"/questions/{id}/{question.GetTitle()}");
         }
+
+        /// <summary>
+        /// 同意
+        /// </summary>
+        [HttpPatch("{id}/like")]
+        public async Task<IActionResult> LikeAsync(int id)
+        {
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Resp r = await question.LikeAsync();
+            return Pack(r);
+        }
+
+        /// <summary>
+        /// 不同意
+        /// </summary>
+        [HttpPatch("{id}/unlike")]
+        public async Task<IActionResult> UnLikeAsync(int id)
+        {
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Resp r = await question.UnLikeAsync();
+            return Pack(r);
+        }
     }
 }
