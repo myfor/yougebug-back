@@ -3,6 +3,7 @@ using DB;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,14 @@ namespace Domain.Clients
     /// </summary>
     public class User : BaseEntity
     {
+        public enum UserState
+        {
+            [Description("启用")]
+            Enabled,
+            [Description("禁用")]
+            Disabled
+        }
+
         public const string USER_NOT_EXIST = "用户不存在";
         public User(int id) : base(id)
         {
@@ -127,7 +136,8 @@ namespace Domain.Clients
                 UserName = user.Name,
                 Email = user.Email,
                 CreateDate = user.CreateDate.ToStandardString(),
-                Avatar = user.Avatar.Path
+                Avatar = user.Avatar.Path,
+                State = user.State
             };
             return Resp.Success(detail);
         }

@@ -37,7 +37,8 @@ namespace yougebug_back.Admin.Clients
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClientDetailAsync(int id)
         {
-
+            Domain.Clients.User user = Domain.Clients.Hub.GetUser(id);
+            
         }
     }
 }

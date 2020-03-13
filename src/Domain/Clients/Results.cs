@@ -40,7 +40,7 @@ namespace Domain.Clients
             public string Email { get; set; }
             public string CreateDate { get; set; }
             public string Avatar { get; set; }
-
+            public int State { get; set; }
         }
     }
 }
