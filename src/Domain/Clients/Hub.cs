@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Domain.Clients
@@ -70,7 +71,7 @@ namespace Domain.Clients
                 return Resp.Fault(Resp.NONE, "该邮箱已被注册");
 
             DB.Tables.User newUser = new DB.Tables.User
-            { 
+            {
                 Name = Guid.NewGuid().ToString(),
                 Email = register.Email,
                 Password = register.Password,
@@ -81,6 +82,36 @@ namespace Domain.Clients
             if (await db.SaveChangesAsync() == 1)
                 return Resp.Success(Resp.NONE);
             return Resp.Fault(Resp.NONE, "注册失败，请重试");
+        }
+
+        /// <summary>
+        /// 获取客户列表
+        /// 管理端使用
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <returns></returns>
+        public async Task<Resp> GetClientsListAysnc(Paginator pager)
+        {
+            string search = pager.Params["search"] ?? "";
+            using var db = new YGBContext();
+
+            Expression<Func<DB.Tables.User, bool>> whereStatement = u => u.Name.Contains(search) || u.Email.Contains(search);
+
+            pager.TotalRows = await db.Users.CountAsync(whereStatement);
+
+            pager.List = await db.Users.AsNoTracking()
+                                       .Skip(pager.Skip)
+                                       .Take(pager.Size)
+                                       .Where(whereStatement)
+                                       .Select(u => new Results.ClientItem
+                                       {
+                                           Id = u.Id,
+                                           UserName = u.Name,
+                                           Email = u.Email,
+                                           CreateDate = u.CreateDate.ToStandardString()
+                                       })
+                                       .ToListAsync();
+            return Resp.Success(pager);
         }
     }
 }

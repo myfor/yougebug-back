@@ -14,7 +14,7 @@ namespace Domain.Clients
     /// </summary>
     public class User : BaseEntity
     {
-
+        public const string USER_NOT_EXIST = "用户不存在";
         public User(int id) : base(id)
         {
         }
@@ -106,6 +106,30 @@ namespace Domain.Clients
         {
             Questions.Hub hub = new Questions.Hub();
             return await hub.AskQuestion(questionParams);
+        }
+
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Resp> GetDetailAsync()
+        {
+            using var db = new YGBContext();
+
+            DB.Tables.User user = await db.Users.AsNoTracking()
+                                                .Include(u => u.Avatar)
+                                                .FirstOrDefaultAsync(u => u.Id == Id);
+            if (user is null)
+                return Resp.Fault(Resp.NONE, USER_NOT_EXIST);
+
+            Results.ClientDetail detail = new Results.ClientDetail
+            {
+                UserName = user.Name,
+                Email = user.Email,
+                CreateDate = user.CreateDate.ToStandardString(),
+                Avatar = user.Avatar.Path
+            };
+            return Resp.Success(detail);
         }
     }
 }

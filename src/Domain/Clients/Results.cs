@@ -22,5 +22,25 @@ namespace Domain.Clients
             [NonSerialized]
             public int Id;
         }
+
+        /// <summary>
+        /// 客户单项
+        /// </summary>
+        public struct ClientItem
+        {
+            public int Id { get; set; }
+            public string UserName { get; set; }
+            public string Email { get; set; }
+            public string CreateDate { get; set; }
+        }
+
+        public struct ClientDetail
+        {
+            public string UserName { get; set; }
+            public string Email { get; set; }
+            public string CreateDate { get; set; }
+            public string Avatar { get; set; }
+
+        }
     }
 }
