@@ -26,7 +26,8 @@ namespace Domain
         /// <summary>
         /// 每页默认页数
         /// </summary>
-        internal const int DEFAULT_SIZE = 20;
+        [NonSerialized]
+        public const int DEFAULT_SIZE = 20;
         /// <summary>
         /// 总页数
         /// </summary>

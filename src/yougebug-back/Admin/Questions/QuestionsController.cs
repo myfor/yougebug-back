@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using yougebug_back.Shared;
 
@@ -19,17 +20,14 @@ namespace yougebug_back.Admin.Questions
         [HttpGet]
         public async Task<ActionResult> GetListAsync(int index, string title)
         {
-            Domain.Paginator pager = new Domain.Paginator
+            Paginator pager = Paginator.New(index, Paginator.DEFAULT_SIZE);
+            pager.Params = new Dictionary<string, string>
             {
-                Index = index,
-                Params = new Dictionary<string, string>
-                { 
-                    ["title"] = title
-                }
+                ["title"] = title
             };
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
-            Domain.Resp resp = await hub.GetListAsync(pager, Domain.Share.Platform.Admin);
+            Resp resp = await hub.GetListAsync(pager, Share.Platform.Admin);
             return Pack(resp);
         }
 
@@ -52,7 +50,7 @@ namespace yougebug_back.Admin.Questions
         public async Task<ActionResult> GetAnswersAsync(int questionId, int index)
         {
             Domain.Paginator pager = new Domain.Paginator
-            { 
+            {
                 Index = index
             };
 

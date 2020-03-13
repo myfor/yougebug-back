@@ -77,7 +77,7 @@ namespace Domain.Clients
                 Password = register.Password,
                 AvatarId = File.DEFAULT_IMG_ID,
                 Token = System.Guid.NewGuid(),
-                State = 
+                State = (int)User.UserState.Enabled
             };
             db.Users.Add(newUser);
             if (await db.SaveChangesAsync() == 1)
