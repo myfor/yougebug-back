@@ -6,8 +6,6 @@ using Domain;
 using Microsoft.AspNetCore.Mvc;
 using yougebug_back.Shared;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace yougebug_back.Admin.Clients
 {
     [Route(Defaults.ADMIN_DEFAULT_ROUTE)]
@@ -38,7 +36,32 @@ namespace yougebug_back.Admin.Clients
         public async Task<IActionResult> GetClientDetailAsync(int id)
         {
             Domain.Clients.User user = Domain.Clients.Hub.GetUser(id);
-            
+            Resp r = await user.GetDetailAsync();
+            return Pack(r);
+        }
+
+        /// <summary>
+        /// 启用用户
+        /// </summary>
+        /// <returns></returns>
+        [HttpPatch("{id}/enabled")]
+        public async Task<IActionResult> EnabledAsync(int id)
+        {
+            Domain.Clients.User user = Domain.Clients.Hub.GetUser(id);
+            Resp r = await user.EnabledAsync();
+            return Pack(r);
+        }
+
+        /// <summary>
+        /// 禁用用户
+        /// </summary>
+        /// <returns></returns>
+        [HttpPatch("{id}/disabled")]
+        public async Task<IActionResult> DisabledAsync(int id)
+        {
+            Domain.Clients.User user = Domain.Clients.Hub.GetUser(id);
+            Resp r = await user.DisabledAsync();
+            return Pack(r);
         }
     }
 }

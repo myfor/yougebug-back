@@ -141,5 +141,45 @@ namespace Domain.Clients
             };
             return Resp.Success(detail);
         }
+
+        /// <summary>
+        /// 启用用户
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Resp> EnabledAsync()
+        {
+            string msg = await ModifyState(UserState.Enabled);
+            if (string.IsNullOrWhiteSpace(msg))
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, msg);
+        }
+
+        public async Task<Resp> DisabledAsync()
+        {
+            string msg = await ModifyState(UserState.Disabled);
+            if (string.IsNullOrWhiteSpace(msg))
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, msg);
+        }
+
+        private async Task<string> ModifyState(UserState userState)
+        {
+            using var db = new YGBContext();
+
+            DB.Tables.User user = await db.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            if (user is null)
+                return USER_NOT_EXIST;
+
+            int value = (int)userState;
+            string description = userState.GetDescription();
+            if (user.State == value)
+                return $"用户已是{description}的状态，不能重复{description}";
+            user.State = value;
+
+            int count = await db.SaveChangesAsync();
+            if (count == 1)
+                return "";
+            return "启用失败";
+        }
     }
 }
