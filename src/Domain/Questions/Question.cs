@@ -171,9 +171,6 @@ namespace Domain.Questions
             if (question is null)
                 return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
 
-            question.Views++;
-            await db.SaveChangesAsync();
-
             //  获取第一页的答案分页
             Paginator page = Paginator.New(index, size);
             (page.List, page.TotalRows) = await GetAnswersAsync(index, size);
@@ -197,6 +194,11 @@ namespace Domain.Questions
                 },
                 Page = page
             };
+
+            question.Views++;
+            question.Actived = DateTimeOffset.Now;
+            await db.SaveChangesAsync();
+
             return Resp.Success(detail, "");
         }
 
