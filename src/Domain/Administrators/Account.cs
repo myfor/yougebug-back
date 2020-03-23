@@ -18,7 +18,7 @@ namespace Domain.Administrators
         /// <summary>
         /// 登录
         /// </summary>
-        public static async Task<Resp> Login(Models.LoginInfo loginInfo)
+        public static async Task<(bool, Resp)> Login(Models.LoginInfo loginInfo)
         {
             /*
              * 检查登录参数
@@ -26,7 +26,7 @@ namespace Domain.Administrators
 
             (bool isValid, string msg) = loginInfo.IsValid();
             if (!isValid)
-                return Resp.Fault(Resp.NONE, msg);
+                return (false, Resp.Fault(Resp.NONE, msg));
 
             /*
              * 检查登录账号密码
@@ -37,12 +37,12 @@ namespace Domain.Administrators
             DB.Tables.Admin account = await db.Admins.FirstOrDefaultAsync(a => a.Account == loginInfo.Account && a.Password == loginInfo.Password);
 
             if (account is null)
-                return Resp.Fault(Resp.NONE, "账号不存在或密码错误");
+                return (false, Resp.Fault(Resp.NONE, "账号不存在或密码错误"));
 
             account.Token = Guid.NewGuid();
             int suc = await db.SaveChangesAsync();
             if (suc != 1)
-                return Resp.Fault(Resp.NONE, "登录失败, 请重试");
+                return (false, Resp.Fault(Resp.NONE, "登录失败, 请重试"));
 
             Results.LoggedInInfo result = new Results.LoggedInInfo
             {
@@ -51,7 +51,7 @@ namespace Domain.Administrators
                 UserName = account.Account,
                 Email = account.Email
             };
-            return Resp.Success(result);
+            return (true, Resp.Success(result));
         }
 
         /// <summary>

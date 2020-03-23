@@ -19,9 +19,9 @@ namespace yougebug_back.Admin.Login
         [HttpPatch]
         public async Task<ActionResult> Login([FromBody]Models.LoginInfo loginInfo)
         {
-            Resp result = await Domain.Administrators.Account.Login(loginInfo);
+            (bool isSuccess, Resp result) = await Domain.Administrators.Account.Login(loginInfo);
 
-            if (result.Data == Resp.NONE)
+            if (!isSuccess)
                 return Pack(result);
 
             Claim[] claims = new Claim[]

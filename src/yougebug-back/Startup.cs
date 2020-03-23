@@ -63,6 +63,8 @@ namespace yougebug_back
 
             app.UseHttpsRedirection();
 
+            app.UseRewriter(new RewriteOptions().AddRewrite("^adminwwwroot$", "/adminwwwroot/index.html", true));
+
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {

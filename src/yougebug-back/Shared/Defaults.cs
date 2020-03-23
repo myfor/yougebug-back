@@ -7,7 +7,7 @@
         /// </summary>
         public const string ADMIN_DEFAULT_ROUTE_PREFIX = "admin/api/";
         /// <summary>
-        /// 管理端默认路由
+        /// 管理端默认路由, admin/api/
         /// </summary>
         public const string ADMIN_DEFAULT_ROUTE = ADMIN_DEFAULT_ROUTE_PREFIX + "[controller]";
         /// <summary>
