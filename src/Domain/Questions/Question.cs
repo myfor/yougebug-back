@@ -251,6 +251,7 @@ namespace Domain.Questions
                                                                         Votes = a.Votes,
                                                                         Content = a.Content,
                                                                         CreateDate = a.CreateDate.ToStandardString(),
+                                                                        State = Share.KeyValue<int, string>.Create(a.State, a.State.GetDescription<Answers.Answer.AnswerState>()),
                                                                         User = a.AnswererId.HasValue ? new Clients.Models.UserIntro
                                                                         {
                                                                             Id = a.Id,

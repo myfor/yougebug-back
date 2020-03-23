@@ -16,6 +16,7 @@ namespace Domain.Answers
             public int Votes { get; set; }
             public string CreateDate { get; set; }
             public Clients.Models.UserIntro User { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
         }
     }
 }
