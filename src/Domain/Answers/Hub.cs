@@ -16,20 +16,48 @@ namespace Domain.Answers
         /// </summary>
         public async Task<Resp> GetAnswersAsync(Paginator pager, int questionId, Answer.AnswerState answerState = Answer.AnswerState.All)
         {
+            (pager.List, pager.TotalRows) = await GetAnswersAsync(questionId, pager.Index, pager.Size, answerState);
+
+            return Resp.Success(pager, "");
+        }
+
+        internal async Task<(List<Answers.Models.AnswerItem>, int)> GetAnswersAsync(int questionId, int index, int size, Answer.AnswerState answerState = Answer.AnswerState.All)
+        {
             Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.QuestionId == questionId;
             if (answerState != Answer.AnswerState.All)
                 whereStatement.And(a => a.State == (int)answerState);
 
             using var db = new YGBContext();
 
-            pager.TotalRows = await db.Answers.CountAsync(a => a.QuestionId == questionId);
-            pager.List = await db.Answers.AsNoTracking()
-                                         .Skip(pager.Skip)
-                                         .Take(pager.Size)
-                                         .OrderByDescending(a => a.Votes)
+            int totalSize = await db.Answers.CountAsync(a => a.QuestionId == questionId);
+            var list = await db.Answers.AsNoTracking()
                                          .Where(whereStatement)
+                                         .Skip((index - 1) * size)
+                                                                    .Take(size)
+                                         .Include(a => a.Answerer)
+                                         .ThenInclude(a => a.Avatar)
+                                         .OrderByDescending(a => a.Votes)
+                                         .Select(a => new Models.AnswerItem
+                                         {
+                                             Id = a.Id,
+                                             Votes = a.Votes,
+                                             Content = a.Content,
+                                             CreateDate = a.CreateDate.ToStandardString(),
+                                             State = Share.KeyValue<int, string>.Create(a.State, a.State.GetDescription<Answers.Answer.AnswerState>()),
+                                             User = a.AnswererId.HasValue ? new Clients.Models.UserIntro
+                                             {
+                                                 Id = a.Id,
+                                                 Account = a.Answerer.Name,
+                                                 Avatar = a.Answerer.Avatar.Thumbnail
+                                             } : new Clients.Models.UserIntro
+                                             {
+                                                 Id = 0,
+                                                 Account = a.NickName,
+                                                 Avatar = File.DEFAULT_AVATAR
+                                             }
+                                         })
                                          .ToListAsync();
-            return Resp.Success(pager, "");
+            return (list, totalSize);
         }
 
         /// <summary>
@@ -46,7 +74,7 @@ namespace Domain.Answers
 
             using var db = new YGBContext();
             DB.Tables.Answer answer = new DB.Tables.Answer
-            { 
+            {
                 QuestionId = questionId,
                 Content = content,
                 AnswererId = answererId,

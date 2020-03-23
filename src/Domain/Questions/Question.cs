@@ -171,9 +171,11 @@ namespace Domain.Questions
             if (question is null)
                 return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
 
+            Answers.Hub answerHub = new Answers.Hub();
             //  获取第一页的答案分页
             Paginator page = Paginator.New(index, size);
-            (page.List, page.TotalRows) = await GetAnswersAsync(index, size);
+            //(page.List, page.TotalRows) = await GetAnswersAsync(index, size);
+            (page.List, page.TotalRows) = await answerHub.GetAnswersAsync(Id, index, size, Answers.Answer.AnswerState.Pass);
 
             Models.QuestionDetail detail = new Models.QuestionDetail
             {
@@ -251,7 +253,7 @@ namespace Domain.Questions
                                                                         Votes = a.Votes,
                                                                         Content = a.Content,
                                                                         CreateDate = a.CreateDate.ToStandardString(),
-                                                                        State = Share.KeyValue<int, string>.Create(a.State, a.State.GetDescription<Answers.Answer.AnswerState>()),
+                                                                        State = Share.KeyValue<int, string>.Create<int, string>(a.State, a.State.GetDescription<Answers.Answer.AnswerState>()),
                                                                         User = a.AnswererId.HasValue ? new Clients.Models.UserIntro
                                                                         {
                                                                             Id = a.Id,

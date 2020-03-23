@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using yougebug_back.Shared;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace yougebug_back.Admin.Answers
 {
     /// <summary>
@@ -15,6 +13,19 @@ namespace yougebug_back.Admin.Answers
     [Route(Defaults.ADMIN_DEFAULT_ROUTE)]
     public class AnswersController : AdminBaseController
     {
+        /// <summary>
+        /// 获取问题下的答案列表
+        /// </summary>
+        [HttpGet()]
+        public async Task<IActionResult> GetAnswersList(int questionId, int index, int size)
+        {
+            Domain.Paginator pager = Domain.Paginator.New(index, size);
+
+            Domain.Answers.Hub answerHub = new Domain.Answers.Hub();
+            var r = await answerHub.GetAnswersAsync(pager, questionId);
+            return Pack(r);
+        }
+
         /// <summary>
         /// 启用答案
         /// </summary>
