@@ -73,6 +73,30 @@ namespace Domain.Answers
         }
 
         /// <summary>
+        /// 通过一个答案
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Resp> EnabledAsync()
+        {
+            using var db = new YGBContext();
+            DB.Tables.Answer answer = await db.Answers.FirstOrDefaultAsync(a => a.Id == Id);
+            if (answer is null)
+                return Resp.Fault(Resp.NONE, NOT_EXIST_ANSWER);
+
+            int stateId = (int)AnswerState.Pass;
+            string description = AnswerState.Pass.GetDescription();
+
+            if (answer.State == stateId)
+                return Resp.Fault(Resp.NONE, $"已经是{description}的状态，不能再次{description}");
+
+            answer.State = stateId;
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 1)
+                return Resp.Success(Resp.NONE, $"{description}成功");
+            return Resp.Fault(Resp.NONE, $"{description}失败");
+        }
+
+        /// <summary>
         /// 退回一个答案
         /// </summary>
         /// <param name="description">退回理由</param>

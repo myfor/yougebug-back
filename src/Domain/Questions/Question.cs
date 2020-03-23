@@ -242,7 +242,7 @@ namespace Domain.Questions
                                                                     .Where(whereStatement)
                                                                     .Include(a => a.Answerer)
                                                                     .ThenInclude(a => a.Avatar)
-                                                                    .Skip((index - 1) * size)
+                                                                    .Skip((index - 1) * size) 
                                                                     .Take(size)
                                                                     .OrderByDescending(a => a.Votes)
                                                                     .Select(a => new Answers.Models.AnswerItem
