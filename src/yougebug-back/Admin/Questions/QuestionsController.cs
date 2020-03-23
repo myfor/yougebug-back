@@ -18,12 +18,12 @@ namespace yougebug_back.Admin.Questions
         /// 获取问题列表
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult> GetListAsync(int index, string title)
+        public async Task<IActionResult> GetListAsync(int index, int size, string search)
         {
-            Paginator pager = Paginator.New(index, Paginator.DEFAULT_SIZE);
+            Paginator pager = Paginator.New(index, size);
             pager.Params = new Dictionary<string, string>
             {
-                ["title"] = title
+                ["search"] = search
             };
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
@@ -36,28 +36,28 @@ namespace yougebug_back.Admin.Questions
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetDetailAsync(int id)
+        public async Task<IActionResult> GetDetailAsync(int id)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
             Domain.Resp resp = await question.GetDetailAsync();
             return Pack(resp);
         }
 
-        /// <summary>
-        /// 获取答案列表
-        /// </summary>
-        [HttpGet]
-        public async Task<ActionResult> GetAnswersAsync(int questionId, int index)
-        {
-            Domain.Paginator pager = new Domain.Paginator
-            {
-                Index = index
-            };
+        ///// <summary>
+        ///// 获取答案列表
+        ///// </summary>
+        //[HttpGet("answers")]
+        //public async Task<IActionResult> GetAnswersAsync(int questionId, int index)
+        //{
+        //    Domain.Paginator pager = new Domain.Paginator
+        //    {
+        //        Index = index
+        //    };
 
-            Domain.Answers.Hub hub = new Domain.Answers.Hub();
-            Domain.Resp resp = await hub.GetAnswersAsync(pager, questionId);
-            return Pack(resp);
-        }
+        //    Domain.Answers.Hub hub = new Domain.Answers.Hub();
+        //    Domain.Resp resp = await hub.GetAnswersAsync(pager, questionId);
+        //    return Pack(resp);
+        //}
 
         /// <summary>
         /// 退回一个问题
@@ -66,7 +66,7 @@ namespace yougebug_back.Admin.Questions
         /// <param name="description">原因</param>
         /// <returns></returns>
         [HttpPatch("{id}")]
-        public async Task<ActionResult> BackAsync(int id, [FromBody]string description)
+        public async Task<IActionResult> BackAsync(int id, [FromBody]string description)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
             Domain.Resp resp = await question.BackAsync(description);

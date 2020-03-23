@@ -17,10 +17,10 @@ namespace Domain.Clients
     {
         public enum UserState
         {
-            [Description("启用")]
-            Enabled,
             [Description("禁用")]
-            Disabled
+            Disabled,
+            [Description("启用")]
+            Enabled
         }
 
         public const string USER_NOT_EXIST = "用户不存在";
@@ -137,7 +137,7 @@ namespace Domain.Clients
                 Email = user.Email,
                 CreateDate = user.CreateDate.ToStandardString(),
                 Avatar = user.Avatar.Path,
-                State = user.State
+                State = Share.KeyValue<int, string>.Create(user.State, user.State.GetDescription<UserState>())
             };
             return Resp.Success(detail);
         }

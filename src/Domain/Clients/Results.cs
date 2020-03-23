@@ -32,6 +32,7 @@ namespace Domain.Clients
             public string UserName { get; set; }
             public string Email { get; set; }
             public string CreateDate { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
         }
 
         public struct ClientDetail
@@ -40,7 +41,7 @@ namespace Domain.Clients
             public string Email { get; set; }
             public string CreateDate { get; set; }
             public string Avatar { get; set; }
-            public int State { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
         }
     }
 }

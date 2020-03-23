@@ -101,15 +101,16 @@ namespace Domain.Clients
             pager.TotalRows = await db.Users.CountAsync(whereStatement);
 
             pager.List = await db.Users.AsNoTracking()
+                                       .Where(whereStatement)
                                        .Skip(pager.Skip)
                                        .Take(pager.Size)
-                                       .Where(whereStatement)
                                        .Select(u => new Results.ClientItem
                                        {
                                            Id = u.Id,
                                            UserName = u.Name,
                                            Email = u.Email,
-                                           CreateDate = u.CreateDate.ToStandardString()
+                                           CreateDate = u.CreateDate.ToStandardString(),
+                                           State = Share.KeyValue<int, string>.Create(u.State, u.State.GetDescription<User.UserState>())
                                        })
                                        .ToListAsync();
             return Resp.Success(pager);
