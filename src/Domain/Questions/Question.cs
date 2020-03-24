@@ -201,6 +201,9 @@ namespace Domain.Questions
             if (question is null)
                 return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
 
+            if (question.State != (int)QuestionState.Enabled)
+                return Resp.Fault(Resp.NONE, "该提问暂时无法查看");
+
             Answers.Hub answerHub = new Answers.Hub();
             //  获取第一页的答案分页
             Paginator page = Paginator.New(index, size);

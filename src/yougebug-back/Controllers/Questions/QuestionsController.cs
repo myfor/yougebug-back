@@ -70,6 +70,8 @@ namespace yougebug_back.Controllers.Questions
 
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
             Domain.Resp resp = await question.GetDetailAsync(index, size);
+            if (!resp.IsSuccess)
+                return Redirect(string.Format($"/questions/?{ALERT_WARNING}", "暂时不能查看该答案"));
             Domain.Questions.Models.QuestionDetail model = resp.GetData<Domain.Questions.Models.QuestionDetail>();
 
             return View("QuestionDetail", model);

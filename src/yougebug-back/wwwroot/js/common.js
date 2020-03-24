@@ -56,7 +56,9 @@ function setUserAvatar(value) {
     AVATAR.alt = INFO.name;
 }
 
+//  普通通知
 const ALERT_PRIMARY = 'alert-primary';
+//  警告通知
 const ALERT_WARNING = 'alert-warning';
 //  检查是否有警告
 function checkAlert() {
