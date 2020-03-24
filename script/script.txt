@@ -1,3 +1,5 @@
+--初始化使用的脚本
+
 insert into files 
 (id, State, CreatorId, CreateDate, ModifyId, ModifyDate, Name, ExtensionName, Size, Path, Thumbnail) 
 values 
@@ -8,3 +10,11 @@ insert into admins
 values
 (1, 1, 0, '2020-01-01', 0, '2020-01-01', 'admin', '96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e', 'e7ec5470-84d6-442d-ab8f-31271de0693b', 'admin@yougebug.com');
 
+备份使用脚本
+mysqldump -u root -p yougebug > F:\MyWebSite\yougebug-back\script\yougebug.sql
+
+docker 使用
+nginx：
+	docker run --name nginx -d -p 80:80 -p 443:443 -v /data/nginx/html:/usr/share/nginx/html -v /data/nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v /data/nginx/logs:/var/log/nginx -v /data/nginx/conf.d:/etc/nginx/conf.d -v /data/nginx/conf:/etc/nginx/conf -d nginx
+yougebug
+	docker run --name yougebug -d -p 8080:8080 -v /data/yougebug/appsettings.json:/app/appsettings.json -v /data/yougebug/wwwroot:/app/wwwroot -v /data/yougebug/files:/app/files -v /data/yougebug/files/temp:/app/files/temp -v /data/yougebug/files/uploadfiles:/app/files/uploadfiles -v /data/yougebug/adminwwwroot:/app/adminwwwroot --link mariadb:mariadb yougebug
