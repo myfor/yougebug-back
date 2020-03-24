@@ -16,15 +16,18 @@ namespace Domain.Questions
 
         public enum QuestionState
         {
-            All = 0,
+            /// <summary>
+            /// 退回是退回审核
+            /// </summary>
             [Description("退回")]
-            Back,
+            Back = 0,
             [Description("启用")]
             Enabled,
             [Description("移除")]
             Remove,
             [Description("待审核")]
-            ToAudit
+            ToAudit,
+            All
         }
 
         public Question(int id) : base(id)
@@ -90,6 +93,24 @@ namespace Domain.Questions
             return Resp.Fault(Resp.NONE, "操作失败");
         }
 
+        public async Task<Resp> EnabledAsync()
+        {
+            int enabledValue = (int)QuestionState.Enabled;
+            string enabledDescription = QuestionState.Enabled.GetDescription();
+
+            using var db = new YGBContext();
+            DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
+            if (question is null)
+                return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
+            if (question.State == enabledValue)
+                return Resp.Fault(Resp.NONE, $"已经是{enabledDescription}的状态，不能再次{enabledDescription}");
+            question.State = enabledValue;
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "修改失败");
+        }
+
         /// <summary>
         /// 退回一个提问
         /// </summary>
@@ -104,12 +125,20 @@ namespace Domain.Questions
 
             CheckEmpty();
 
+            if (string.IsNullOrWhiteSpace(description))
+                description = "";
+
+            int value = (int)QuestionState.Back;
+            string backDescription = QuestionState.Back.GetDescription();
+
             using var db = new YGBContext();
             DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
             if (question is null)
                 return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
-            if (question.State != (int)QuestionState.Back)
-                question.State = (int)QuestionState.Back;
+            if (question.State == value)
+                return Resp.Fault(Resp.NONE, $"已经是{backDescription}的状态，不能再次{backDescription}");
+            else
+                question.State = value;
 
             DB.Tables.QuestionBackRecord record = new DB.Tables.QuestionBackRecord
             {
@@ -117,7 +146,8 @@ namespace Domain.Questions
                 Description = description
             };
             db.QuestionBackRecords.Add(record);
-            if (await db.SaveChangesAsync() > 0)
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 2)
                 return Resp.Success(Resp.NONE);
             return Resp.Fault(Resp.NONE, "退回失败");
         }
@@ -226,48 +256,6 @@ namespace Domain.Questions
             if (isSuccess)
                 return Resp.Success(Resp.NONE);
             return Resp.Fault(Resp.NONE, msg);
-        }
-
-        /// <summary>
-        /// 获取问题的答案列表
-        /// </summary>
-        /// <param name="index">第几页</param>
-        /// <param name="size">几条</param>
-        /// <returns>返货答案列表和总条数</returns>
-        private async Task<(List<Answers.Models.AnswerItem>, int)> GetAnswersAsync(int index, int size)
-        {
-            using var db = new YGBContext();
-
-            Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.QuestionId == Id && a.State == (int)Answers.Answer.AnswerState.Pass;
-            int totalSize = await db.Answers.CountAsync(whereStatement);
-            List<Answers.Models.AnswerItem> list = await db.Answers.AsNoTracking()
-                                                                    .Where(whereStatement)
-                                                                    .Include(a => a.Answerer)
-                                                                    .ThenInclude(a => a.Avatar)
-                                                                    .Skip((index - 1) * size) 
-                                                                    .Take(size)
-                                                                    .OrderByDescending(a => a.Votes)
-                                                                    .Select(a => new Answers.Models.AnswerItem
-                                                                    {
-                                                                        Id = a.Id,
-                                                                        Votes = a.Votes,
-                                                                        Content = a.Content,
-                                                                        CreateDate = a.CreateDate.ToStandardString(),
-                                                                        State = Share.KeyValue<int, string>.Create<int, string>(a.State, a.State.GetDescription<Answers.Answer.AnswerState>()),
-                                                                        User = a.AnswererId.HasValue ? new Clients.Models.UserIntro
-                                                                        {
-                                                                            Id = a.Id,
-                                                                            Account = a.Answerer.Name,
-                                                                            Avatar = a.Answerer.Avatar.Thumbnail
-                                                                        } : new Clients.Models.UserIntro
-                                                                        {
-                                                                            Id = 0,
-                                                                            Account = a.NickName,
-                                                                            Avatar = File.DEFAULT_AVATAR
-                                                                        }
-                                                                    })
-                                                                    .ToListAsync();
-            return (list, totalSize);
         }
 
         /// <summary>

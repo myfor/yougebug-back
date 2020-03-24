@@ -65,11 +65,24 @@ namespace yougebug_back.Admin.Questions
         /// <param name="id"></param>
         /// <param name="description">原因</param>
         /// <returns></returns>
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> BackAsync(int id, [FromBody]string description)
+        [HttpPatch("{id}/back")]
+        public async Task<IActionResult> BackAsync(int id, string descpiption)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp resp = await question.BackAsync(description);
+            Domain.Resp resp = await question.BackAsync(descpiption);
+            return Pack(resp);
+        }
+
+        /// <summary>
+        /// 启用一个问题
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPatch("{id}/enabled")]
+        public async Task<IActionResult> EnabledAsync(int id)
+        {
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Resp resp = await question.EnabledAsync();
             return Pack(resp);
         }
     }
