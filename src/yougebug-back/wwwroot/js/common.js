@@ -1,4 +1,4 @@
-﻿const REDIRECT_TO = 'redirect-to';
+const REDIRECT_TO = 'redirect-to';
 
 function getQueryString(name) {
     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
