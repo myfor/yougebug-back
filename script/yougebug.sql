@@ -16,22 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `__efmigrationshistory`
+-- Table structure for table `Admins`
 --
 
-DROP TABLE IF EXISTS `__efmigrationshistory`;
---
--- Dumping data for table `__efmigrationshistory`
---
-
---
--- Table structure for table `admins`
---
-
-DROP TABLE IF EXISTS `admins`;
+DROP TABLE IF EXISTS `Admins`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `admins` (
+CREATE TABLE `Admins` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `State` int(11) NOT NULL,
   `CreatorId` int(11) NOT NULL,
@@ -50,9 +41,9 @@ CREATE TABLE `admins` (
 -- Dumping data for table `admins`
 --
 
-LOCK TABLES `admins` WRITE;
+LOCK TABLES `Admins` WRITE;
 /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
-INSERT INTO `admins` VALUES (1,1,0,'2020-01-01 00:00:00.000000',0,'2020-01-01 00:00:00.000000','admin','96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e','9c32988e-d786-4ace-ad77-a215c1304dd6','admin@yougebug.com');
+INSERT INTO `Admins` VALUES (1,1,0,'2020-01-01 00:00:00.000000',0,'2020-01-01 00:00:00.000000','admin','96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e','9c32988e-d786-4ace-ad77-a215c1304dd6','admin@yougebug.com');
 /*!40000 ALTER TABLE `admins` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,10 +51,10 @@ UNLOCK TABLES;
 -- Table structure for table `answerbackrecords`
 --
 
-DROP TABLE IF EXISTS `answerbackrecords`;
+DROP TABLE IF EXISTS `AnswerBackRecords`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `answerbackrecords` (
+CREATE TABLE `AnswerBackRecords` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `State` int(11) NOT NULL,
   `CreatorId` int(11) NOT NULL,
@@ -82,19 +73,19 @@ CREATE TABLE `answerbackrecords` (
 -- Dumping data for table `answerbackrecords`
 --
 
-LOCK TABLES `answerbackrecords` WRITE;
+LOCK TABLES `AnswerBackRecords` WRITE;
 /*!40000 ALTER TABLE `answerbackrecords` DISABLE KEYS */;
 /*!40000 ALTER TABLE `answerbackrecords` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `answerreportrecords`
+-- Table structure for table `AnswerReportRecords`
 --
 
-DROP TABLE IF EXISTS `answerreportrecords`;
+DROP TABLE IF EXISTS `AnswerReportRecords`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `answerreportrecords` (
+CREATE TABLE `AnswerReportRecords` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `State` int(11) NOT NULL,
   `CreatorId` int(11) NOT NULL,
@@ -111,22 +102,22 @@ CREATE TABLE `answerreportrecords` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `answerreportrecords`
+-- Dumping data for table `AnswerReportRecords`
 --
 
-LOCK TABLES `answerreportrecords` WRITE;
-/*!40000 ALTER TABLE `answerreportrecords` DISABLE KEYS */;
-/*!40000 ALTER TABLE `answerreportrecords` ENABLE KEYS */;
+LOCK TABLES `AnswerReportRecords` WRITE;
+/*!40000 ALTER TABLE `AnswerReportRecords` DISABLE KEYS */;
+/*!40000 ALTER TABLE `AnswerReportRecords` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `answers`
+-- Table structure for table `Answers`
 --
 
-DROP TABLE IF EXISTS `answers`;
+DROP TABLE IF EXISTS `Answers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `answers` (
+CREATE TABLE `Answers` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `State` int(11) NOT NULL,
   `CreatorId` int(11) NOT NULL,
@@ -148,13 +139,13 @@ CREATE TABLE `answers` (
 
 
 --
--- Table structure for table `files`
+-- Table structure for table `Files`
 --
 
-DROP TABLE IF EXISTS `files`;
+DROP TABLE IF EXISTS `Files`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `files` (
+CREATE TABLE `Files` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `State` int(11) NOT NULL,
   `CreatorId` int(11) NOT NULL,
@@ -184,10 +175,10 @@ UNLOCK TABLES;
 -- Table structure for table `questionbackrecords`
 --
 
-DROP TABLE IF EXISTS `questionbackrecords`;
+DROP TABLE IF EXISTS `QuestionBackRecords`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `questionbackrecords` (
+CREATE TABLE `QuestionBackRecords` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `State` int(11) NOT NULL,
   `CreatorId` int(11) NOT NULL,
@@ -204,13 +195,13 @@ CREATE TABLE `questionbackrecords` (
 
 
 --
--- Table structure for table `questionreportrecords`
+-- Table structure for table `QuestionReportRecords`
 --
 
-DROP TABLE IF EXISTS `questionreportrecords`;
+DROP TABLE IF EXISTS `QuestionReportRecords`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `questionreportrecords` (
+CREATE TABLE `QuestionReportRecords` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `State` int(11) NOT NULL,
   `CreatorId` int(11) NOT NULL,
@@ -227,22 +218,22 @@ CREATE TABLE `questionreportrecords` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `questionreportrecords`
+-- Dumping data for table `QuestionReportRecords`
 --
 
-LOCK TABLES `questionreportrecords` WRITE;
-/*!40000 ALTER TABLE `questionreportrecords` DISABLE KEYS */;
-/*!40000 ALTER TABLE `questionreportrecords` ENABLE KEYS */;
+LOCK TABLES `QuestionReportRecords` WRITE;
+/*!40000 ALTER TABLE `QuestionReportRecords` DISABLE KEYS */;
+/*!40000 ALTER TABLE `QuestionReportRecords` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `questions`
+-- Table structure for table `Questions`
 --
 
-DROP TABLE IF EXISTS `questions`;
+DROP TABLE IF EXISTS `Questions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `questions` (
+CREATE TABLE `Questions` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `State` int(11) NOT NULL,
   `CreatorId` int(11) NOT NULL,
@@ -264,13 +255,13 @@ CREATE TABLE `questions` (
 
 
 --
--- Table structure for table `tags`
+-- Table structure for table `Tags`
 --
 
-DROP TABLE IF EXISTS `tags`;
+DROP TABLE IF EXISTS `Tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tags` (
+CREATE TABLE `Tags` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `State` int(11) NOT NULL,
   `CreatorId` int(11) NOT NULL,
@@ -286,10 +277,10 @@ CREATE TABLE `tags` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `Users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
+CREATE TABLE `Users` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `State` int(11) NOT NULL,
   `CreatorId` int(11) NOT NULL,
