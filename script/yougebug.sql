@@ -162,13 +162,13 @@ CREATE TABLE `Files` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `files`
+-- Dumping data for table `Files`
 --
 
-LOCK TABLES `files` WRITE;
-/*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES (1,1,0,'2020-01-01 00:00:00.000000',0,'2020-01-01 00:00:00.000000','default.png','.png',40,'/files/default.png','/files/default.png');
-/*!40000 ALTER TABLE `files` ENABLE KEYS */;
+LOCK TABLES `Files` WRITE;
+/*!40000 ALTER TABLE `Files` DISABLE KEYS */;
+INSERT INTO `Files` VALUES (1,1,0,'2020-01-01 00:00:00.000000',0,'2020-01-01 00:00:00.000000','default.png','.png',40,'/Files/default.png','/Files/default.png');
+/*!40000 ALTER TABLE `Files` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -294,7 +294,7 @@ CREATE TABLE `Users` (
   `Token` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   PRIMARY KEY (`Id`),
   KEY `IX_Users_AvatarId` (`AvatarId`),
-  CONSTRAINT `FK_Users_Files_AvatarId` FOREIGN KEY (`AvatarId`) REFERENCES `files` (`Id`) ON DELETE CASCADE
+  CONSTRAINT `FK_Users_Files_AvatarId` FOREIGN KEY (`AvatarId`) REFERENCES `Files` (`Id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
