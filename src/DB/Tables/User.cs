@@ -12,6 +12,11 @@ namespace DB.Tables
         [Required, StringLength(64)]
         public string Email { get; set; } = "";
         /// <summary>
+        /// 用户验证的邮箱，就是邮箱的大写小写模式
+        /// </summary>
+        [Required, StringLength(64)]
+        public string AuthEmail { get; set; } = "";
+        /// <summary>
         /// 密码
         /// </summary>
         [Required, StringLength(64)]

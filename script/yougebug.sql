@@ -188,8 +188,7 @@ CREATE TABLE `QuestionBackRecords` (
   `QuestionId` int(11) NOT NULL,
   `Description` varchar(1024) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`Id`),
-  KEY `IX_QuestionBackRecords_QuestionId` (`QuestionId`),
-  CONSTRAINT `FK_QuestionBackRecords_Questions_QuestionId` FOREIGN KEY (`QuestionId`) REFERENCES `questions` (`Id`) ON DELETE CASCADE
+  KEY `IX_QuestionBackRecords_QuestionId` (`QuestionId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -212,8 +211,7 @@ CREATE TABLE `QuestionReportRecords` (
   `Reason` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
   `Description` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`Id`),
-  KEY `IX_QuestionReportRecords_QuestionId` (`QuestionId`),
-  CONSTRAINT `FK_QuestionReportRecords_Questions_QuestionId` FOREIGN KEY (`QuestionId`) REFERENCES `questions` (`Id`) ON DELETE CASCADE
+  KEY `IX_QuestionReportRecords_QuestionId` (`QuestionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -248,8 +246,7 @@ CREATE TABLE `Questions` (
   `Actived` datetime(6) NOT NULL,
   `AskerId` int(11) NOT NULL,
   PRIMARY KEY (`Id`),
-  KEY `IX_Questions_AskerId` (`AskerId`),
-  CONSTRAINT `FK_Questions_Users_AskerId` FOREIGN KEY (`AskerId`) REFERENCES `users` (`Id`) ON DELETE CASCADE
+  KEY `IX_Questions_AskerId` (`AskerId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

@@ -52,13 +52,13 @@ namespace Domain.Questions
 
             pager.TotalRows = await db.Questions.CountAsync(where);
             pager.List = await db.Questions.AsNoTracking()
+                                            .OrderByDescending(q => q.CreateDate)
+                                            .Where(where)
+                                            .Skip(pager.Skip)
+                                            .Take(pager.Size)
                                             .Include(q => q.Answers)
                                             .Include(q => q.Asker)
                                             .ThenInclude(asker => asker.Avatar)
-                                            .Skip(pager.Skip)
-                                            .Take(pager.Size)
-                                            .OrderByDescending(q => q.CreateDate)
-                                            .Where(where)
                                             .Select(q => new Models.QuentionItem_Client
                                             {
                                                 Id = q.Id,
