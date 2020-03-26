@@ -74,9 +74,9 @@
                 .then(function (resp) {
                     if (resp.status === 200) {
                         alert('提问成功');
-                        location.href = 'questions/' + resp.data.data;
+                        location.href = 'questions/' + resp.data.data + `/${TITLE.value}`;
                     } else {
-                        alert(resp.data.data);
+                        alert(resp.data.message);
                     }
                 })
                 .catch(function (err) {

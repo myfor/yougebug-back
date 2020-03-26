@@ -22,6 +22,10 @@ namespace Domain.Clients
             [Description("启用")]
             Enabled
         }
+        /// <summary>
+        /// 用户名最小长度
+        /// </summary>
+        public const int USER_NAME_MIN_LENGTH = 4;
 
         public const string USER_NOT_EXIST = "用户不存在";
         public User(int id) : base(id)
@@ -109,6 +113,45 @@ namespace Domain.Clients
         }
 
         /// <summary>
+        /// 修改用户名
+        /// </summary>
+        public async Task<Resp> ChangeUserInfoAsync(Models.UserModify model)
+        {
+            (bool isValid, string msg) = model.IsValid();
+            if (!isValid)
+                return Resp.Fault(Resp.NONE, msg);
+
+            if (model.UserName.Length < 4)
+                return Resp.Fault(Resp.NONE, "用户名必须四个字符以上");
+
+            using var db = new YGBContext();
+            DB.Tables.User user = await db.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            if (user is null)
+                return Resp.Fault(Resp.NONE, USER_NOT_EXIST);
+
+            string currentName = user.Name.ToLower();
+
+            string[] nonAllow = Config.GetValue("NonAllowedUserName").Split(',', StringSplitOptions.RemoveEmptyEntries);
+            if (nonAllow.Contains(model.UserName))
+                return Resp.Fault(Resp.NONE, "不能使用这个名字");
+
+            if (currentName == model.UserName.ToLower())
+                return Resp.Fault(Resp.NONE, "不能和原来的用户相同");
+            if (await db.Users.AnyAsync(u => u.Name.ToLower() == model.UserName && u.Id != Id))
+                return Resp.Fault(Resp.NONE, "已经被使用的用户名");
+
+            if (await db.Users.AnyAsync(u => u.Email.ToLower() == model.Email && u.Id != Id))
+                return Resp.Fault(Resp.NONE, "已经被使用的邮箱");
+
+            user.Name = model.UserName;
+            user.Email = model.Email;
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "修改失败");
+        }
+
+        /// <summary>
         /// 提问
         /// </summary>
         public async Task<Resp> AskQuestion(Questions.Models.PostQuestion questionParams)
@@ -123,13 +166,26 @@ namespace Domain.Clients
         /// <returns></returns>
         public async Task<Resp> GetDetailAsync()
         {
+            try
+            {
+                var detail = await GetUserInfoAsync();
+                return Resp.Success(detail);
+            }
+            catch (Exception ex)
+            {
+                return Resp.Fault(Resp.NONE, ex.Message);
+            }
+        }
+
+        public async Task<Results.ClientDetail> GetUserInfoAsync()
+        {
             using var db = new YGBContext();
 
             DB.Tables.User user = await db.Users.AsNoTracking()
                                                 .Include(u => u.Avatar)
                                                 .FirstOrDefaultAsync(u => u.Id == Id);
             if (user is null)
-                return Resp.Fault(Resp.NONE, USER_NOT_EXIST);
+                throw new NullReferenceException("USER_NOT_EXIST");
 
             Results.ClientDetail detail = new Results.ClientDetail
             {
@@ -139,7 +195,7 @@ namespace Domain.Clients
                 Avatar = user.Avatar.Path,
                 State = Share.KeyValue<int, string>.Create(user.State, user.State.GetDescription<UserState>())
             };
-            return Resp.Success(detail);
+            return detail;
         }
 
         /// <summary>

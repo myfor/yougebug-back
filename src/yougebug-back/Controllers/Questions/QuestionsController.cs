@@ -88,10 +88,10 @@ namespace yougebug_back.Controllers.Questions
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
 
             if (IsLogged)
-                _ = await question.AddAnswerAsync(CurrentUser.Id, content);
+                return Pack(await question.AddAnswerAsync(CurrentUser.Id, content));
             else
-                _ = await question.AddAnswerAsync(nickName, content);
-            return Redirect($"/questions/{id}/{question.GetTitle()}");
+                return Pack(await question.AddAnswerAsync(nickName, content));
+            //  return Redirect($"/questions/{id}/{question.GetTitle()}");
         }
 
         /// <summary>

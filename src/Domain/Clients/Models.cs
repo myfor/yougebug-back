@@ -51,5 +51,27 @@ namespace Domain.Clients
                 return (true, "");
             }
         }
+
+        /// <summary>
+        /// 修改用户信息参数
+        /// </summary>
+        public struct UserModify
+        {
+            public string UserName { get; set; }
+            public string Email { get; set; }
+
+            public (bool, string) IsValid()
+            {
+                if (string.IsNullOrWhiteSpace(UserName) || UserName.Trim().Length < User.USER_NAME_MIN_LENGTH)
+                    return (false, $"用户名长度不能小于{User.USER_NAME_MIN_LENGTH}位");
+                UserName = UserName.Trim();
+
+                Regex r = new Regex("^\\s*([A-Za-z0-9_-]+(\\.\\w+)*@(\\w+\\.)+\\w{2,5})\\s*$");
+                if (!r.IsMatch(Email))
+                    return (false, "邮箱格式有误");
+
+                return (true, "");
+            }
+        }
     }
 }

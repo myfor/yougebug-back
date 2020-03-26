@@ -1,0 +1,101 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Domain.Clients.Results.ClientDetail;
+<div class="row">
+    <div class="col-2 d-none d-lg-block" style="width: 150px;">
+        @await Html.PartialAsync("_LeftNav")
+    </div>
+
+    <div class="col-sm-12 col-lg-8 h-100">
+        <div class="d-flex flex-column">
+            <div class="d-flex flex-row border-bottom pt-3 pb-3">
+                <img class="img-thumbnail mr-5" src="@Model.Avatar" alt="avatar" style="width: 150px; height: 150px;" />
+                <div class="w-100" id="d_profile">
+                    <div class="flex-grow-1">
+                        <h4 id="profile_userName">@Model.UserName</h4>
+                        <span class="small" id="profile_email">@Model.Email</span>
+                        <p class="small">@Model.CreateDate</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" id="btn_edit" onclick="editInfo()">编辑信息</button>
+                    </div>
+                </div>
+                <div id="d_edit" hidden>
+                    <form class="d-flex flex-column">
+                        <label><small>用户名</small></label>
+                        <input class="form-control" id="txt_userName" value="@Model.UserName" required />
+
+                        <label class="mt-2"><small>邮箱</small></label>
+                        <input class="form-control" type="email" id="txt_email" value="@Model.Email" required />
+                        <div class="mt-2">
+                            <button class="btn btn-primary" type="button" onclick="update()">确认修改</button>
+                            <button class="btn btn-light" type="button" onclick="cancel()">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-2 d-none d-lg-block">
+        @await Html.PartialAsync("_RightNav")
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/axios/axios.min.js"></script>
+    <script>
+        function editInfo() {
+            $('#d_profile').hide();
+            $('#d_edit').removeAttr('hidden');
+            $('#d_edit').show();
+        }
+
+        function update() {
+            disabled('d_edit');
+
+            const USER_NAME = $('#txt_userName');
+            const EMAIL = $('#txt_email');
+            const USER_NAME_VALUE = USER_NAME.val().trim();
+            const EMAIL_VALUE = EMAIL.val().trim();
+
+            if (USER_NAME_VALUE.length < 4) {
+                alert('用户名不能小于4位');
+                USER_NAME.focus();
+                enabled('d_edit');
+                return;
+            }
+            if (!EMAIL_VALUE) {
+                alert('邮箱不能未空');
+                EMAIL.focus();
+                enabled('d_edit');
+                return;
+            }
+
+            axios.put('/users/username', {
+                userName: USER_NAME_VALUE,
+                email: EMAIL_VALUE
+            })
+                .then(function (resp) {
+                    if (resp.status === 200) {
+                        $('#profile_userName').html(USER_NAME_VALUE);
+                        $('#profile_email').html(EMAIL_VALUE);
+                    } else {
+                        alert(resp.data.message);
+                    }
+                })
+                .catch(function (err) {
+                    catchErr(err);
+                });
+
+            enabled('d_edit');
+            cancel();
+        }
+
+        function cancel() {
+            $('#d_profile').show();
+            $('#d_edit').hide();
+        }
+    </script>
+}

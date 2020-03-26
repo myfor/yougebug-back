@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -47,10 +47,12 @@
                     </div>
                 </div>
                 <div id="d-logout" hidden="hidden">
-                    <a class="dropdown-toggle" id="avatar_DDL" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="dropdown-toggle" href="javascript:;" id="avatar_DDL" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="/files/default.png" id="img_avatar" alt="头像" height="40" style="cursor: pointer;" />
                     </a>
                     <div class="dropdown-menu" aria-labelledby="avatar_DDL">
+                        <a class="dropdown-item" id="a_profile" href="javascript:;">我的主页</a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="javascript:;" onclick="logout()">退出登录</a>
                     </div>
                 </div>
@@ -77,8 +79,11 @@
             checkAlert();
 
             const current = isLogged();
-            if (current)
+            if (current) {
                 document.getElementById('d-logout').removeAttribute('hidden');
+                const DATA = JSON.parse(current);
+                document.getElementById('a_profile').href = `/users/${DATA.name}`;
+            }
             else
                 document.getElementById('d-login').removeAttribute('hidden');
 

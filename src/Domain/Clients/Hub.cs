@@ -67,7 +67,7 @@ namespace Domain.Clients
                 return Resp.Fault(Resp.NONE, msg);
 
             using var db = new YGBContext();
-            if (await db.Users.AnyAsync(u => u.AuthEmail == register.Email.ToLower()))
+            if (await db.Users.AnyAsync(u => u.Email.ToLower() == register.Email.ToLower()))
                 return Resp.Fault(Resp.NONE, "该邮箱已被注册");
 
             DB.Tables.User newUser = new DB.Tables.User
@@ -77,8 +77,7 @@ namespace Domain.Clients
                 Password = register.Password,
                 AvatarId = File.DEFAULT_IMG_ID,
                 Token = System.Guid.NewGuid(),
-                State = (int)User.UserState.Enabled,
-                AuthEmail = register.Email.ToLower()
+                State = (int)User.UserState.Enabled
             };
             db.Users.Add(newUser);
             if (await db.SaveChangesAsync() == 1)

@@ -64,8 +64,7 @@ CREATE TABLE `AnswerBackRecords` (
   `AnswerId` int(11) NOT NULL,
   `Description` varchar(1024) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`Id`),
-  KEY `IX_AnswerBackRecords_AnswerId` (`AnswerId`),
-  CONSTRAINT `FK_AnswerBackRecords_Answers_AnswerId` FOREIGN KEY (`AnswerId`) REFERENCES `answers` (`Id`) ON DELETE CASCADE
+  KEY `IX_AnswerBackRecords_AnswerId` (`AnswerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -96,8 +95,7 @@ CREATE TABLE `AnswerReportRecords` (
   `Reason` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
   `Description` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`Id`),
-  KEY `IX_AnswerReportRecords_AnswerId` (`AnswerId`),
-  CONSTRAINT `FK_AnswerReportRecords_Answers_AnswerId` FOREIGN KEY (`AnswerId`) REFERENCES `answers` (`Id`) ON DELETE CASCADE
+  KEY `IX_AnswerReportRecords_AnswerId` (`AnswerId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -131,9 +129,7 @@ CREATE TABLE `Answers` (
   `NickName` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `IX_Answers_QuestionId` (`QuestionId`),
-  KEY `IX_Answers_AnswererId` (`AnswererId`),
-  CONSTRAINT `FK_Answers_Questions_QuestionId` FOREIGN KEY (`QuestionId`) REFERENCES `questions` (`Id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_Answers_Users_AnswererId` FOREIGN KEY (`AnswererId`) REFERENCES `users` (`Id`)
+  KEY `IX_Answers_AnswererId` (`AnswererId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -290,8 +286,7 @@ CREATE TABLE `Users` (
   `AvatarId` int(11) NOT NULL,
   `Token` char(36) NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000',
   PRIMARY KEY (`Id`),
-  KEY `IX_Users_AvatarId` (`AvatarId`),
-  CONSTRAINT `FK_Users_Files_AvatarId` FOREIGN KEY (`AvatarId`) REFERENCES `Files` (`Id`) ON DELETE CASCADE
+  KEY `IX_Users_AvatarId` (`AvatarId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

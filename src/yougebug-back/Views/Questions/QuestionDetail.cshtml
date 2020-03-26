@@ -27,8 +27,8 @@
                     <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" name="questionVotes" onclick="questionVotesDown(@Model.Id)" />
                 </div>
             </div>
-            <div class="d-flex flex-column mt-2 ml-4 w-100">
-                <dav>
+            <div class="d-flex flex-column mt-2 ml-4">
+                <dav style="max-width: 780px;">
                     @Model.Description
                 </dav>
                 <div class="d-flex mt-2">
@@ -88,8 +88,8 @@
                                     <img src="~/icons/chevron-down.svg" class="pointer rounded shadow-hov" alt="不赞同" height="40" name="answerVotes_@answer.Id" onclick="answerVotesDown(@answer.Id)" />
                                 </div>
                             </div>
-                            <div class="d-flex flex-column ml-4 w-100">
-                                <div>
+                            <div class="d-flex flex-column ml-4">
+                                <div class="pr-4" style="overflow-wrap: break-word; max-width: 780px;">
                                     @answer.Content
                                 </div>
                                 <div class="d-flex flex-row-reverse mr-4 mt-3">
@@ -129,18 +129,18 @@
         </div>
 
         <div>
-            <form action="/questions/@Model.Id/answer" method="post">
+            <form>
                 <div id="d_nickName">
                     <label>
                         您当前没有登录，可以
                         <a href="javascript:;" id="a_login">登录</a>
                         或匿名写下答案
                     </label>
-                    <input type="text" class="form-control" name="nickName" value="匿名" placeholder="昵称或登录" />
+                    <input type="text" class="form-control" id="txt_nickName" value="匿名" placeholder="昵称或登录" />
                 </div>
                 <label for="txt_answer">你的回答</label>
-                <textarea class="form-control" id="txt_answer" name="content" rows="5" required placeholder="写下你的答案"></textarea>
-                <button type="submit" class="btn btn-primary mt-3">提交</button>
+                <textarea class="form-control" id="txt_answer" rows="5" required placeholder="写下你的答案"></textarea>
+                <button type="button" class="btn btn-primary mt-3" onclick="newAnswer()">提交</button>
             </form>
         </div>
 
@@ -222,5 +222,23 @@
             }
         }
 
+        function newAnswer() {
+
+            const FORM = new FormData();
+            FORM.append('content', $('#txt_answer').val());
+            FORM.append('nickName', $('#txt_nickName').val().trim());
+
+            axios.post('/questions/@Model.Id/answer', FORM)
+                .then(function (resp) {
+                    if (resp.status === 200) {
+                        location.reload();
+                    } else {
+                        alert(resp.data.message);
+                    }
+                })
+                .catch(function (err) {
+                    catchErr(err);
+                });
+        }
     </script>
 }
