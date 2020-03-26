@@ -24,6 +24,7 @@ namespace yougebug_back.Controllers.Questions
          */
         [HttpPost]
         [Authorize]
+        [ClientsLoginCheck]
         public async Task<IActionResult> NewAskAsync([FromBody]Domain.Questions.Models.PostQuestion model)
         {
             model.UserId = CurrentUser.Id;

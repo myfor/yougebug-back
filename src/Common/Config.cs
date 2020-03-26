@@ -21,6 +21,7 @@ namespace Common
 		public static void SetConfiguration(IConfiguration config)
 		{
 			Configuration = config;
+			Configuration.GetSection("Var").Bind(Var);
 		}
 
 		/// <summary>
@@ -49,5 +50,7 @@ namespace Common
 		/// <param name="name"></param>
 		/// <returns></returns>
 		public static string GetConnectionString(string name) => Configuration.GetConnectionString(name);
+
+		public static Var Var => Var.GetVar();
 	}
 }

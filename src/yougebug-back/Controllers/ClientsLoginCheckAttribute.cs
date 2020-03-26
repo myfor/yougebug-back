@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace yougebug_back.Clients
+namespace yougebug_back.Controllers
 {
     /// <summary>
     /// 检查客户端用户是否已登录

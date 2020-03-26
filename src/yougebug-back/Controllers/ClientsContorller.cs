@@ -35,7 +35,7 @@ namespace yougebug_back.Controllers
         /// <summary>
         /// 打包响应数据
         /// </summary>
-        /// <returns></returns>
+        
         protected ActionResult Pack(Resp resp)
         {
             ActionResult result = resp.StatusCode switch

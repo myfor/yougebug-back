@@ -131,8 +131,7 @@ namespace Domain.Clients
 
             string currentName = user.Name.ToLower();
 
-            string[] nonAllow = Config.GetValue("NonAllowedUserName").Split(',', StringSplitOptions.RemoveEmptyEntries);
-            if (nonAllow.Contains(model.UserName))
+            if (Config.Var.NonAllowedUserName.Contains(model.UserName))
                 return Resp.Fault(Resp.NONE, "不能使用这个名字");
 
             if (currentName == model.UserName.ToLower())
