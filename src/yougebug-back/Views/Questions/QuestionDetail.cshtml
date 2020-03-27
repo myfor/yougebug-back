@@ -208,7 +208,7 @@
 
             const VOTES_STR = document.getElementById('spn_answerVotes_' + id);
             const VOTES = parseInt(VOTES_STR.innerHTML);
-            VOTES_STR.innerHTML = VOTES + 1;
+            VOTES_STR.innerHTML = VOTES - 1;
 
             axios.patch(`/answers/${id}/unlike`);
         }

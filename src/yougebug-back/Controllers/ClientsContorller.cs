@@ -35,7 +35,7 @@ namespace yougebug_back.Controllers
         /// <summary>
         /// 打包响应数据
         /// </summary>
-        
+
         protected ActionResult Pack(Resp resp)
         {
             ActionResult result = resp.StatusCode switch
@@ -57,19 +57,26 @@ namespace yougebug_back.Controllers
         {
             get
             {
-                if (_currentUser != null)
+                try
+                {
+                    if (_currentUser != null)
+                        return _currentUser;
+
+                    string jwt = JWT.GetJwtInHeader(Request.Headers);
+
+                    List<Claim> claims = JWT.GetClaims(jwt).ToList();
+
+                    string token = claims.First(c => c.Type == ClaimTypes.Authentication).Value.Trim();
+                    if (string.IsNullOrWhiteSpace(token))
+                        throw new Exception("未获取到用户有效凭证");
+
+                    _currentUser = Domain.Clients.Hub.GetUser(token);
                     return _currentUser;
-
-                string jwt = JWT.GetJwtInHeader(Request.Headers);
-
-                List<Claim> claims = JWT.GetClaims(jwt).ToList();
-
-                string token = claims.First(c => c.Type == ClaimTypes.Authentication).Value.Trim();
-                if (string.IsNullOrWhiteSpace(token))
-                    throw new Exception("未获取到用户有效凭证");
-
-                _currentUser = Domain.Clients.Hub.GetUser(token);
-                return _currentUser;
+                }
+                catch (Exception)
+                {
+                    return Domain.Clients.User.GetEmpty();
+                }
             }
         }
         protected bool IsLogged

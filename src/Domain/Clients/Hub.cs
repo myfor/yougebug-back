@@ -57,6 +57,19 @@ namespace Domain.Clients
             return new User(user.Id);
         }
 
+        public static User GetUserByUserName(string userName)
+        {
+            using var db = new YGBContext();
+
+            DB.Tables.User user = db.Users.AsNoTracking()
+                                          .Where(u => u.Name.Equals(userName, StringComparison.OrdinalIgnoreCase))
+                                          .FirstOrDefault();
+            if (user is null)
+                return User.GetEmpty();
+
+            return new User(user.Id);
+        }
+
         /// <summary>
         /// 注册
         /// </summary>

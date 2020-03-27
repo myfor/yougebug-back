@@ -22,10 +22,6 @@ namespace Domain.Clients
             [Description("启用")]
             Enabled
         }
-        /// <summary>
-        /// 用户名最小长度
-        /// </summary>
-        public const int USER_NAME_MIN_LENGTH = 4;
 
         public const string USER_NOT_EXIST = "用户不存在";
         public User(int id) : base(id)
@@ -58,10 +54,12 @@ namespace Domain.Clients
             using var db = new YGBContext();
 
             DB.Tables.User user = await db.Users.Include(u => u.Avatar)
-                                                .FirstOrDefaultAsync(a => (a.Name == loginInfo.Account || a.Email == loginInfo.Account) && a.Password == loginInfo.Password);
+                                                .FirstOrDefaultAsync(a => 
+                                                (a.Name.Equals(loginInfo.Account, StringComparison.OrdinalIgnoreCase) || a.Email.Equals(loginInfo.Account, StringComparison.OrdinalIgnoreCase)) 
+                                                && a.Password == loginInfo.Password);
 
             if (user is null)
-                return Resp.Fault(Resp.NONE, "账号不存在或密码错误");
+                return Resp.Fault(Resp.NONE, "用户名或邮箱不存在或密码错误");
 
             user.Token = Guid.NewGuid();
             int suc = await db.SaveChangesAsync();

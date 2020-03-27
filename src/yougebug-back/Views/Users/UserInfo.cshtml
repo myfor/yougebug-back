@@ -1,7 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model Domain.Clients.Results.ClientDetail;
+﻿
+
+@model yougebug_back.ViewModels.Users.UserInfo;
 <div class="row">
     <div class="col-2 d-none d-lg-block" style="width: 150px;">
         @await Html.PartialAsync("_LeftNav")
@@ -17,23 +16,29 @@
                         <span class="small" id="profile_email">@Model.Email</span>
                         <p class="small">@Model.CreateDate</p>
                     </div>
-                    <div>
-                        <button class="btn btn-primary" id="btn_edit" onclick="editInfo()">编辑信息</button>
-                    </div>
-                </div>
-                <div id="d_edit" hidden>
-                    <form class="d-flex flex-column">
-                        <label><small>用户名</small></label>
-                        <input class="form-control" id="txt_userName" value="@Model.UserName" required />
-
-                        <label class="mt-2"><small>邮箱</small></label>
-                        <input class="form-control" type="email" id="txt_email" value="@Model.Email" required />
-                        <div class="mt-2">
-                            <button class="btn btn-primary" type="button" onclick="update()">确认修改</button>
-                            <button class="btn btn-light" type="button" onclick="cancel()">取消</button>
+                    @if (Model.IsSelf)
+                    {
+                        <div>
+                            <button class="btn btn-primary" id="btn_edit" onclick="editInfo()">编辑信息</button>
                         </div>
-                    </form>
+                    }
                 </div>
+                @if (Model.IsSelf)
+                {
+                    <div id="d_edit" hidden>
+                        <form class="d-flex flex-column">
+                            <label><small>用户名</small></label>
+                            <input class="form-control" id="txt_userName" value="@Model.UserName" required />
+
+                            <label class="mt-2"><small>邮箱</small></label>
+                            <input class="form-control" type="email" id="txt_email" value="@Model.Email" required />
+                            <div class="mt-2">
+                                <button class="btn btn-primary" type="button" onclick="update()">确认修改</button>
+                                <button class="btn btn-light" type="button" onclick="cancel()">取消</button>
+                            </div>
+                        </form>
+                    </div>
+                }
             </div>
         </div>
     </div>

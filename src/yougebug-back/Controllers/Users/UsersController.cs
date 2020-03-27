@@ -34,9 +34,22 @@ namespace yougebug_back.Controllers.Users
              * 详情要获取用户信息，提问问题，回答记录
              */
 
-            Domain.Clients.Results.ClientDetail detail = await CurrentUser.GetUserInfoAsync();
+            Domain.Clients.User user = Domain.Clients.Hub.GetUserByUserName(userName);
 
-            return View(detail);
+            Domain.Clients.Results.ClientDetail detail = await user.GetUserInfoAsync();
+
+            var currentUser = CurrentUser;
+
+            ViewModels.Users.UserInfo model = new ViewModels.Users.UserInfo
+            { 
+                UserName = detail.UserName,
+                Email = detail.Email,
+                CreateDate = detail.CreateDate,
+                Avatar = detail.Avatar
+            };
+            model.IsSelf = !currentUser.IsEmpty() && currentUser.GetName().Equals(user.GetName(), StringComparison.OrdinalIgnoreCase);
+
+            return View(model);
         }
     }
 }

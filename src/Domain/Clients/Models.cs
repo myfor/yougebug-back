@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Domain.Clients
 {
@@ -19,7 +16,7 @@ namespace Domain.Clients
             public (bool, string) IsValid()
             {
                 if (string.IsNullOrWhiteSpace(Account))
-                    return (false, "登录账号不能为空");
+                    return (false, "用户名或邮箱不能为空");
                 if (string.IsNullOrWhiteSpace(Password))
                     return (false, "密码不能为空");
                 return (true, "");
@@ -62,8 +59,8 @@ namespace Domain.Clients
 
             public (bool, string) IsValid()
             {
-                if (string.IsNullOrWhiteSpace(UserName) || UserName.Trim().Length < User.USER_NAME_MIN_LENGTH)
-                    return (false, $"用户名长度不能小于{User.USER_NAME_MIN_LENGTH}位");
+                if (string.IsNullOrWhiteSpace(UserName) || UserName.Trim().Length < Common.Config.Var.UserNameMinLength)
+                    return (false, $"用户名长度不能小于{Common.Config.Var.UserNameMinLength}位");
                 UserName = UserName.Trim();
 
                 Regex r = new Regex("^\\s*([A-Za-z0-9_-]+(\\.\\w+)*@(\\w+\\.)+\\w{2,5})\\s*$");

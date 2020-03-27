@@ -12,7 +12,8 @@ namespace Domain
             return new Paginator
             {
                 Index = index <= 0 ? 1 : index,
-                Size = size <= 0 ? DEFAULT_SIZE : size
+                Size = size <= 0 ? DEFAULT_SIZE : size,
+                Params = new Dictionary<string, string>(1)
             };
         }
         /// <summary>
