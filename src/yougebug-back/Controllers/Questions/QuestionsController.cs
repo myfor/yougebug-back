@@ -89,7 +89,11 @@ namespace yougebug_back.Controllers.Questions
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
 
             if (IsLogged)
+            {
+                if (CurrentUser.IsEmpty())
+                    return Pack(Domain.Resp.NeedLogin(Domain.Resp.NONE, "请重新登录"));
                 return Pack(await question.AddAnswerAsync(CurrentUser.Id, content));
+            }
             else
                 return Pack(await question.AddAnswerAsync(nickName, content));
             //  return Redirect($"/questions/{id}/{question.GetTitle()}");
