@@ -13,6 +13,7 @@
 
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 
 namespace Common
 {
@@ -52,5 +53,20 @@ namespace Common
 		public static string GetConnectionString(string name) => Configuration.GetConnectionString(name);
 
 		public static Var Var => Var.GetVar();
+
+		private static HashSet<string> _nonAllowedUserName;
+
+		/// <summary>
+		/// 不被允许的用户名
+		/// </summary>
+		public static HashSet<string> NonAllowedUserName
+		{
+			get
+			{
+				if (_nonAllowedUserName is null)
+					_nonAllowedUserName = new HashSet<string>(Var.NonAllowedUserName);
+				return _nonAllowedUserName;
+			}
+		}
 	}
 }
