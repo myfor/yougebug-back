@@ -12,7 +12,7 @@
                 <div class="form-group">
                     <label for="txt_description">请描述具体要提问的内容，至少 15 个字，可参考 </label><a href="ask#how-to-ask">提问要点</a>
                     <br />
-                    <small class="small">支持 markdowm 语法</small>
+                    <small class="small">支持 <a href="https://github.com/younghz/Markdown" target="_blank" data-toggle="tooltip" data-placement="bottom" title="什么是 markdown?">markdown</a> 语法</small>
                     <ul class="nav nav-tabs justify-content-end">
                         <li class="nav-item">
                             <a class="nav-link active" id="a_nav_edit" href="javascript:;" onclick="navEdit()">编辑</a>
@@ -34,7 +34,7 @@
     </div>
     <div class="col-12 col-md-3 mb-3 mt-5">
         <div id="how-to-ask">
-            <h3 class="font-weight-bold">提问要点 !</h3>
+            <h3 class="font-weight-bold"><span class="badge badge-secondary">提问要点 !</span></h3>
             <p>
                 更详细的介绍请参考 -
                 <a href="https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/master/README-zh_CN.md#%E6%8F%90%E9%97%AE%E7%9A%84%E6%99%BA%E6%85%A7" target="_blank">提问的智慧</a>
@@ -47,7 +47,7 @@
                 <li>系统环境，使用的架构</li>
                 <li>产生的日志</li>
                 <li>你能想到的其他细节...</li>
-                <li><strong>不要写对问题没有帮助的描述，如您急躁的心情</strong></li>
+                <li><strong>不要写对问题没有帮助的描述，比如您急躁的心情</strong></li>
             </ul>
             <p><strong>细节越多，会让人更方便解决您的问题，请认真对待您的提问。</strong></p>
         </div>
@@ -64,7 +64,9 @@
                 location.href = `/login?${REDIRECT_TO}=${location.pathname}`;
             }
 
-
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
         })
 
         function submitAsk() {
