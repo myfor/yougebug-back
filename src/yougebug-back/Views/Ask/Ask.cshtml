@@ -8,11 +8,21 @@
                     <label for="txt_title">标题，要求 4 个字以上，简明扼要</label>
                     <input type="text" class="form-control" name="title" id="txt_title" aria-describedby="title" required placeholder="请输入标题" />
                 </div>
+
                 <div class="form-group">
                     <label for="txt_description">请描述具体要提问的内容，至少 15 个字，可参考 </label><a href="ask#how-to-ask">提问要点</a>
                     <br />
                     <small class="small">支持 markdowm 语法</small>
+                    <ul class="nav nav-tabs justify-content-end">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="a_nav_edit" href="javascript:;" onclick="navEdit()">编辑</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="a_nav_view" href="javascript:;" onclick="navView()">预览</a>
+                        </li>
+                    </ul>
                     <textarea class="form-control" id="txt_description" name="description" rows="15" required placeholder="描述内容"></textarea>
+                    <div class="border p-3" id="d_preview" style="display: none;"></div>
                 </div>
                 <div class="form-group">
                     <label for="txt_tags">标签，请写上与问题相关联的标签</label>
@@ -44,6 +54,7 @@
     </div>
 </div>
 @section Scripts {
+    <script src="~/lib/marked/marked.min.js"></script>
     <script src="~/lib/axios/axios.min.js"></script>
     <script>
         $(function () {
@@ -52,6 +63,8 @@
                 alert('请先登录');
                 location.href = `/login?${REDIRECT_TO}=${location.pathname}`;
             }
+
+
         })
 
         function submitAsk() {
@@ -98,6 +111,26 @@
 
             enabled('btn_post');
             return false;
+        }
+
+        function navEdit() {
+            $('#txt_description').show();
+            $('#d_preview').hide();
+
+            $('#a_nav_edit').addClass('active');
+            $('#a_nav_view').removeClass('active');
+        }
+
+        function navView() {
+            const EDIT = $('#txt_description');
+            EDIT.hide();
+
+            const VIEW = $('#d_preview');
+            VIEW.html(marked(EDIT.val().trim()));
+            VIEW.show();
+
+            $('#a_nav_edit').removeClass('active');
+            $('#a_nav_view').addClass('active');
         }
 
     </script>
