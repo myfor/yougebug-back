@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using System;
-using Domain;
+﻿using Domain;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using yougebug_back.Shared;
 
 namespace yougebug_back.Controllers

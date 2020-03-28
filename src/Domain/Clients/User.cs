@@ -149,6 +149,32 @@ namespace Domain.Clients
         }
 
         /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="newPassword">经过加密的新密码</param>
+        /// <returns></returns>
+        public async Task<Resp> ChangePasswordAsync(Models.ChangePassword model)
+        {
+            (bool isValid, string msg) = model.IsValid();
+            if (!isValid)
+                return Resp.Fault(Resp.NONE, msg);
+
+            using var db = new YGBContext();
+            DB.Tables.User user = await db.Users.FirstOrDefaultAsync(u => u.Id == Id);
+            if (user is null)
+                return Resp.NeedLogin(Resp.NONE, "请重新登录");
+            if (!user.Password.Equals(model.OldPassword, StringComparison.OrdinalIgnoreCase))
+                return Resp.Fault(Resp.NONE, "旧密码有误");
+            if (user.Password.Equals(model.NewPassword, StringComparison.OrdinalIgnoreCase))
+                return Resp.Fault(Resp.NONE, "新密码不能和旧密码相同");
+            user.Password = model.NewPassword;
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "修改失败");
+        }
+
+        /// <summary>
         /// 提问
         /// </summary>
         public async Task<Resp> AskQuestion(Questions.Models.PostQuestion questionParams)

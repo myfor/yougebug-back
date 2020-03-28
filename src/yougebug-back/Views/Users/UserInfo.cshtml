@@ -9,7 +9,7 @@
     <div class="col-sm-12 col-lg-8 h-100">
         <div class="d-flex flex-column">
             <div class="d-flex flex-row border-bottom pt-3 pb-3">
-                <img class="img-thumbnail mr-5" src="@Model.Avatar" alt="avatar" style="width: 150px; height: 150px;" />
+                <img class="img-thumbnail mr-5" src="@Model.Avatar" alt="avatar" style="width: 150px;" />
                 <div class="w-100" id="d_profile">
                     <div class="flex-grow-1">
                         <h4 id="profile_userName">@Model.UserName</h4>
@@ -20,6 +20,32 @@
                     {
                         <div>
                             <button class="btn btn-primary" id="btn_edit" onclick="editInfo()">编辑信息</button>
+                            <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#changePasswordBox">修改密码</button>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="changePasswordBox" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label class="small" for="txt_oldPassword">请输入旧密码</label>
+                                        <input class="form-control mb-2" type="password" id="txt_oldPassword" data-toggle="popover" data-trigger="focus" title="请输入旧密码" />
+                                        <label class="small" for="txt_newPassword">请输入新密码，密码长度不得小于六位</label>
+                                        <input class="form-control mb-2" type="password" id="txt_newPassword" data-toggle="popover" data-trigger="focus" title="新密码不能小于6位" />
+                                        <label class="small" for="txt_confirm">请重新输入新密码</label>
+                                        <input class="form-control" type="password" id="txt_confirm" data-toggle="popover" data-trigger="focus" title="旧密码与新密码必须一致" />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" id="btn_changePassword" onclick="changePassword()">修改</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     }
                 </div>
@@ -49,8 +75,13 @@
 </div>
 
 @section Scripts {
-    <script src="~/lib/axios/axios.min.js"></script>
+    <script src="~/lib/CryptoJS v3.1.2/rollups/sha256.js"></script>
+    @*<script src="~/lib/axios/axios.min.js"></script>*@
     <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+
         function editInfo() {
             $('#d_profile').hide();
             $('#d_edit').removeAttr('hidden');
@@ -101,6 +132,53 @@
         function cancel() {
             $('#d_profile').show();
             $('#d_edit').hide();
+        }
+
+        function changePassword() {
+            const OLD_PASSWORD = $('#txt_oldPassword');
+            const NEW_PASSWORD = $('#txt_newPassword');
+            const CONFIRM = $('#txt_confirm');
+
+            const OLD_PASSWORD_VALUE = OLD_PASSWORD.val().trim();
+            const NEW_PASSWORD_VALUE = NEW_PASSWORD.val().trim();
+            const CONFIRM_VALUE = CONFIRM.val().trim();
+
+            if (!OLD_PASSWORD_VALUE) {
+                OLD_PASSWORD.focus();
+                return;
+            }
+            if (!NEW_PASSWORD_VALUE || NEW_PASSWORD_VALUE.length < 6) {
+                NEW_PASSWORD.focus();
+                return;
+            }
+            if (CONFIRM_VALUE !== NEW_PASSWORD_VALUE) {
+                CONFIRM.focus();
+                return;
+            }
+
+            disabled('btn_changePassword');
+
+            axios.put('/users/password', {
+                oldPassword: CryptoJS.SHA256(OLD_PASSWORD_VALUE).toString(),
+                newPassword: CryptoJS.SHA256(NEW_PASSWORD_VALUE).toString(),
+                confirm: CryptoJS.SHA256(CONFIRM_VALUE).toString()
+            })
+                .then(function (resp) {
+                    if (resp.status === 200) {
+                        $('#changePasswordBox').modal('hide');
+                        alert('修改成功，请重新登录');
+                        location.href = '/login';
+                        return;
+                    } else {
+                        alert(resp.data.message);
+                    }
+                    enabled('btn_changePassword');
+                })
+                .catch(function (err) {
+                    catchErr(err);
+                    enabled('btn_changePassword');
+                });
+
         }
     </script>
 }

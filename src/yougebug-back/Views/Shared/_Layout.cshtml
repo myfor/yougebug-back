@@ -73,6 +73,7 @@
     <script src="~/js/popper.min.js"></script>
     <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
     <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/axios/axios.min.js"></script>
 
     <script>
         $(function () {
@@ -82,7 +83,7 @@
             if (current) {
                 document.getElementById('d-logout').removeAttribute('hidden');
                 const DATA = JSON.parse(current);
-                document.getElementById('a_profile').href = `/users/${DATA.name}`;
+                document.getElementById('a_profile').href = `/${DATA.name}`;
             }
             else
                 document.getElementById('d-login').removeAttribute('hidden');
@@ -91,7 +92,17 @@
         });
 
         function logout() {
-            setLogout();
+            axios.put('/users/logout')
+                .then(function (resp) {
+                    if (resp.status === 200) {
+                        setLogout();
+                    } else {
+                        alert(resp.data.message);
+                    }
+                })
+                .catch(function (err) {
+                    catchErr(err);
+                });
         }
 
         function search() {

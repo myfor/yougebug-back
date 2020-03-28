@@ -4,30 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using yougebug_back.Shared;
 
 namespace yougebug_back.Controllers.Users
 {
-    [Route("users")]
+    [Route("/users")]
     public class UsersController : ClientsContorller
     {
-        /// <summary>
-        /// 修改用户名信息
-        /// </summary>
-        /// <returns></returns>
-        [HttpPut("username")]
-        [Authorize]
-        public async Task<IActionResult> ChangeUserNameAsync([FromBody]Domain.Clients.Models.UserModify model)
-        {
-            Domain.Resp r = await CurrentUser.ChangeUserInfoAsync(model);
-            return Pack(r);
-        }
-
         /// <summary>
         /// 用户主页
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
-        [HttpGet("{username}")]
+        [HttpGet("/{username}")]
         public async Task<IActionResult> UserInfo(string userName)
         {
             /*
@@ -50,6 +39,44 @@ namespace yougebug_back.Controllers.Users
             model.IsSelf = !currentUser.IsEmpty() && currentUser.GetName().Equals(user.GetName(), StringComparison.OrdinalIgnoreCase);
 
             return View(model);
+        }
+
+        /// <summary>
+        /// 修改用户名信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut("username")]
+        [Authorize]
+        [ClientsLoginCheck]
+        public async Task<IActionResult> ChangeUserNameAsync([FromBody]Domain.Clients.Models.UserModify model)
+        {
+            Domain.Resp r = await CurrentUser.ChangeUserInfoAsync(model);
+            return Pack(r);
+        }
+
+        /// <summary>
+        /// 修改用户名密码
+        /// </summary>
+        [HttpPut("password")]
+        [Authorize]
+        [ClientsLoginCheck]
+        public async Task<IActionResult> ChangePasswordAsync([FromBody]Domain.Clients.Models.ChangePassword model)
+        {
+            Domain.Resp r = await CurrentUser.ChangePasswordAsync(model);
+            return Pack(r);
+        }
+
+        /// <summary>
+        /// 登出
+        /// </summary>
+        [HttpPut("logout")]
+        [Authorize]
+        [ClientsLoginCheck]
+        public async Task<IActionResult> LogoutAync()
+        {
+            var r = await CurrentUser.LogoutAsync();
+            Response.Cookies.Delete(Defaults.ADMIN_AUTH_COOKIE_KEY);
+            return Pack(r);
         }
     }
 }

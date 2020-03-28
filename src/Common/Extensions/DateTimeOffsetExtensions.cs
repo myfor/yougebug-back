@@ -7,7 +7,7 @@
         /// </summary>
         public static string ToStandardTimeString(this DateTimeOffset dateTimeOffset)
         {
-            return dateTimeOffset.ToLocalTime().ToString("HH:mm");
+            return dateTimeOffset.UtcDateTime.ToLocalTime().ToString("HH:mm");
         }
 
         /// <summary>
@@ -15,7 +15,7 @@
         /// </summary>
         public static string ToStandardString(this DateTimeOffset dateTimeOffset)
         {
-            return dateTimeOffset.ToLocalTime().ToString("yyyy-MM-dd HH:mm");
+            return dateTimeOffset.UtcDateTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm");
         }
     }
 }

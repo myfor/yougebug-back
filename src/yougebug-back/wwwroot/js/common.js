@@ -34,8 +34,11 @@ function enabled(selector) {
 const LOGGED_KEY = '____';
 //  当前是否有登录
 function isLogged() {
+    const IS_LOGGED = document.cookie.indexOf('8d0de8f8-61ef-4c56-a23e-de69a5f41681') !== -1;
     const current = localStorage.getItem(LOGGED_KEY);
-    return current;
+    if (IS_LOGGED && current)
+        return current;
+    return null;
 }
 //  登出
 function setLogout() {

@@ -45,14 +45,13 @@
                             location.href = `${redirect}&${ALERT_PRIMARY}=登录成功`;
                     } else {
                         alert(resp.data.message);
+                        enabled('btn_login');
                     }
                 })
                 .catch(function (err) {
                     catchErr(err);
+                    enabled('btn_login');
                 })
-
-            enabled('btn_login');
-
             return false;
         }
     </script>
