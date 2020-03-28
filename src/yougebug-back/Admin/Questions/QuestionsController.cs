@@ -43,6 +43,19 @@ namespace yougebug_back.Admin.Questions
             return Pack(resp);
         }
 
+        /// <summary>
+        /// 软删除一个问题
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteQuestionAsync(int id)
+        {
+            Domain.Questions.Hub questionHub = new Domain.Questions.Hub();
+            Resp r = await questionHub.DeleteQuestionAsync(id);
+            return Pack(r);
+        }
+
         ///// <summary>
         ///// 获取答案列表
         ///// </summary>

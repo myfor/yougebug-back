@@ -128,5 +128,32 @@ namespace Domain.Questions
 
             return Resp.Fault(Resp.NONE, "提交失败");
         }
+
+        /// <summary>
+        /// 删除一个答案
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="deep">是否深删除</param>
+        /// <returns></returns>
+        public async Task<Resp> DeleteQuestionAsync(int id, bool deep = false)
+        {
+            using var db = new YGBContext();
+            var question = await db.Questions.FirstOrDefaultAsync(q => q.Id == id);
+            if (question is null)
+                return Resp.Fault(Resp.NONE, "该问题不存在");
+
+            if (deep)
+            {
+                db.Questions.Remove(question);
+            }
+            else
+            {
+                question.State = (int)Question.QuestionState.Remove;
+            }
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 1)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "删除失败");
+        }
     }
 }
