@@ -32,7 +32,7 @@ namespace Domain.Questions.List
                                                Title = q.Title,
                                                Description = q.Description.Length > 20 ? q.Description.Substring(0, 20) + "..." : q.Description,
                                                CreateDate = q.CreateDate.ToStandardString(),
-                                               State = q.State
+                                               State = Share.KeyValue<int, string>.Create(q.State, q.State.GetDescription<Question.QuestionState>())
                                            })
                                            .ToListAsync();
             return Resp.Success(pager, "");

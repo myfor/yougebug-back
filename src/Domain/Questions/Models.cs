@@ -47,7 +47,7 @@ namespace Domain.Questions
             public string Title { get; set; }
             public string Description { get; set; }
             public string CreateDate { get; set; }
-            public int State { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
         }
         /// <summary>
         /// 问题的详情
