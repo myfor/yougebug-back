@@ -28,7 +28,7 @@ namespace yougebug_back.Admin
 
                 string token = claims.First(c => c.Type == ClaimTypes.Authentication).Value.Trim();
                 if (string.IsNullOrWhiteSpace(token))
-                    throw new Exception("未获取到用户有效凭证");
+                    return Domain.Administrators.Account.GetEmpty();
 
                 _currentAccount = Domain.Administrators.Hub.GetAccount(token);
                 return _currentAccount;

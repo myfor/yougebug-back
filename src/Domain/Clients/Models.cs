@@ -63,6 +63,15 @@ namespace Domain.Clients
                     return (false, $"用户名长度不能小于{Common.Config.Var.UserNameMinLength}位");
                 UserName = UserName.Trim();
 
+                foreach (string character in Common.Config.Var.NonAllowedContainCharacter)
+                {
+                    if (UserName.Contains(character))
+                        return (false, $"不能包含不允许的字符：{string.Join(',', Common.Config.Var.NonAllowedContainCharacter)}");
+                }
+                
+                if (Common.Config.NonAllowedUserName.Contains(UserName))
+                    return (false, "不能使用这个名字");
+
                 Regex r = new Regex("^\\s*([A-Za-z0-9_-]+(\\.\\w+)*@(\\w+\\.)+\\w{2,5})\\s*$");
                 if (!r.IsMatch(Email))
                     return (false, "邮箱格式有误");

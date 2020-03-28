@@ -119,25 +119,17 @@ namespace Domain.Clients
             if (!isValid)
                 return Resp.Fault(Resp.NONE, msg);
 
-            if (model.UserName.Length < 4)
-                return Resp.Fault(Resp.NONE, "用户名必须四个字符以上");
-
             using var db = new YGBContext();
             DB.Tables.User user = await db.Users.FirstOrDefaultAsync(u => u.Id == Id);
             if (user is null)
                 return Resp.Fault(Resp.NONE, USER_NOT_EXIST);
 
-            string currentName = user.Name.ToLower();
-
-            if (Config.NonAllowedUserName.Contains(model.UserName))
-                return Resp.Fault(Resp.NONE, "不能使用这个名字");
-
-            if (currentName == model.UserName.ToLower())
+            if (user.Name.Equals(model.UserName, StringComparison.OrdinalIgnoreCase))
                 return Resp.Fault(Resp.NONE, "不能和原来的用户相同");
-            if (await db.Users.AnyAsync(u => u.Name.ToLower() == model.UserName && u.Id != Id))
+            if (await db.Users.AnyAsync(u => u.Name.Equals(model.UserName, StringComparison.OrdinalIgnoreCase) && u.Id != Id))
                 return Resp.Fault(Resp.NONE, "已经被使用的用户名");
 
-            if (await db.Users.AnyAsync(u => u.Email.ToLower() == model.Email && u.Id != Id))
+            if (await db.Users.AnyAsync(u => u.Email.Equals(model.Email, StringComparison.OrdinalIgnoreCase) && u.Id != Id))
                 return Resp.Fault(Resp.NONE, "已经被使用的邮箱");
 
             user.Name = model.UserName;

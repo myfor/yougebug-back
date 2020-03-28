@@ -15,6 +15,11 @@ namespace Domain.Administrators
         {
         }
 
+        public static Account GetEmpty()
+        {
+            return new Account(EMPTY);
+        }
+
         /// <summary>
         /// 登录
         /// </summary>

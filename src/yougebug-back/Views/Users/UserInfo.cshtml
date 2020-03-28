@@ -9,7 +9,7 @@
     <div class="col-sm-12 col-lg-8 h-100">
         <div class="d-flex flex-column">
             <div class="d-flex flex-row border-bottom pt-3 pb-3">
-                <img class="img-thumbnail mr-5" src="@Model.Avatar" alt="avatar" style="width: 150px;" />
+                <img class="img-thumbnail mr-5" src="@Model.Avatar" alt="avatar" style="width: 150px; height: 150px;" />
                 <div class="w-100" id="d_profile">
                     <div class="flex-grow-1">
                         <h4 id="profile_userName">@Model.UserName</h4>
@@ -54,10 +54,10 @@
                     <div id="d_edit" hidden>
                         <form class="d-flex flex-column">
                             <label><small>用户名</small></label>
-                            <input class="form-control" id="txt_userName" value="@Model.UserName" required />
+                            <input class="form-control" id="txt_userName" value="@Model.UserName" required placeholder="不区分大小写" />
 
                             <label class="mt-2"><small>邮箱</small></label>
-                            <input class="form-control" type="email" id="txt_email" value="@Model.Email" required />
+                            <input class="form-control" type="email" id="txt_email" value="@Model.Email" required placeholder="不区分大小写" />
                             <div class="mt-2">
                                 <button class="btn btn-primary" type="button" onclick="update()">确认修改</button>
                                 <button class="btn btn-light" type="button" onclick="cancel()">取消</button>
@@ -117,16 +117,17 @@
                     if (resp.status === 200) {
                         $('#profile_userName').html(USER_NAME_VALUE);
                         $('#profile_email').html(EMAIL_VALUE);
+                        cancel();
                     } else {
                         alert(resp.data.message);
+                        enabled('d_edit');
                     }
                 })
                 .catch(function (err) {
                     catchErr(err);
+                    enabled('d_edit');
                 });
 
-            enabled('d_edit');
-            cancel();
         }
 
         function cancel() {

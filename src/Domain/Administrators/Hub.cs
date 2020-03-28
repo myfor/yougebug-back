@@ -19,6 +19,11 @@ namespace Domain.Administrators
                 return new Account(Account.EMPTY);
             return new Account(account.Id);
         }
+        /// <summary>
+        /// 根据 token 获取管理员，如果管理员不存在，会返回管理员空值
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public static Account GetAccount(string token)
         {
             using var db = new YGBContext();

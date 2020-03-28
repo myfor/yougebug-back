@@ -17,7 +17,7 @@ namespace yougebug_back.Shared.Controllers
         [Route("401")]
         public ActionResult NotFound401()
         {
-            return Pack(Resp.NeedLogin(null, "请重新登录"));
+            return Pack(Resp.NeedLogin(Resp.NONE, "请重新登录"));
         }
     }
 }

@@ -68,5 +68,19 @@ namespace Common
 				return _nonAllowedUserName;
 			}
 		}
+
+		//private static HashSet<string> _nonAllowedContainCharater;
+		///// <summary>
+		///// 不被允许的用户名
+		///// </summary>
+		//public static HashSet<string> NonAllowedContainCharater
+		//{
+		//	get
+		//	{
+		//		if (_nonAllowedContainCharater is null)
+		//			_nonAllowedContainCharater = new HashSet<string>(Var.NonAllowedContainCharater);
+		//		return _nonAllowedContainCharater;
+		//	}
+		//}
 	}
 }

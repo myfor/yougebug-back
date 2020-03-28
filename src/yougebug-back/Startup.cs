@@ -51,7 +51,10 @@ namespace yougebug_back
                 });
             });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options => 
+            {
+                options.Filters.Add(typeof(Filter.ClientsExceptionFilter));
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

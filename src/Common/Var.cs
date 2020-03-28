@@ -15,5 +15,9 @@
         /// 不允许的用户名
         /// </summary>
         public string[] NonAllowedUserName { get; set; } = { };
+        /// <summary>
+        /// 用户名不允许包含的字符
+        /// </summary>
+        public string[] NonAllowedContainCharacter { get; set; } = { };
     }
 }
