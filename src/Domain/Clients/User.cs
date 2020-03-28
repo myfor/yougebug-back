@@ -208,13 +208,13 @@ namespace Domain.Clients
                                                 .Include(u => u.Avatar)
                                                 .FirstOrDefaultAsync(u => u.Id == Id);
             if (user is null)
-                throw new NullReferenceException("USER_NOT_EXIST");
+                throw new NullReferenceException(USER_NOT_EXIST);
 
             Results.ClientDetail detail = new Results.ClientDetail
             {
                 UserName = user.Name,
                 Email = user.Email,
-                CreateDate = user.CreateDate.ToStandardString(),
+                CreateDate = user.CreateDate.ToStandardDateString(),
                 Avatar = user.Avatar.Path,
                 State = Share.KeyValue<int, string>.Create(user.State, user.State.GetDescription<UserState>())
             };
