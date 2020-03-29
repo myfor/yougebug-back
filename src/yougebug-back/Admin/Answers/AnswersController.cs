@@ -45,7 +45,7 @@ namespace yougebug_back.Admin.Answers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPatch("{id}/disabled")]
-        public async Task<IActionResult> BackAsync(int id, [FromBody]string description)
+        public async Task<IActionResult> BackAsync(int id, string description)
         {
             var answer = Domain.Answers.Hub.GetAnswer(id);
             Domain.Resp r = await answer.BackAsync(description);

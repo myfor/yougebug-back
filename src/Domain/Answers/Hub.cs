@@ -14,17 +14,17 @@ namespace Domain.Answers
         /// <summary>
         /// 获取问题的回答，分页
         /// </summary>
-        public async Task<Resp> GetAnswersAsync(Paginator pager, int questionId, Answer.AnswerState answerState = Answer.AnswerState.All)
+        public async Task<Resp> GetAnswersAsync(Paginator pager, int questionId, Answer.StandardStates answerState = Answer.StandardStates.NoSelected)
         {
             (pager.List, pager.TotalRows) = await GetAnswersAsync(questionId, pager.Index, pager.Size, answerState);
 
             return Resp.Success(pager, "");
         }
 
-        internal async Task<(List<Answers.Models.AnswerItem>, int)> GetAnswersAsync(int questionId, int index, int size, Answer.AnswerState answerState = Answer.AnswerState.All)
+        internal async Task<(List<Answers.Models.AnswerItem>, int)> GetAnswersAsync(int questionId, int index, int size, Answer.StandardStates answerState = Answer.StandardStates.NoSelected)
         {
             Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.QuestionId == questionId;
-            if (answerState != Answer.AnswerState.All)
+            if (answerState != Answer.StandardStates.NoSelected)
                 whereStatement.And(a => a.State == (int)answerState);
 
             using var db = new YGBContext();
@@ -78,7 +78,7 @@ namespace Domain.Answers
                 QuestionId = questionId,
                 Content = content,
                 AnswererId = answererId,
-                State = (int)Answer.AnswerState.Pass
+                State = (int)Answer.StandardStates.Enabled
             };
             db.Answers.Add(answer);
             if (await db.SaveChangesAsync() == 1)

@@ -22,19 +22,11 @@ namespace Domain.Answers
         /// </summary>
         public enum AnswerState
         {
-            All = 0,
-            [Description("退回")]
-            Back,
-            /// <summary>
-            /// 通过
-            /// </summary>
-            [Description("通过")]
-            Pass,
             /// <summary>
             /// 待审核
             /// </summary>
             [Description("待审核")]
-            ToAudit,
+            ToAudit = 3
         }
 
         /// <summary>
@@ -83,8 +75,8 @@ namespace Domain.Answers
             if (answer is null)
                 return Resp.Fault(Resp.NONE, NOT_EXIST_ANSWER);
 
-            int stateId = (int)AnswerState.Pass;
-            string description = AnswerState.Pass.GetDescription();
+            int stateId = (int)Answer.StandardStates.Enabled;
+            string description = Answer.StandardStates.Enabled.GetDescription();
 
             if (answer.State == stateId)
                 return Resp.Fault(Resp.NONE, $"已经是{description}的状态，不能再次{description}");
@@ -112,7 +104,7 @@ namespace Domain.Answers
             if (answer is null)
                 return Resp.Fault(Resp.NONE, NOT_EXIST_ANSWER);
 
-            if (answer.State == (int)AnswerState.ToAudit || answer.State == (int)AnswerState.Back)
+            if (answer.State == (int)AnswerState.ToAudit || answer.State == (int)Answer.StandardStates.Disabled)
                 return Resp.Fault(Resp.NONE, $"已经是{((AnswerState)answer.State).GetDescription()}的状态，不能再次退回");
 
             DB.Tables.AnswerBackRecord record = new DB.Tables.AnswerBackRecord

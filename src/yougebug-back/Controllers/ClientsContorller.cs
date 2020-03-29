@@ -79,20 +79,5 @@ namespace yougebug_back.Controllers
                 }
             }
         }
-        protected bool IsLogged
-        {
-            get
-            {
-                try
-                {
-                    _ = CurrentUser;
-                    return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-        }
     }
 }

@@ -18,12 +18,17 @@ namespace yougebug_back.Admin.Questions
         /// 获取问题列表
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> GetListAsync(int index, int size, string search)
+        public async Task<IActionResult> GetListAsync(int index, int size, string search, int? state)
         {
+            /*
+                管理员获取的问题列表，不包括被移除的，移除的列表在回收站中查看
+             */
+
             Paginator pager = Paginator.New(index, size);
             pager.Params = new Dictionary<string, string>
             {
-                ["search"] = search
+                ["search"] = search,
+                ["state"] = state.ToString()
             };
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
@@ -39,7 +44,7 @@ namespace yougebug_back.Admin.Questions
         public async Task<IActionResult> GetDetailAsync(int id)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp resp = await question.GetDetailAsync();
+            Domain.Resp resp = await question.GetDetailAsync(Share.Platform.Admin);
             return Pack(resp);
         }
 

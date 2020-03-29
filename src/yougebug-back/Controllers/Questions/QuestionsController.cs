@@ -26,7 +26,7 @@ namespace yougebug_back.Controllers.Questions
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
             page = await hub.GetNewestQuestionsPager(page);
             NewestModel model = new NewestModel
-            { 
+            {
                 Page = page
             };
 
@@ -61,7 +61,7 @@ namespace yougebug_back.Controllers.Questions
 
         /*
          * 获取一个提问的详情
-         */ 
+         */
         [HttpGet("{id}/{title}")]
         public async Task<IActionResult> GetQuestionDetailAsync(int id, string title, int index, int size)
         {
@@ -70,7 +70,7 @@ namespace yougebug_back.Controllers.Questions
             size = size == 0 ? 10 : size;
 
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp resp = await question.GetDetailAsync(index, size);
+            Domain.Resp resp = await question.GetDetailAsync(Domain.Share.Platform.Client, index, size);
             if (!resp.IsSuccess)
                 return Redirect(string.Format($"/questions/?{ALERT_WARNING}", "暂时不能查看该答案"));
             Domain.Questions.Models.QuestionDetail model = resp.GetData<Domain.Questions.Models.QuestionDetail>();
@@ -88,15 +88,10 @@ namespace yougebug_back.Controllers.Questions
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
 
-            if (IsLogged)
-            {
-                if (CurrentUser.IsEmpty())
-                    return Pack(Domain.Resp.NeedLogin(Domain.Resp.NONE, "请重新登录"));
+            if (CurrentUser.IsEmpty())
                 return Pack(await question.AddAnswerAsync(CurrentUser.Id, content));
-            }
-            else
-                return Pack(await question.AddAnswerAsync(nickName, content));
-            //  return Redirect($"/questions/{id}/{question.GetTitle()}");
+
+            return Pack(await question.AddAnswerAsync(nickName, content));
         }
 
         /// <summary>

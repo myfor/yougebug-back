@@ -18,6 +18,12 @@ namespace Domain.Questions.List
 
             Expression<Func<DB.Tables.Question, bool>> where = q => q.Title.Contains(title);
 
+            //  获取的列表默认不包括移除的
+            if (int.TryParse(pager.Params["state"] ?? "", out int state))
+                where.And(q => q.State == state);
+            else
+                where.And(q => q.State != (int)Question.QuestionState.Remove);
+
             using var db = new YGBContext();
 
             pager.TotalRows = await db.Questions.CountAsync(where);

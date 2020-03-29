@@ -12,7 +12,7 @@ namespace Domain.Questions
 {
     public class Question : BaseEntity
     {
-        private const string QUESTION_NO_EXIST = "该问题不存在";
+        public const string QUESTION_NO_EXIST = "该问题不存在";
 
         public enum QuestionState
         {
@@ -178,64 +178,73 @@ namespace Domain.Questions
         /// 获取详情
         /// </summary>
         /// <returns></returns>
-        public async Task<Resp> GetDetailAsync()
-        {
-            return await GetDetailAsync(1, 10);
-        }
-
-        /// <summary>
-        /// 获取详情
-        /// </summary>
-        /// <param name="index">提问回答的页数</param>
-        /// <param name="size">回答的行数</param>
-        /// <returns></returns>
-        public async Task<Resp> GetDetailAsync(int index, int size)
+        public async Task<Resp> GetDetailAsync(Share.Platform platform, int index = 1, int size = 10)
         {
             CheckEmpty();
 
-            using var db = new YGBContext();
-            DB.Tables.Question question = await db.Questions.Include(q => q.Asker)
-                                                            .ThenInclude(asker => asker.Avatar)
-                                                            .FirstOrDefaultAsync(q => q.Id == Id);
-
-            if (question is null)
-                return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
-
-            if (question.State != (int)QuestionState.Enabled)
-                return Resp.Fault(Resp.NONE, "该提问暂时无法查看");
-
-            Answers.Hub answerHub = new Answers.Hub();
-            //  获取第一页的答案分页
-            Paginator page = Paginator.New(index, size);
-            //(page.List, page.TotalRows) = await GetAnswersAsync(index, size);
-            (page.List, page.TotalRows) = await answerHub.GetAnswersAsync(Id, index, size, Answers.Answer.AnswerState.Pass);
-
-            Models.QuestionDetail detail = new Models.QuestionDetail
+            Detail.IGetQuestionDetail detail = platform switch
             {
-                Id = question.Id,
-                Title = question.Title,
-                Description = question.Description,
-                Tags = question.Tags.Split(','),
-                Votes = question.Votes,
-                Views = question.Views,
-                Actived = question.Actived.ToStandardString(),
-                CreateDate = question.CreateDate.ToStandardString(),
-                State = Share.KeyValue<int, string>.Create(question.State, question.State.GetDescription<QuestionState>()),
-                User = new Clients.Models.UserIntro
-                {
-                    Id = question.Asker.Id,
-                    Account = question.Asker.Name,
-                    Avatar = question.Asker.Avatar.Thumbnail
-                },
-                Page = page
+                Share.Platform.Admin => new Detail.DetailForAdmin(),
+                Share.Platform.Client => new Detail.DetailForClient(),
+                _ => throw new ArgumentException(),
             };
 
-            question.Views++;
-            question.Actived = DateTimeOffset.Now;
-            await db.SaveChangesAsync();
-
-            return Resp.Success(detail, "");
+            return await detail.GetDetailAsync(Id, index, size);
         }
+
+        ///// <summary>
+        ///// 获取详情
+        ///// </summary>
+        ///// <param name="index">提问回答的页数</param>
+        ///// <param name="size">回答的行数</param>
+        ///// <returns></returns>
+        //public async Task<Resp> GetDetailAsync(int index, int size)
+        //{
+        //    CheckEmpty();
+
+        //    using var db = new YGBContext();
+        //    DB.Tables.Question question = await db.Questions.Include(q => q.Asker)
+        //                                                    .ThenInclude(asker => asker.Avatar)
+        //                                                    .FirstOrDefaultAsync(q => q.Id == Id);
+
+        //    if (question is null)
+        //        return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
+
+        //    if (question.State != (int)QuestionState.Enabled)
+        //        return Resp.Fault(Resp.NONE, "该提问暂时无法查看");
+
+        //    Answers.Hub answerHub = new Answers.Hub();
+        //    //  获取第一页的答案分页
+        //    Paginator page = Paginator.New(index, size);
+        //    //(page.List, page.TotalRows) = await GetAnswersAsync(index, size);
+        //    (page.List, page.TotalRows) = await answerHub.GetAnswersAsync(Id, index, size, Answers.Answer.AnswerState.Pass);
+
+        //    Models.QuestionDetail detail = new Models.QuestionDetail
+        //    {
+        //        Id = question.Id,
+        //        Title = question.Title,
+        //        Description = question.Description,
+        //        Tags = question.Tags.Split(','),
+        //        Votes = question.Votes,
+        //        Views = question.Views,
+        //        Actived = question.Actived.ToStandardString(),
+        //        CreateDate = question.CreateDate.ToStandardString(),
+        //        State = Share.KeyValue<int, string>.Create(question.State, question.State.GetDescription<QuestionState>()),
+        //        User = new Clients.Models.UserIntro
+        //        {
+        //            Id = question.Asker.Id,
+        //            Account = question.Asker.Name,
+        //            Avatar = question.Asker.Avatar.Thumbnail
+        //        },
+        //        Page = page
+        //    };
+
+        //    question.Views++;
+        //    question.Actived = DateTimeOffset.Now;
+        //    await db.SaveChangesAsync();
+
+        //    return Resp.Success(detail, "");
+        //}
 
         /// <summary>
         /// 新回答
