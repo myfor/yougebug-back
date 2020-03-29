@@ -89,9 +89,8 @@ namespace yougebug_back.Controllers.Questions
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
 
             if (CurrentUser.IsEmpty())
-                return Pack(await question.AddAnswerAsync(CurrentUser.Id, content));
-
-            return Pack(await question.AddAnswerAsync(nickName, content));
+                return Pack(await question.AddAnswerAsync(nickName, content));
+            return Pack(await question.AddAnswerAsync(CurrentUser.Id, content));
         }
 
         /// <summary>

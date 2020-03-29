@@ -142,22 +142,7 @@
                 <textarea class="form-control" id="txt_answer" rows="10" required placeholder="写下你的答案"></textarea>
                 <div class="d-flex flex-row-reverse">
                     <span class="flex-grow-1 text-right"><strong>认真对待您的答案，请不要写不关联的文字</strong></span>
-                    <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#postAnswer">提交</button>
-                </div>
-
-                <!-- Modal -->
-                <div class="modal fade" id="postAnswer" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">确认提交？</h5>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                                <button type="button" class="btn btn-primary" onclick="newAnswer()">提交</button>
-                            </div>
-                        </div>
-                    </div>
+                    <button type="button" class="btn btn-primary mt-3" id="btn_postAnswer" onclick="newAnswer()">提交</button>
                 </div>
 
             </form>
@@ -257,6 +242,7 @@
             FORM.append('content', $('#txt_answer').val());
             FORM.append('nickName', $('#txt_nickName').val().trim());
 
+            disabled('btn_postAnswer', '提交中');
             axios.post('/questions/@Model.Id/answer', FORM)
                 .then(function (resp) {
                     if (resp.status === 200) {
@@ -264,9 +250,11 @@
                     } else {
                         alert(resp.data.message);
                     }
+                    enabled('btn_postAnswer', '提交');
                 })
                 .catch(function (err) {
                     catchErr(err);
+                    enabled('btn_postAnswer', '提交失败，请重试');
                 });
         }
     </script>

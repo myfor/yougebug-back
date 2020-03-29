@@ -25,11 +25,11 @@ namespace Domain.Answers
         {
             Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.QuestionId == questionId;
             if (answerState != Answer.StandardStates.NoSelected)
-                whereStatement.And(a => a.State == (int)answerState);
+                whereStatement = whereStatement.And(a => a.State == (int)answerState);
 
             using var db = new YGBContext();
 
-            int totalSize = await db.Answers.CountAsync(a => a.QuestionId == questionId);
+            int totalSize = await db.Answers.CountAsync(whereStatement);
             var list = await db.Answers.AsNoTracking()
                                          .Where(whereStatement)
                                          .Skip((index - 1) * size)

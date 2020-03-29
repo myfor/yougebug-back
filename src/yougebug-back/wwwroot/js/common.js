@@ -23,12 +23,17 @@ function disabled(selector, value = undefined) {
     if (ELE.hasAttribute(DISABLED))
         return;
     ELE.setAttribute(DISABLED, DISABLED);
+    if (value)
+        ELE.value = value;
 }
 
 //  设置元素 enabled
-function enabled(selector) {
+function enabled(selector, value = undefined) {
     const DISABLED = 'disabled';
-    document.getElementById(selector).removeAttribute(DISABLED);
+    const ELE = document.getElementById(selector);
+    ELE.removeAttribute(DISABLED);
+    if (value)
+        ELE.value = value;
 }
 
 const LOGGED_KEY = '____';

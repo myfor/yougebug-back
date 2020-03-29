@@ -23,6 +23,26 @@ namespace Domain.Answers
         public enum AnswerState
         {
             /// <summary>
+            /// 无选中状态
+            /// </summary>
+            [Description("无选中状态")]
+            NoSelected = -1,
+            /// <summary>
+            /// 禁用
+            /// </summary>
+            [Description("禁用")]
+            Disabled = 0,
+            /// <summary>
+            /// 启用
+            /// </summary>
+            [Description("启用")]
+            Enabled = 1,
+            /// <summary>
+            /// 移除
+            /// </summary>
+            [Description("移除")]
+            Remove = 2,
+            /// <summary>
             /// 待审核
             /// </summary>
             [Description("待审核")]
