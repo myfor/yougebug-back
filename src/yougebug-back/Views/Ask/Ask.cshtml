@@ -70,7 +70,7 @@
         })
 
         function submitAsk() {
-            disabled('btn_post');
+            disabled('btn_post', '提交中...');
 
             const DOC = document;
 
@@ -82,17 +82,23 @@
             if (!TITLE.value || TITLE.value.length < 4) {
                 alert('标题，要求 4 个字以上');
                 TITLE.focus();
-                enabled('btn_post');
+                enabled('btn_post', '提交问题');
                 return false;
             }
             DESCRIPTION.value = DESCRIPTION.value.trim();
             if (!DESCRIPTION.value || DESCRIPTION.value.length < 15) {
                 alert('请描述具体要提问的内容，至少 15 个字');
                 DESCRIPTION.focus();
-                enabled('btn_post');
+                enabled('btn_post', '提交问题');
                 return false;
             }
             TAGS.value = TAGS.value.trim();
+            if (!TAGS.value) {
+                alert('请填写相关的标签');
+                enabled('btn_post', '提交问题');
+                TAGS.focus();
+                return false;
+            }
 
             axios.post('/ask', {
                 title: TITLE.value,
@@ -106,12 +112,13 @@
                     } else {
                         alert(resp.data.message);
                     }
+                    enabled('btn_post', '提交问题');
                 })
                 .catch(function (err) {
                     catchErr(err);
+                    enabled('btn_post', '提交问题');
                 });
 
-            enabled('btn_post');
             return false;
         }
 
