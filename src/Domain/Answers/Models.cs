@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Domain.Answers
+﻿namespace Domain.Answers
 {
     public class Models
     {

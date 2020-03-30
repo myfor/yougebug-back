@@ -170,7 +170,8 @@
             const ANSWERS = document.getElementsByName("answer-content");
             for (var i = 0; i < ANSWERS.length; i++) {
                 const answer = ANSWERS[i];
-                answer.innerHTML = marked(answer.innerHTML.trim());
+                const markValue = marked(answer.innerHTML.trim());
+                answer.innerHTML = markValue;
             }
         });
 
