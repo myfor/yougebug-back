@@ -16,7 +16,7 @@ namespace Domain.Questions.List
         {
             string title = pager.Params["search"] ?? "";
 
-            Expression<Func<DB.Tables.Question, bool>> where = q => q.Title.Contains(title);
+            Expression<Func<DB.Tables.Question, bool>> where = q => q.Title.Contains(title, StringComparison.OrdinalIgnoreCase);
 
             //  获取的列表默认不包括移除的
             if (int.TryParse(pager.Params["state"] ?? "", out int state))

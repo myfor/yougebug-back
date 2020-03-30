@@ -17,7 +17,7 @@ namespace Domain.Questions.List
             string search = pager.Params?["search"] ?? "";
 
             Expression<Func<DB.Tables.Question, bool>> where = q =>
-                q.Title.Contains(search) || q.Description.Contains(search);
+                q.Title.Contains(search, StringComparison.OrdinalIgnoreCase) || q.Description.Contains(search, StringComparison.OrdinalIgnoreCase);
 
             using var db = new YGBContext();
 
