@@ -164,13 +164,13 @@
 
             document.getElementById('a_login').href = `/login?${REDIRECT_TO}=${location.pathname + location.search}`;
 
-            const CONTENT = document.getElementById('d-description-content')
-            CONTENT.innerHTML = marked(CONTENT.innerHTML.trim());
+            const CONTENT = $('#d-description-content');
+            CONTENT.html(marked(CONTENT.text().trim()));
 
             const ANSWERS = document.getElementsByName("answer-content");
             for (var i = 0; i < ANSWERS.length; i++) {
                 const answer = ANSWERS[i];
-                const markValue = marked(answer.innerHTML.trim());
+                const markValue = marked($(answer).text().trim());
                 answer.innerHTML = markValue;
             }
         });
