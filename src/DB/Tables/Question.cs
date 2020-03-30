@@ -9,7 +9,7 @@ namespace DB.Tables
         /// <summary>
         /// 标题
         /// </summary>
-        [Required, StringLength(64)]
+        [Required, StringLength(256)]
         public string Title { get; set; } = "";
         /// <summary>
         /// 描述
