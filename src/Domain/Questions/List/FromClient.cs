@@ -17,36 +17,10 @@ namespace Domain.Questions.List
         {
             string search = pager.Params?["search"] ?? "";
 
-            Expression<Func<DB.Tables.Question, bool>> where = q => q.State == (int)Question.QuestionState.Enabled &&
-                (q.Title.Contains(search, StringComparison.OrdinalIgnoreCase) || q.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
-
-            //string whereStatement = BuildWhereStatement(search).ToString();
+            Expression<Func<DB.Tables.Question, bool>> where = q => q.State == (int)Question.QuestionState.Enabled;
+            where = where.And(WhereExpression(search));
 
             using var db = new YGBContext();
-            /*
-            pager.TotalRows = await db.Questions.FromSqlRaw(whereStatement).CountAsync();
-            pager.List = await db.Questions.FromSqlRaw(whereStatement)
-                                            .Include(q => q.Answers)
-                                            .Include(q => q.Asker)
-                                            .ThenInclude(asker => asker.Avatar)
-                                            .Skip(pager.Skip)
-                                            .Take(pager.Size)
-                                            .OrderByDescending(q => q.CreateDate)
-                                            .Select(q => new Models.QuentionItem_Client
-                                            {
-                                                Id = q.Id,
-                                                Title = q.Title,
-                                                Description = q.Description.Length > 20 ? q.Description.Substring(0, 20) + "..." : q.Description,
-                                                CreateDate = q.CreateDate.ToStandardString(),
-                                                VoteCounts = q.Votes,
-                                                ViewCounts = q.Views,
-                                                AnswerCounts = q.Answers.Count(),
-                                                Tags = q.Tags.SplitOfChar(','),
-                                                AskerName = q.Asker.Name,
-                                                AskerAvatar = q.Asker.Avatar.Thumbnail
-                                            })
-                                            .ToListAsync();
-*/
             
             pager.TotalRows = await db.Questions.CountAsync(where);
             pager.List = await db.Questions.AsNoTracking()
@@ -76,35 +50,28 @@ namespace Domain.Questions.List
         }
 
         /// <summary>
-        /// 根据搜索关键字拼接查询字符串
+        /// 根据搜索字符拼接查询表达式树
         /// </summary>
         /// <param name="search"></param>
         /// <returns></returns>
-        private StringBuilder BuildWhereStatement(string search)
+        private Expression<Func<DB.Tables.Question, bool>> WhereExpression(string search)
         {
-            string[] searchKeyValues = search.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string[] searchKeywords = search.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-            using var db = new DB.YGBContext();
-            DB.Tables.Question question = new DB.Tables.Question();
-
-            StringBuilder where = new StringBuilder(50);
-            where.Append($"select * from {nameof(db.Questions)} where {nameof(question.State)} = {(int)Question.QuestionState.Enabled} ");
-
-            if (searchKeyValues.Length > 0)
+            Expression<Func<DB.Tables.Question, bool>> where = q => false;
+            if (searchKeywords.Length == 0)
+                where = q => q.Title.Contains("") || q.Description.Contains("");
+            else
             {
-                where.Append(" and (");
-                for (int i = 0; i < searchKeyValues.Length; i++)
+                for (int i = 0; i < searchKeywords.Length; i++)
                 {
-                    string keyvalue = searchKeyValues[i].Trim();
-                    where.Append($"Title like '%{keyvalue}%' or Description like '%{keyvalue}%'");
-                    if (i < searchKeyValues.Length - 1)
-                        where.Append("or");
+                    string keyword = searchKeywords[i];
+                    if (i == 0)
+                        where = q => q.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase) || q.Description.Contains(keyword, StringComparison.OrdinalIgnoreCase);
+                    else
+                        where = where.Or(q => q.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase) || q.Description.Contains(keyword, StringComparison.OrdinalIgnoreCase));
                 }
-                
-                where.Append(")");
             }
-
-            where.Append(";");
             return where;
         }
     }
