@@ -32,7 +32,7 @@ namespace yougebug_back.Admin.Questions
             };
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
-            Resp resp = await hub.GetListAsync(pager, Share.Platform.Admin);
+            Resp resp = await hub.GetListAsync(pager, Domain.Questions.Hub.QuestionListSource.Admin);
             return Pack(resp);
         }
 

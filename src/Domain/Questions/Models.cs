@@ -50,6 +50,23 @@ namespace Domain.Questions
             public Share.KeyValue<int, string> State { get; set; }
         }
         /// <summary>
+        /// 获取用户详情下的提问列表
+        /// </summary>
+        public struct QuestionItem_UserSelf
+        {
+            public int Id { get; set; }
+            /// <summary>
+            /// 是否本人
+            /// </summary>
+            public bool IsSelf { get; set; }
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string CreateDate { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
+            public int AnswersCount { get; set; }
+        }
+
+        /// <summary>
         /// 问题的详情
         /// </summary>
         public struct QuestionDetail
@@ -101,6 +118,12 @@ namespace Domain.Questions
                     return (false, "问题描述不能为空");
                 if (Tags.Length <= 0)
                     return (false, "请输入至少一个问题标签");
+
+                for (int i = 0; i < Tags.Length; i++)
+                {
+                    Tags[i] = Tags[i].Trim();
+                }
+
                 return (true, "");
             }
         }

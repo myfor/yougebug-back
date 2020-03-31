@@ -217,10 +217,11 @@ namespace Domain.Clients
         /// 获取自己的提问
         /// </summary>
         /// <returns></returns>
-        public async Task<Resp> GetSelfQuestions()
+        public async Task<Resp> GetSelfQuestions(Domain.Paginator pager)
         {
-#warning not implemente
-            throw new NotImplementedException();
+            Domain.Questions.Hub questionsHub = new Questions.Hub();
+            Resp resp = await questionsHub.GetListAsync(pager, Questions.Hub.QuestionListSource.ClientUserDetailPage);
+            return resp;
         }
 
         /// <summary>

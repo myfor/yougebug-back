@@ -15,14 +15,33 @@ namespace Domain.Questions
     public class Hub
     {
         /// <summary>
+        /// 列表来源
+        /// </summary>
+        public enum QuestionListSource
+        {
+            /// <summary>
+            /// 管理惯
+            /// </summary>
+            Admin,
+            /// <summary>
+            /// 客户端
+            /// </summary>
+            Client,
+            /// <summary>
+            /// 客户端用户详情页
+            /// </summary>
+            ClientUserDetailPage
+        }
+
+        /// <summary>
         /// 获取问题
         /// </summary>
-        public async Task<Resp> GetListAsync(Paginator page, Share.Platform platform)
+        public async Task<Resp> GetListAsync(Paginator page, QuestionListSource source)
         {
-            Domain.Questions.List.IGetQuestionListAsync questionList = platform switch
+            Domain.Questions.List.IGetQuestionListAsync questionList = source switch
             { 
-                Share.Platform.Admin => new List.FromAdmin(),
-                Share.Platform.Client => new List.FromClient(),
+                QuestionListSource.Admin => new List.FromAdmin(),
+                QuestionListSource.Client => new List.FromClient(),
                 _ => throw new ArgumentException(),
             };
             return await questionList.GetListAsync(page);
@@ -35,7 +54,7 @@ namespace Domain.Questions
         /// <returns></returns>
         public async Task<Paginator> GetClientQuestionPager(Paginator page)
         {
-            Resp r = await GetListAsync(page, Share.Platform.Client);
+            Resp r = await GetListAsync(page, QuestionListSource.Client);
             Paginator pager = r.GetData<Paginator>();
 
             return pager;

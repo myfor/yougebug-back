@@ -41,6 +41,12 @@ namespace yougebug_back.Controllers.Users
             return View(model);
         }
 
+        public async Task<IActionResult> GetUserSelfQuestionsAsync()
+        {
+#warning not implemented
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 修改用户名信息
         /// </summary>
