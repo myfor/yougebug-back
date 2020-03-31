@@ -214,6 +214,16 @@ namespace Domain.Clients
         }
 
         /// <summary>
+        /// 获取自己的提问
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Resp> GetSelfQuestions()
+        {
+#warning not implemente
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// 启用用户
         /// </summary>
         /// <returns></returns>
