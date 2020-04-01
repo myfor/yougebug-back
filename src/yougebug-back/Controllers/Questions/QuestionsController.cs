@@ -74,6 +74,8 @@ namespace yougebug_back.Controllers.Questions
             if (!resp.IsSuccess)
                 return Redirect(string.Format($"/questions/?{ALERT_WARNING}", "暂时不能查看该答案"));
             Domain.Questions.Models.QuestionDetail model = resp.GetData<Domain.Questions.Models.QuestionDetail>();
+            //  是否为本人
+            model.IsSelf = CurrentUser.Id == model.User.Id;
 
             return View("QuestionDetail", model);
         }

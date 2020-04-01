@@ -71,6 +71,10 @@ namespace Domain.Questions
         /// </summary>
         public struct QuestionDetail
         {
+            /// <summary>
+            /// 是否为本人
+            /// </summary>
+            public bool IsSelf { get; set; }
             public int Id { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
