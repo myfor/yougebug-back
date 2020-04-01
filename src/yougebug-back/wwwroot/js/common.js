@@ -51,10 +51,22 @@ function setLogout() {
     location.reload();
 }
 //  设置登录状态
+//  value 是序列化后的
 function setLogged(value) {
     localStorage.setItem(LOGGED_KEY, value);
     setUserAvatar(value);
 }
+//  重设登录状态
+//  name 是名字
+function reSetLogged(name) {
+    const CURRENT = isLogged();
+    if (CURRENT) {
+        const DATA = JSON.parse(CURRENT);
+        DATA.name = name;
+        setLogged(JSON.stringify(DATA));
+    }
+}
+
 function setUserAvatar(value) {
     if (!isLogged())
         return;

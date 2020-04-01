@@ -166,6 +166,8 @@
                         $('#profile_userName').html(USER_NAME_VALUE);
                         $('#profile_email').html(EMAIL_VALUE);
                         cancel();
+                        reSetLogged(USER_NAME_VALUE);
+                        location.href = `/${USER_NAME_VALUE}`;
                     } else {
                         alert(resp.data.message);
                         enabled('d_edit');
