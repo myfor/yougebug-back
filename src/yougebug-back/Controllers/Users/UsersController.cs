@@ -39,9 +39,11 @@ namespace yougebug_back.Controllers.Users
             model.IsSelf = !currentUser.IsEmpty() && currentUser.GetName().Equals(user.GetName(), StringComparison.OrdinalIgnoreCase);
 
             //  获取用户的第一页提问列表
-            List<Domain.Questions.Models.QuestionItem_UserSelf> questionsList = await user.GetSelfQuestionsAsync(1, 5, currentUser.Id);
+            List<Domain.Questions.Models.QuestionItem_UserSelf> questionsList = await user.GetSelfQuestionsByDetailAsync(currentUser.Id);
 
             model.UserAsks = questionsList;
+
+            SetTitle("用户: " + userName);
 
             return View(model);
         }

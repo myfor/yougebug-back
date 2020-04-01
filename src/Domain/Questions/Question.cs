@@ -13,7 +13,10 @@ namespace Domain.Questions
     public class Question : BaseEntity
     {
         public const string QUESTION_NO_EXIST = "该问题不存在";
-
+        /// <summary>
+        /// 列表中提问描述简介的长度
+        /// </summary>
+        public const int LIST_DESCRIPTION_LENGTH = 50;
         public enum QuestionState
         {
             /// <summary>

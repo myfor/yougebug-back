@@ -19,7 +19,7 @@ namespace yougebug_back.Controllers.Questions
         [HttpGet]
         public async Task<IActionResult> Newest(int index, int size)
         {
-            SetTitle("有个bug，最新提问");
+            SetTitle("最新提问");
 
             Domain.Paginator page = Domain.Paginator.New(index, size);
 
@@ -42,7 +42,7 @@ namespace yougebug_back.Controllers.Questions
             if (string.IsNullOrWhiteSpace(s))
                 return await Newest(0, 0);
 
-            SetTitle("有个bug，提问 - " + s);
+            SetTitle(" - " + s);
 
             Domain.Paginator page = Domain.Paginator.New(index, size);
             page.Params.Add("search", s);
@@ -65,7 +65,7 @@ namespace yougebug_back.Controllers.Questions
         [HttpGet("{id}/{title}")]
         public async Task<IActionResult> GetQuestionDetailAsync(int id, string title, int index, int size)
         {
-            SetTitle("有个bug - " + title);
+            SetTitle(title);
             index = index == 0 ? 1 : index;
             size = size == 0 ? 10 : size;
 

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using yougebug_back.Auth;
 
 namespace yougebug_back.Controllers
@@ -29,7 +28,7 @@ namespace yougebug_back.Controllers
             if (string.IsNullOrWhiteSpace(title))
                 ViewBag.Title = "有个bug，程序员的问答社区";
             else
-                ViewBag.Title = title;
+                ViewBag.Title = $"有个bug - {title}";
         }
 
         /// <summary>

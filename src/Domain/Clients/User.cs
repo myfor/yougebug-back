@@ -226,14 +226,14 @@ namespace Domain.Clients
         /// <summary>
         /// 获取用户自己的提问，只获取第一页
         /// </summary>
-        public async Task<List<Questions.Models.QuestionItem_UserSelf>> GetSelfQuestionsAsync(int index, int size, int currentUserId)
+        public async Task<List<Questions.Models.QuestionItem_UserSelf>> GetSelfQuestionsByDetailAsync(int currentUserId)
         {
             /*
              * currentUserId 为当前查看人的ID
              * userName 为获取的用户名
              */
 
-            Paginator pager = Paginator.New(index, size);
+            Paginator pager = Paginator.New(1, 4);
             pager.Params = new Dictionary<string, string>
             { 
                 ["userId"] = Id.ToString(),

@@ -35,7 +35,7 @@ namespace Domain.Questions.List
                                             {
                                                 Id = q.Id,
                                                 Title = q.Title,
-                                                Description = q.Description.Length > 20 ? q.Description.Substring(0, 20) + "..." : q.Description,
+                                                Description = q.Description.Length > Question.LIST_DESCRIPTION_LENGTH ? q.Description.Substring(0, Question.LIST_DESCRIPTION_LENGTH) + "..." : q.Description,
                                                 CreateDate = q.CreateDate.ToStandardString(),
                                                 VoteCounts = q.Votes,
                                                 ViewCounts = q.Views,

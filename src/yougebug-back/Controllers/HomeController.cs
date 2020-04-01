@@ -20,7 +20,7 @@ namespace yougebug_back.Controllers
         [HttpGet("login")]
         public IActionResult Login()
         {
-            SetTitle("有个bug，登录");
+            SetTitle("登录");
 
             return View();
         }
@@ -56,7 +56,7 @@ namespace yougebug_back.Controllers
         [HttpGet("register")]
         public IActionResult Register()
         {
-            SetTitle("有个bug，注册");
+            SetTitle("注册");
 
             return View();
         }

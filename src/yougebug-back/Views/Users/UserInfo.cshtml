@@ -1,6 +1,16 @@
 ﻿
 
 @model yougebug_back.ViewModels.Users.UserInfo;
+
+@section Style {
+    <style>
+        .ask-list {
+            border-radius: 5px;
+            border-top: 3px solid #0062cc;
+        }
+    </style>
+}
+
 <div class="row">
     <div class="col-2 d-none d-lg-block" style="width: 150px;">
         @await Html.PartialAsync("_LeftNav")
@@ -67,12 +77,41 @@
                 }
             </div>
 
-            <div>
+            @* 提问列表 *@
+            <div class="mt-3 p-3">
+                <div class="mb-3 d-flex flex-row-reverse">
+                    <span class="flex-grow-1 d-flex flex-row-reverse align-items-end">
+                        <a class="small" href="javascript:;">查看更多</a>
+                    </span>
+                    <span class="h3 ask-list">
+                        @if (Model.IsSelf)
+                        {
+                            <label>我</label>
+                        }
+                        else
+                            @Model.UserName
+                        的提问
+                    </span>
+                </div>
+
                 @foreach (var question in Model.UserAsks)
                 {
-                    <p>
-                        @question.Title;
-                    </p>
+                    <div class="d-flex flex-column border rounded mt-2 mb-2 p-3">
+                        <span>
+                            <a href="questions/@question.Id/@question.Title">@question.Title</a>
+                        </span>
+                        <div class="p-2">
+                            @question.Description
+                        </div>
+                        <div>
+                            <span class="small">@question.CreateDate</span>
+                            @if (question.IsSelf)
+                            {
+                                <span class="ml-3 small">@question.State.Value</span>
+                            }
+                        </div>
+                    </div>
+
                 }
             </div>
         </div>

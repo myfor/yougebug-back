@@ -52,7 +52,7 @@ namespace Domain.Questions.List
                                                Id = q.Id,
                                                IsSelf = isSelf,
                                                Title = q.Title,
-                                               Description = q.Description,
+                                               Description = q.Description.Length > Question.LIST_DESCRIPTION_LENGTH ? q.Description.Substring(0, Question.LIST_DESCRIPTION_LENGTH) + "..." : q.Description,
                                                CreateDate = q.CreateDate.ToStandardDateString(),
                                                State = Share.KeyValue<int, string>.Create(q.State, q.State.GetDescription<Question.QuestionState>()),
                                                AnswersCount = q.Answers.Count

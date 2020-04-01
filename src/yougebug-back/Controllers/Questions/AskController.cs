@@ -14,7 +14,7 @@ namespace yougebug_back.Controllers.Questions
         [HttpGet]
         public IActionResult Index()
         {
-            SetTitle("有个bug - 提问");
+            SetTitle("提问");
 
             return View("Ask");
         }
