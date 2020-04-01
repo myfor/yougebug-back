@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using yougebug_back.Shared;
@@ -26,7 +27,6 @@ namespace yougebug_back.Controllers.Users
             Domain.Clients.User user = Domain.Clients.Hub.GetUserByUserName(userName);
 
             Domain.Clients.Results.ClientDetail detail = await user.GetUserInfoAsync();
-
             var currentUser = CurrentUser;
 
             ViewModels.Users.UserInfo model = new ViewModels.Users.UserInfo
@@ -38,13 +38,25 @@ namespace yougebug_back.Controllers.Users
             };
             model.IsSelf = !currentUser.IsEmpty() && currentUser.GetName().Equals(user.GetName(), StringComparison.OrdinalIgnoreCase);
 
+            //  获取用户的第一页提问列表
+            List<Domain.Questions.Models.QuestionItem_UserSelf> questionsList = await user.GetSelfQuestionsAsync(1, 5, currentUser.Id);
+
+            model.UserAsks = questionsList;
+
             return View(model);
         }
 
-        public async Task<IActionResult> GetUserSelfQuestionsAsync()
+        /*
+         * 获取用户的提问列表
+         */
+        [HttpGet("{userName}/questions")]
+        public async Task<IActionResult> GetUserSelfQuestionsAsync(string userName, int index)
         {
-#warning not implemented
-            throw new NotImplementedException();
+            Domain.Paginator pager = Domain.Paginator.New(index, Domain.Paginator.DEFAULT_SIZE);
+
+            Domain.Clients.User user = Domain.Clients.Hub.GetUser(userName);
+            Domain.Resp r = await user.GetSelfQuestionsAsync(pager);
+            return Pack(r);
         }
 
         /// <summary>

@@ -42,6 +42,7 @@ namespace Domain.Questions
             { 
                 QuestionListSource.Admin => new List.FromAdmin(),
                 QuestionListSource.Client => new List.FromClient(),
+                QuestionListSource.ClientUserDetailPage => new List.FromUserSelf(),
                 _ => throw new ArgumentException(),
             };
             return await questionList.GetListAsync(page);

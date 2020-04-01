@@ -217,11 +217,32 @@ namespace Domain.Clients
         /// 获取自己的提问
         /// </summary>
         /// <returns></returns>
-        public async Task<Resp> GetSelfQuestions(Domain.Paginator pager)
+        public async Task<Resp> GetSelfQuestionsAsync(Domain.Paginator pager)
         {
             Domain.Questions.Hub questionsHub = new Questions.Hub();
             Resp resp = await questionsHub.GetListAsync(pager, Questions.Hub.QuestionListSource.ClientUserDetailPage);
             return resp;
+        }
+        /// <summary>
+        /// 获取用户自己的提问，只获取第一页
+        /// </summary>
+        public async Task<List<Questions.Models.QuestionItem_UserSelf>> GetSelfQuestionsAsync(int index, int size, int currentUserId)
+        {
+            /*
+             * currentUserId 为当前查看人的ID
+             * userName 为获取的用户名
+             */
+
+            Paginator pager = Paginator.New(index, size);
+            pager.Params = new Dictionary<string, string>
+            { 
+                ["userId"] = Id.ToString(),
+                ["currentUserId"] = currentUserId.ToString()
+            };
+
+            Resp r = await GetSelfQuestionsAsync(pager);
+            List<Questions.Models.QuestionItem_UserSelf> list = r.GetData<Paginator>().GetList<Questions.Models.QuestionItem_UserSelf>();
+            return list;
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace Domain.Questions.List
                 currentUserId = 0;
             //  如果不是用户本人，只能看到通过的提问
             bool isSelf = currentUserId == userId;
-            if (isSelf)
+            if (!isSelf)
                 whereStatement = whereStatement.And(q => q.State == (int)Question.QuestionState.Enabled);
             //  如果是，则能看到所有提问
 
@@ -42,10 +42,10 @@ namespace Domain.Questions.List
 
             pager.TotalRows = await db.Questions.CountAsync(whereStatement);
             pager.List = await db.Questions.AsNoTracking()
-                                           .Skip(pager.Skip)
-                                           .Take(pager.Size)
                                            .OrderByDescending(q => q.CreateDate)
                                            .Where(whereStatement)
+                                           .Skip(pager.Skip)
+                                           .Take(pager.Size)
                                            .Include(q => q.Answers)
                                            .Select(q => new Models.QuestionItem_UserSelf
                                            { 

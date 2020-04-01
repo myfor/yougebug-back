@@ -66,6 +66,15 @@
                     </div>
                 }
             </div>
+
+            <div>
+                @foreach (var question in Model.UserAsks)
+                {
+                    <p>
+                        @question.Title;
+                    </p>
+                }
+            </div>
         </div>
     </div>
 
