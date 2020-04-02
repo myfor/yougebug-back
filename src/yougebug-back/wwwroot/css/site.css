@@ -65,3 +65,8 @@ pre {
     padding: 5px 10px !important;
     border-radius: 5px !important;
 }
+
+.tag-top {
+    border-radius: 5px;
+    border-top: 3px solid #0062cc;
+}
