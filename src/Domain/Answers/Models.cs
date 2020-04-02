@@ -14,5 +14,15 @@
             public Clients.Models.UserIntro User { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
         }
+
+        /// <summary>
+        /// 新的答案
+        /// </summary>
+        public struct PostAnswer
+        {
+            public string Content { get; set; }
+            public string NickName { get; set; }
+            public bool IsLogin { get; set; }
+        }
     }
 }

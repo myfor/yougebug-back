@@ -86,13 +86,17 @@ namespace yougebug_back.Controllers.Questions
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost("{id}/answer")]
-        public async Task<IActionResult> PostAnswerAsync(int id, [FromForm]string content, [FromForm]string nickName)
+        public async Task<IActionResult> PostAnswerAsync(int id, [FromBody]Domain.Answers.Models.PostAnswer model)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
 
-            if (CurrentUser.IsEmpty())
-                return Pack(await question.AddAnswerAsync(nickName, content));
-            return Pack(await question.AddAnswerAsync(CurrentUser.Id, content));
+            bool isLogin = !CurrentUser.IsEmpty();
+            if (isLogin != model.IsLogin)
+                return Pack(Domain.Resp.NeedLogin(Domain.Resp.NONE, "登录超时"));
+
+            if (isLogin)
+                return Pack(await question.AddAnswerAsync(CurrentUser.Id, model.Content));
+            return Pack(await question.AddAnswerAsync(model.NickName, model.Content));
         }
 
         /// <summary>

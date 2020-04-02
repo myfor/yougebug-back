@@ -20,7 +20,7 @@ namespace Domain.Questions.List
             Expression<Func<DB.Tables.Question, bool>> where = q => q.State == (int)Question.QuestionState.Enabled;
             where = where.And(WhereExpression(search));
 
-            using var db = new YGBContext();
+            await using var db = new YGBContext();
             
             pager.TotalRows = await db.Questions.CountAsync(where);
             pager.List = await db.Questions.AsNoTracking()
@@ -39,7 +39,7 @@ namespace Domain.Questions.List
                                                 CreateDate = q.CreateDate.ToStandardString(),
                                                 VoteCounts = q.Votes,
                                                 ViewCounts = q.Views,
-                                                AnswerCounts = q.Answers.Count(),
+                                                AnswerCounts = q.Answers.Count(a => a.State == (int)Answers.Answer.AnswerState.Enabled),
                                                 Tags = q.Tags.SplitOfChar(','),
                                                 AskerName = q.Asker.Name,
                                                 AskerAvatar = q.Asker.Avatar.Thumbnail

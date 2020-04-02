@@ -269,7 +269,7 @@ namespace Domain.Questions
             Answers.Hub answerHub = new Answers.Hub();
             (bool isSuccess, string msg) = await answerHub.NewAnswerAsync(Id, content, nickName);
             if (isSuccess)
-                return Resp.Success(Resp.NONE);
+                return Resp.Success(Resp.NONE, "匿名提交成功");
             return Resp.Fault(Resp.NONE, msg);
         }
 

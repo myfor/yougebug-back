@@ -149,7 +149,7 @@
                     <label>
                         您当前没有登录，可以
                         <a href="javascript:;" id="a_login">登录</a>
-                        或匿名写下答案
+                        或匿名写下答案，但需要审核后才能显示
                     </label>
                     <input type="text" class="form-control" id="txt_nickName" value="匿名" placeholder="昵称或登录" />
                 </div>
@@ -253,15 +253,21 @@
         }
 
         function newAnswer() {
+            const IS_LOGGED = isLogged() ? true : false;
 
-            const FORM = new FormData();
-            FORM.append('content', $('#txt_answer').val());
-            FORM.append('nickName', $('#txt_nickName').val().trim());
+            const NEW_ANSWER = {
+                content: $('#txt_answer').val(),
+                nickName: $('#txt_nickName').val().trim(),
+                isLogin: IS_LOGGED
+            };
 
             disabled('btn_postAnswer', '提交中');
-            axios.post('/questions/@Model.Id/answer', FORM)
+            axios.post('/questions/@Model.Id/answer', NEW_ANSWER)
                 .then(function (resp) {
                     if (resp.status === 200) {
+                        if (resp.data.message) {
+                            showAlert(resp.data.message);
+                        }
                         location.reload();
                     } else {
                         alert(resp.data.message);
@@ -269,7 +275,10 @@
                     enabled('btn_postAnswer', '提交');
                 })
                 .catch(function (err) {
-                    catchErr(err);
+                    if (err.response.status === 401) {
+                        setLogout();
+                        alert('登录超时，请重新登录或匿名提交');
+                    }
                     enabled('btn_postAnswer', '提交失败，请重试');
                 });
         }

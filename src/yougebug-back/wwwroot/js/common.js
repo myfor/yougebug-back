@@ -17,7 +17,7 @@ function checkEmail(email) {
 }
 
 //  设置元素 disabled
-function disabled(selector, value = undefined) {
+function disabled(selector, value) {
     const DISABLED = 'disabled';
     const ELE = document.getElementById(selector);
     if (ELE.hasAttribute(DISABLED))
@@ -28,7 +28,7 @@ function disabled(selector, value = undefined) {
 }
 
 //  设置元素 enabled
-function enabled(selector, value = undefined) {
+function enabled(selector, value) {
     const DISABLED = 'disabled';
     const ELE = document.getElementById(selector);
     ELE.removeAttribute(DISABLED);
@@ -116,4 +116,9 @@ function catchErr(err) {
     } else {
         alert('系统错误，请重试');
     }
+}
+
+
+function showAlert(content) {
+    alert(content);
 }

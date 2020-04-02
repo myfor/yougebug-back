@@ -24,7 +24,7 @@ namespace Domain.Questions.List
             else
                 where.And(q => q.State != (int)Question.QuestionState.Remove);
 
-            using var db = new YGBContext();
+            await using var db = new YGBContext();
 
             pager.TotalRows = await db.Questions.CountAsync(where);
             pager.List = await db.Questions.AsNoTracking()
@@ -36,7 +36,7 @@ namespace Domain.Questions.List
                                            {
                                                Id = q.Id,
                                                Title = q.Title,
-                                               Description = q.Description.Length > Question.LIST_DESCRIPTION_LENGTH ? q.Description.Substring(0, Question.LIST_DESCRIPTION_LENGTH) + "..." : q.Description,
+                                               Description = q.Description.Length > 10 ? q.Description.Substring(0, 10) + "..." : q.Description,
                                                CreateDate = q.CreateDate.ToStandardString(),
                                                State = Share.KeyValue<int, string>.Create(q.State, q.State.GetDescription<Question.QuestionState>())
                                            })
