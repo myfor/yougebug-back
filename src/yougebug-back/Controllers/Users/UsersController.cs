@@ -48,6 +48,15 @@ namespace yougebug_back.Controllers.Users
             return View(model);
         }
 
+        /// <summary>
+        /// 用户自己的提问页面
+        /// </summary>
+        [HttpGet("/{username}/questions")]
+        public IActionResult UserInfoQuestion(string userName)
+        {
+            return View("Questions");
+        }
+
         /*
          * 获取用户的提问列表
          */
