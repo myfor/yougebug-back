@@ -1,6 +1,6 @@
 
 //  提示弹窗
-function showAlert(content, click) {
+function showAlert(content, title, click) {
     const MOD = document.createElement('div');
     MOD.className = 'modal fade';
     MOD.id = 'mod_alert';
@@ -12,7 +12,7 @@ function showAlert(content, click) {
 <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+        <h5 class="modal-title" id="exampleModalLabel">${title ? title : 提示}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

@@ -266,7 +266,7 @@
                 .then(function (resp) {
                     if (resp.status === 200) {
                         if (resp.data.message) {
-                            showAlert(resp.data.message);
+                            showAlert(resp.data.message, '');
                         }
                         location.reload();
                     } else {

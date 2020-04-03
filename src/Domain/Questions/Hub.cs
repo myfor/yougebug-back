@@ -87,7 +87,7 @@ namespace Domain.Questions
                                                 CreateDate = q.CreateDate.ToStandardString(),
                                                 VoteCounts = q.Votes,
                                                 ViewCounts = q.Views,
-                                                AnswerCounts = q.Answers.Count(),
+                                                AnswerCounts = q.Answers.Count(a => a.State == (int)Answers.Answer.AnswerState.Enabled),
                                                 Tags = q.Tags.SplitOfChar(','),
                                                 AskerName = q.Asker.Name,
                                                 AskerAvatar = q.Asker.Avatar.Thumbnail
