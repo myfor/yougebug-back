@@ -177,7 +177,7 @@
             if (isLogged())
                 document.getElementById('d_nickName').setAttribute('hidden', 'hidden');
 
-            document.getElementById('a_login').href = `/login?${REDIRECT_TO}=${location.pathname + location.search}`;
+            document.getElementById('a_login').href = `/login?${GO_TO}=${location.pathname + location.search}`;
 
             const CONTENT = $('#d-description-content');
             CONTENT.html(marked(CONTENT.text().trim()));

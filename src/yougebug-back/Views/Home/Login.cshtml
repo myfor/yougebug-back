@@ -35,7 +35,7 @@
                 .then(function (resp) {
                     if (resp.status === 200) {
                         //  重定向路由
-                        let redirect = getQueryString(REDIRECT_TO);
+                        let redirect = getQueryString(GO_TO);
                         if (!redirect)
                             redirect = '/';
                         setLogged(JSON.stringify(resp.data.data));

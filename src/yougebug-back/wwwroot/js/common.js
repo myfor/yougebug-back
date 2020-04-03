@@ -1,4 +1,4 @@
-
+;
 //  提示弹窗
 function showAlert(content, title, click) {
     const MOD = document.createElement('div');
@@ -35,7 +35,7 @@ function showAlert(content, title, click) {
     $(MOD).modal('show');
 }
 
-const REDIRECT_TO = 'redirect-to';
+const GO_TO = 'redirect-to';
 
 function getQueryString(name) {
     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -119,6 +119,7 @@ const ALERT_PRIMARY = 'alert-primary';
 const ALERT_WARNING = 'alert-warning';
 //  检查是否有警告
 function checkAlert() {
+
     let MSG = getQueryString(ALERT_PRIMARY);
     let hasAlert = false;
     if (MSG) {
@@ -130,8 +131,13 @@ function checkAlert() {
         $('#d_alert').html($('#d_alert').html() + getAlertMode('warning', MSG));
         hasAlert = true;
     }
-    if (hasAlert)
-        history.replaceState(null, '', location.pathname);
+    if (hasAlert) {
+        MSG = getQueryString(GO_TO);
+        let pathName = '';
+        if (MSG)
+            pathName = `?${GO_TO}=${MSG}`;
+        history.replaceState(null, '', location.pathname + pathName);
+    }
 }
 function getAlertMode(type, msg) {
     return `

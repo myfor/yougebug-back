@@ -61,7 +61,7 @@
             //  检查登录
             if (!isLogged()) {
                 //  showAlert('请先登录');
-                location.href = `/login?${REDIRECT_TO}=${location.pathname}&${ALERT_WARNING}=请先登录`;
+                location.href = `/login?${GO_TO}=${location.pathname}&${ALERT_WARNING}=请先登录`;
             }
 
             $(function () {
