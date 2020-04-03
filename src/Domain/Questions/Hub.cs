@@ -30,7 +30,11 @@ namespace Domain.Questions
             /// <summary>
             /// 客户端用户详情页
             /// </summary>
-            ClientUserDetailPage
+            ClientUserDetailPage,
+            /// <summary>
+            /// 首页最新
+            /// </summary>
+            HomePageNewest
         }
 
         /// <summary>
@@ -43,6 +47,7 @@ namespace Domain.Questions
                 QuestionListSource.Admin => new List.FromAdmin(),
                 QuestionListSource.Client => new List.FromClient(),
                 QuestionListSource.ClientUserDetailPage => new List.FromUserSelf(),
+                QuestionListSource.HomePageNewest => new List.FromHomePage(),
                 _ => throw new ArgumentException(),
             };
             return await questionList.GetListAsync(page);
@@ -66,34 +71,9 @@ namespace Domain.Questions
         /// </summary>
         public async Task<Paginator> GetNewestQuestionsPager(Paginator pager)
         {
-            using var db = new YGBContext();
-
-            Expression<Func<DB.Tables.Question, bool>> where = q => q.State == (int)Question.QuestionState.Enabled;
-
-            pager.TotalRows = await db.Questions.CountAsync(where);
-            pager.List = await db.Questions.AsNoTracking()
-                                            .OrderByDescending(q => q.CreateDate)
-                                            .Where(where)
-                                            .Skip(pager.Skip)
-                                            .Take(pager.Size)
-                                            .Include(q => q.Answers)
-                                            .Include(q => q.Asker)
-                                            .ThenInclude(asker => asker.Avatar)
-                                            .Select(q => new Models.QuentionItem_Client
-                                            {
-                                                Id = q.Id,
-                                                Title = q.Title,
-                                                Description = q.Description.Length > 20 ? q.Description.Substring(0, 20) + "..." : q.Description,
-                                                CreateDate = q.CreateDate.ToStandardString(),
-                                                VoteCounts = q.Votes,
-                                                ViewCounts = q.Views,
-                                                AnswerCounts = q.Answers.Count(a => a.State == (int)Answers.Answer.AnswerState.Enabled),
-                                                Tags = q.Tags.SplitOfChar(','),
-                                                AskerName = q.Asker.Name,
-                                                AskerAvatar = q.Asker.Avatar.Thumbnail
-                                            })
-                                            .ToListAsync();
-            return pager;
+            var resp = await GetListAsync(pager, QuestionListSource.HomePageNewest);
+            var p = resp.GetData<Paginator>();
+            return p;
         }
 
         /// <summary>
