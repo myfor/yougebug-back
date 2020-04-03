@@ -32,7 +32,7 @@
             const CONFIRM = DOC.getElementById('txt_confirm');
 
             if (!checkEmail(EMAIL.value.trim())) {
-                alert('邮箱格式有误');
+                showAlert('邮箱格式有误');
                 EMAIL.focus();
                 enabled('btn_register');
                 return false;
@@ -40,13 +40,13 @@
 
             const PASSWORDVALUE = PASSWORD.value.trim();
             if (PASSWORDVALUE.length < 6) {
-                alert('密码最少 6 位');
+                showAlert('密码最少 6 位');
                 PASSWORD.focus();
                 enabled('btn_register');
                 return false;
             }
             if (CONFIRM.value.trim() !== PASSWORDVALUE) {
-                alert('两次密码不一致');
+                showAlert('两次密码不一致');
                 enabled('btn_register');
                 return false;
             }

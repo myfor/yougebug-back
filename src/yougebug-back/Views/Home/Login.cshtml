@@ -44,7 +44,7 @@
                         else
                             location.href = `${redirect}&${ALERT_PRIMARY}=登录成功`;
                     } else {
-                        alert(resp.data.message);
+                        showAlert(resp.data.message);
                         enabled('btn_login');
                     }
                 })

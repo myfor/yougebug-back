@@ -1,0 +1,10 @@
+@model yougebug_back.ViewModels.Shared.UserIntro
+
+<div class="user">
+    <div class="avatar">
+        <a href="/myfor">
+            <img class="img-thumbnail" id="img_avatar" src="@Model.Avatar" alt="头像" width="60" />
+        </a>
+    </div>
+</div>
+<div class="pl-3 mt-3 h3" id="d_userName">@Model.UserName</div>

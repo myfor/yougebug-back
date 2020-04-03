@@ -59,7 +59,7 @@
             </div>
         </div>
     </header>
-    <div id="d_alert" style="margin-top: 27px;"></div>
+    <div id="d_alert" style="margin-top: 50px;"></div>
     <div class="container mt-5 mb-5">
         @RenderBody()
     </div>
@@ -70,7 +70,7 @@
 
     <script src="~/js/common.js"></script>
     <script src="~/js/jquery.min.js"></script>
-    <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
     <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
     <script src="~/lib/axios/axios.min.js"></script>
 
@@ -96,7 +96,7 @@
                     if (resp.status === 200) {
                         setLogout();
                     } else {
-                        alert(resp.data.message);
+                        showAlert(resp.data.message);
                     }
                 })
                 .catch(function (err) {

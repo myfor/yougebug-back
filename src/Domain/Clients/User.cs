@@ -90,6 +90,11 @@ namespace Domain.Clients
                 return Resp.Success(Resp.NONE);
             return Resp.Fault(Resp.NONE, "退出登录失败");
         }
+
+        /// <summary>
+        /// 用户名字缓存
+        /// </summary>
+        private string _name;
         /// <summary>
         /// 获取这个用户的名字
         /// </summary>
@@ -98,16 +103,48 @@ namespace Domain.Clients
         {
             CheckEmpty();
 
+            if (_name != null)
+                return _name;
+
             string key = $"e2522d10-c5ad-4811-87c3-503efe1a5858_{Id}";
-            string name = Cache.Get<string>(key);
-            if (name is null)
+            _name = Cache.Get<string>(key);
+            if (_name is null)
             {
                 using var db = new YGBContext();
-                DB.Tables.User account = db.Users.AsNoTracking().FirstOrDefault(a => a.Id == Id);
-                name = account?.Name ?? "";
-                Cache.Set(key, name);
+                DB.Tables.User account = db.Users.AsNoTracking()
+                                                 .Include(u => u.Avatar)
+                                                 .FirstOrDefault(a => a.Id == Id);
+                _name = account?.Name ?? "";
+                _avatar = account.Avatar.Thumbnail;
+                Cache.Set(key, _name);
             }
-            return name;
+            return _name;
+        }
+        private string _avatar;
+        /// <summary>
+        /// 获取用户头像
+        /// </summary>
+        /// <returns></returns>
+        public string GetAvatar()
+        {
+            CheckEmpty();
+
+            if (_avatar != null)
+                return _avatar;
+
+            string key = $"06ba9d74-dd08-4c0f-acf7-cbdcbb56bf40_{Id}";
+            _avatar = Cache.Get<string>(key);
+            if (_avatar is null)
+            {
+                using var db = new YGBContext();
+                DB.Tables.User account = db.Users.AsNoTracking()
+                                                 .Include(u => u.Avatar)
+                                                 .FirstOrDefault(a => a.Id == Id);
+                _name = account?.Name ?? "";
+                _avatar = account.Avatar.Thumbnail;
+                Cache.Set(key, _avatar);
+            }
+            return _avatar;
         }
 
         /// <summary>

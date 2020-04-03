@@ -1,3 +1,40 @@
+
+//  提示弹窗
+function showAlert(content, click) {
+    const MOD = document.createElement('div');
+    MOD.className = 'modal fade';
+    MOD.id = 'mod_alert';
+    MOD.setAttribute('tabindex', '-1');
+    MOD.setAttribute('role', 'role');
+    MOD.setAttribute('aria-labelledby', 'exampleModalLabel');
+    MOD.setAttribute('aria-hidden', 'true');
+    MOD.innerHTML = `
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">提示</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ${content}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-out-secondary" data-dismiss="modal">关闭</button>    
+`;
+    if (click) {
+        MOD.innerHTML += `<button type="button" class="btn btn-primary" onclick="${click}">提交</button>`;
+    }
+    MOD.innerHTML += `
+        </div>
+    </div>
+  </div>
+`;
+
+    $(MOD).modal('show');
+}
+
 const REDIRECT_TO = 'redirect-to';
 
 function getQueryString(name) {
@@ -111,14 +148,9 @@ function catchErr(err) {
     if (err.response) {
         if (err.response.status === 401) {
             setLogout();
-            alert('请先登录');
+            showAlert('请先登录');
         }
     } else {
-        alert('系统错误，请重试');
+        showAlert('系统错误，请重试');
     }
-}
-
-
-function showAlert(content) {
-    alert(content);
 }

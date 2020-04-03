@@ -270,14 +270,14 @@
                         }
                         location.reload();
                     } else {
-                        alert(resp.data.message);
+                        showAlert(resp.data.message);
                     }
                     enabled('btn_postAnswer', '提交');
                 })
                 .catch(function (err) {
                     if (err.response.status === 401) {
                         setLogout();
-                        alert('登录超时，请重新登录或匿名提交');
+                        showAlert('登录超时，请重新登录或匿名提交');
                     }
                     enabled('btn_postAnswer', '提交失败，请重试');
                 });

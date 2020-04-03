@@ -42,7 +42,7 @@ namespace yougebug_back.Controllers.Questions
             if (string.IsNullOrWhiteSpace(s))
                 return await Newest(0, 0);
 
-            SetTitle(" - " + s);
+            SetTitle(s);
 
             Domain.Paginator page = Domain.Paginator.New(index, size);
             page.Params.Add("search", s);

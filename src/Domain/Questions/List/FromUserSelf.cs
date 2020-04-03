@@ -15,17 +15,18 @@ namespace Domain.Questions.List
     public class FromUserSelf : IGetQuestionListAsync
     {
         /*
+         * 被移除的提问用户自己也不能看到
          * 如果当前获取提问列表的非用户本人
          * 则只能获取到启用的提问
          */
 
         public async Task<Resp> GetListAsync(Paginator pager)
         {
-            Expression<Func<DB.Tables.Question, bool>> whereStatement;
+            Expression<Func<DB.Tables.Question, bool>> whereStatement = q => q.State != (int)Question.QuestionState.Remove;
 
             //  要获取的人的ID
             if (int.TryParse(pager.Params["userId"] ?? "", out int userId))
-                whereStatement = q => q.AskerId == userId;
+                whereStatement = whereStatement.And(q => q.AskerId == userId);
             else
                 return Resp.Fault(Resp.NONE, "");
 

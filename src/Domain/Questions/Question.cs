@@ -26,6 +26,10 @@ namespace Domain.Questions
             Back = 0,
             [Description("启用")]
             Enabled,
+            /*
+             * 移除操作只能管理员或用户操作
+             * 移除后的提问用户自己也不能看到
+             */
             [Description("移除")]
             Remove,
             [Description("待审核")]

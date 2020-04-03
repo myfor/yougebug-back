@@ -68,7 +68,17 @@ namespace yougebug_back.Controllers.Users
 
             Paginator resultPager = await user.GetSelfQuestionsAsync(pager);
 
-            return View("questions", resultPager);
+            ViewModels.Users.UserQuestions model = new ViewModels.Users.UserQuestions
+            { 
+                UserIntro = new ViewModels.Shared.UserIntro
+                { 
+                    UserName = userName,
+                    Avatar = user.GetAvatar()
+                },
+                Paginator = resultPager
+            };
+
+            return View("questions", model);
         }
 
         /// <summary>

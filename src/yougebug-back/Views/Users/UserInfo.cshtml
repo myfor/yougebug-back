@@ -114,7 +114,21 @@
                                 <span class="small">@question.CreateDate</span>
                                 @if (question.IsSelf)
                                 {
-                                    <span class="ml-3 small">@question.State.Value</span>
+                                    @if (question.IsSelf)
+                                    {
+                                        @switch (question.State.Key)
+                                        {
+                                            case (int)Domain.Questions.Question.QuestionState.Enabled:
+                                                <span class="ml-3 badge badge-primary">@question.State.Value</span>; break;
+                                            case (int)Domain.Questions.Question.QuestionState.Back:
+                                                <span class="ml-3 badge badge-danger">@question.State.Value</span>; break;
+                                            case (int)Domain.Questions.Question.QuestionState.ToAudit:
+                                                <span class="ml-3 badge badge-warning">@question.State.Value</span>; break;
+                                            default:
+                                                <span class="ml-3 badge">@question.State.Value</span>
+                                                break;
+                                        }
+                                    }
                                 }
                             </div>
                         </div>
@@ -152,13 +166,13 @@
             const EMAIL_VALUE = EMAIL.val().trim();
 
             if (USER_NAME_VALUE.length < 4) {
-                alert('用户名不能小于4位');
+                showAlert('用户名不能小于4位');
                 USER_NAME.focus();
                 enabled('d_edit');
                 return;
             }
             if (!EMAIL_VALUE) {
-                alert('邮箱不能未空');
+                showAlert('邮箱不能未空');
                 EMAIL.focus();
                 enabled('d_edit');
                 return;
@@ -176,7 +190,7 @@
                         reSetLogged(USER_NAME_VALUE);
                         location.href = `/${USER_NAME_VALUE}`;
                     } else {
-                        alert(resp.data.message);
+                        showAlert(resp.data.message);
                         enabled('d_edit');
                     }
                 })
@@ -224,11 +238,11 @@
                 .then(function (resp) {
                     if (resp.status === 200) {
                         $('#changePasswordBox').modal('hide');
-                        alert('修改成功，请重新登录');
+                        showAlert('修改成功，请重新登录');
                         location.href = '/login';
                         return;
                     } else {
-                        alert(resp.data.message);
+                        showAlert(resp.data.message);
                     }
                     enabled('btn_changePassword');
                 })

@@ -1,4 +1,4 @@
-﻿@model Domain.Paginator;
+﻿@model yougebug_back.ViewModels.Users.UserQuestions
 
 @section Style {
     <style>
@@ -25,14 +25,7 @@
 
     <div class="col-sm-12 col-lg-8 h-100">
         <div>
-            <div class="user">
-                <div class="avatar">
-                    <a href="/myfor">
-                        <img class="img-thumbnail" src="/files/default.png" alt="头像" width="60" />
-                    </a>
-                </div>
-            </div>
-            <div class="pl-3 mt-3 h3">myfor</div>
+            @await Html.PartialAsync("_UserIntro", Model.UserIntro)
         </div>
 
         <div class="mt-5">
@@ -41,26 +34,37 @@
             </span>
 
             <div>
-                @foreach (var question in Model.GetList<Domain.Questions.Models.QuestionItem_UserSelf>())
+                @foreach (var question in Model.Paginator.GetList<Domain.Questions.Models.QuestionItem_UserSelf>())
                 {
-                <div class="d-flex flex-column border rounded mt-2 mb-2 p-3">
-                    <span>
-                        <a href="questions/@question.Id/@question.Title">@question.Title</a>
-                    </span>
-                    <div class="p-2">
-                        @question.Description
+                    <div class="d-flex flex-column border rounded mt-2 mb-2 p-3">
+                        <span>
+                            <a href="questions/@question.Id/@question.Title">@question.Title</a>
+                        </span>
+                        <div class="p-2">
+                            @question.Description
+                        </div>
+                        <div>
+                            <span class="small">@question.CreateDate</span>
+                            @if (question.IsSelf)
+                            {
+                                @switch (question.State.Key)
+                                {
+                                    case (int)Domain.Questions.Question.QuestionState.Enabled:
+                                        <span class="ml-3 badge badge-primary">@question.State.Value</span>; break;
+                                    case (int)Domain.Questions.Question.QuestionState.Back:
+                                        <span class="ml-3 badge badge-danger">@question.State.Value</span>; break;
+                                    case (int)Domain.Questions.Question.QuestionState.ToAudit:
+                                        <span class="ml-3 badge badge-warning">@question.State.Value</span>; break;
+                                    default:
+                                        <span class="ml-3 badge">@question.State.Value</span>
+                                        break;
+                                }
+                            }
+                        </div>
                     </div>
-                    <div>
-                        <span class="small">@question.CreateDate</span>
-                        @if (question.IsSelf)
-                        {
-                            <span class="ml-3 small">@question.State.Value</span>
-                        }
-                    </div>
-                </div>
                 }
 
-                @await Html.PartialAsync("_Paginator", Model)
+                @await Html.PartialAsync("_Paginator", Model.Paginator)
             </div>
 
         </div>
