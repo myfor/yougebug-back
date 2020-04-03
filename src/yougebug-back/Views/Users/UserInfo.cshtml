@@ -4,7 +4,6 @@
 
 @section Style {
     <style>
-        
     </style>
 }
 
@@ -83,7 +82,7 @@
                     <span class="h4 tag-top">
                         @if (Model.IsSelf)
                         {
-                            <label>我</label>
+                            <span>我</span>
                         }
                         else
                         {
@@ -93,24 +92,33 @@
                     </span>
                 </div>
 
-                @foreach (var question in Model.UserAsks)
+                @if (Model.UserAsks == null || Model.UserAsks.Count == 0)
                 {
-                    <div class="d-flex flex-column border rounded mt-2 mb-2 p-3">
-                        <span>
-                            <a href="questions/@question.Id/@question.Title">@question.Title</a>
-                        </span>
-                        <div class="p-2">
-                            @question.Description
-                        </div>
-                        <div>
-                            <span class="small">@question.CreateDate</span>
-                            @if (question.IsSelf)
-                            {
-                                <span class="ml-3 small">@question.State.Value</span>
-                            }
-                        </div>
+                    <div class="text-center">
+                        您还没有提问，
+                        <a href="/ask">现在提问</a>
                     </div>
-
+                }
+                else
+                {
+                    @foreach (var question in Model.UserAsks)
+                    {
+                        <div class="d-flex flex-column border rounded mt-2 mb-2 p-3">
+                            <span>
+                                <a href="questions/@question.Id/@question.Title">@question.Title</a>
+                            </span>
+                            <div class="p-2">
+                                @question.Description
+                            </div>
+                            <div>
+                                <span class="small">@question.CreateDate</span>
+                                @if (question.IsSelf)
+                                {
+                                    <span class="ml-3 small">@question.State.Value</span>
+                                }
+                            </div>
+                        </div>
+                    }
                 }
             </div>
         </div>

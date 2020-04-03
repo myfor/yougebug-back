@@ -30,7 +30,7 @@ namespace yougebug_back.Controllers.Users
             var currentUser = CurrentUser;
 
             ViewModels.Users.UserInfo model = new ViewModels.Users.UserInfo
-            { 
+            {
                 UserName = detail.UserName,
                 Email = detail.Email,
                 CreateDate = detail.CreateDate,
@@ -48,26 +48,27 @@ namespace yougebug_back.Controllers.Users
             return View(model);
         }
 
-        /// <summary>
-        /// 用户自己的提问页面
-        /// </summary>
-        [HttpGet("/{username}/questions")]
-        public IActionResult UserInfoQuestion(string userName)
-        {
-            return View("Questions");
-        }
-
         /*
          * 获取用户的提问列表
          */
-        [HttpGet("{userName}/questions")]
+        [HttpGet("/{userName}/questions")]
         public async Task<IActionResult> GetUserSelfQuestionsAsync(string userName, int index)
         {
-            Domain.Paginator pager = Domain.Paginator.New(index, Domain.Paginator.DEFAULT_SIZE);
+            if (index <= 0)
+                index = 1;
 
-            Domain.Clients.User user = Domain.Clients.Hub.GetUser(userName);
-            Domain.Resp r = await user.GetSelfQuestionsAsync(pager);
-            return Pack(r);
+            Domain.Clients.User user = Domain.Clients.Hub.GetUserByUserName(userName);
+
+            Paginator pager = Paginator.New(index, 10);
+            pager.Params = new Dictionary<string, string>
+            {
+                ["userId"] = user.Id.ToString(),
+                ["currentUserId"] = CurrentUser.Id.ToString()
+            };
+
+            Paginator resultPager = await user.GetSelfQuestionsAsync(pager);
+
+            return View("questions", resultPager);
         }
 
         /// <summary>

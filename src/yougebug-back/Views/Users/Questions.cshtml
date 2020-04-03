@@ -1,6 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Domain.Paginator;
 
 @section Style {
     <style>
@@ -41,6 +39,30 @@
             <span class="h4 tag-top">
                 提问列表
             </span>
+
+            <div>
+                @foreach (var question in Model.GetList<Domain.Questions.Models.QuestionItem_UserSelf>())
+                {
+                <div class="d-flex flex-column border rounded mt-2 mb-2 p-3">
+                    <span>
+                        <a href="questions/@question.Id/@question.Title">@question.Title</a>
+                    </span>
+                    <div class="p-2">
+                        @question.Description
+                    </div>
+                    <div>
+                        <span class="small">@question.CreateDate</span>
+                        @if (question.IsSelf)
+                        {
+                            <span class="ml-3 small">@question.State.Value</span>
+                        }
+                    </div>
+                </div>
+                }
+
+                @await Html.PartialAsync("_Paginator", Model)
+            </div>
+
         </div>
     </div>
 

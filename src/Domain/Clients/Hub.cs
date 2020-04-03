@@ -94,7 +94,12 @@ namespace Domain.Clients
             };
             db.Users.Add(newUser);
             if (await db.SaveChangesAsync() == 1)
+            {
+                newUser.Name = $"未命名_{newUser.Id}";
+                await db.SaveChangesAsync();
+
                 return Resp.Success(Resp.NONE);
+            }
             return Resp.Fault(Resp.NONE, "注册失败，请重试");
         }
 

@@ -54,8 +54,8 @@ namespace Domain.Clients
             using var db = new YGBContext();
 
             DB.Tables.User user = await db.Users.Include(u => u.Avatar)
-                                                .FirstOrDefaultAsync(a => 
-                                                (a.Name.Equals(loginInfo.Account, StringComparison.OrdinalIgnoreCase) || a.Email.Equals(loginInfo.Account, StringComparison.OrdinalIgnoreCase)) 
+                                                .FirstOrDefaultAsync(a =>
+                                                (a.Name.Equals(loginInfo.Account, StringComparison.OrdinalIgnoreCase) || a.Email.Equals(loginInfo.Account, StringComparison.OrdinalIgnoreCase))
                                                 && a.Password == loginInfo.Password);
 
             if (user is null)
@@ -217,11 +217,13 @@ namespace Domain.Clients
         /// 获取自己的提问
         /// </summary>
         /// <returns></returns>
-        public async Task<Resp> GetSelfQuestionsAsync(Domain.Paginator pager)
+        public async Task<Paginator> GetSelfQuestionsAsync(Domain.Paginator pager)
         {
             Domain.Questions.Hub questionsHub = new Questions.Hub();
             Resp resp = await questionsHub.GetListAsync(pager, Questions.Hub.QuestionListSource.ClientUserDetailPage);
-            return resp;
+            Paginator resultPager = resp.GetData<Paginator>();
+
+            return resultPager;
         }
         /// <summary>
         /// 获取用户自己的提问，只获取第一页
@@ -235,13 +237,13 @@ namespace Domain.Clients
 
             Paginator pager = Paginator.New(1, 4);
             pager.Params = new Dictionary<string, string>
-            { 
+            {
                 ["userId"] = Id.ToString(),
                 ["currentUserId"] = currentUserId.ToString()
             };
 
-            Resp r = await GetSelfQuestionsAsync(pager);
-            List<Questions.Models.QuestionItem_UserSelf> list = r.GetData<Paginator>().GetList<Questions.Models.QuestionItem_UserSelf>();
+            var resultPager = await GetSelfQuestionsAsync(pager);
+            List<Questions.Models.QuestionItem_UserSelf> list = resultPager.GetList<Questions.Models.QuestionItem_UserSelf>();
             return list;
         }
 
