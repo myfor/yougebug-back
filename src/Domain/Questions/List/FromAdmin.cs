@@ -32,7 +32,7 @@ namespace Domain.Questions.List
                                            .Take(pager.Size)
                                            .OrderByDescending(q => q.CreateDate)
                                            .Where(where)
-                                           .Select(q => new Models.QuestionItem_Admin
+                                           .Select(q => new Results.QuestionItem_Admin
                                            {
                                                Id = q.Id,
                                                Title = q.Title,

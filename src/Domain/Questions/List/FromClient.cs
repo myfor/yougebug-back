@@ -31,7 +31,7 @@ namespace Domain.Questions.List
                                             .Take(pager.Size)
                                             .OrderByDescending(q => q.CreateDate)
                                             .Where(where)
-                                            .Select(q => new Models.QuentionItem_Client
+                                            .Select(q => new Results.QuentionItem_Client
                                             {
                                                 Id = q.Id,
                                                 Title = q.Title,

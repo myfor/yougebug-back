@@ -1,4 +1,4 @@
-@model Domain.Questions.Models.QuestionDetail;
+@model Domain.Questions.Results.QuestionDetail;
 
 <div class="row">
     <div class="col-2 d-none d-lg-block" style="width: 150px;">
@@ -24,9 +24,9 @@
                             操作
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="javascript:;">编辑</a>
+                            <a class="dropdown-item" href="/questions/@Model.Id/edit">编辑</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="javascript:;">删除</a>
+                            <a class="dropdown-item text-danger" href="javascript:;" onclick="deleteQuestion(@Model.Id)">删除</a>
                         </div>
                     </div>
                 </div>
@@ -282,5 +282,10 @@
                     enabled('btn_postAnswer', '提交失败，请重试');
                 });
         }
+
+        function deleteQuestion(id) {
+
+        }
+
     </script>
 }

@@ -199,59 +199,56 @@ namespace Domain.Questions
             return await detail.GetDetailAsync(Id, index, size);
         }
 
-        ///// <summary>
-        ///// 获取详情
-        ///// </summary>
-        ///// <param name="index">提问回答的页数</param>
-        ///// <param name="size">回答的行数</param>
-        ///// <returns></returns>
-        //public async Task<Resp> GetDetailAsync(int index, int size)
-        //{
-        //    CheckEmpty();
+        /// <summary>
+        /// 获取用户编辑的提问信息
+        /// </summary>
+        /// <param name="questionId"></param>
+        /// <returns></returns>
+        public async Task<Results.QuestionEditInfo> GetEditInfoAsync(int questionId)
+        {
+            await using var db = new YGBContext();
+            DB.Tables.Question question = await db.Questions.AsNoTracking().FirstOrDefaultAsync(q => q.Id == questionId);
+            if (question is null)
+                return default;
+            return new Results.QuestionEditInfo
+            { 
+                Id = question.Id,
+                Title = question.Title,
+                Content = question.Description,
+                Tags = question.Tags.Split(',')
+            };
+        }
 
-        //    using var db = new YGBContext();
-        //    DB.Tables.Question question = await db.Questions.Include(q => q.Asker)
-        //                                                    .ThenInclude(asker => asker.Avatar)
-        //                                                    .FirstOrDefaultAsync(q => q.Id == Id);
+        /// <summary>
+        /// 修改提问
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<Resp> EditAsync(Models.EditQuestion model)
+        {
+            (bool isValid, string msg) = model.IsValid();
+            if (!isValid)
+                return Resp.Fault(Resp.NONE, msg);
 
-        //    if (question is null)
-        //        return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
+            await using var db = new YGBContext();
+            DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
+            if (question is null)
+                Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
+            if (question.AskerId != model.CurrentUserId)
+                return Resp.Fault(Resp.NONE, "不能修改其他人的答案");
 
-        //    if (question.State != (int)QuestionState.Enabled)
-        //        return Resp.Fault(Resp.NONE, "该提问暂时无法查看");
-
-        //    Answers.Hub answerHub = new Answers.Hub();
-        //    //  获取第一页的答案分页
-        //    Paginator page = Paginator.New(index, size);
-        //    //(page.List, page.TotalRows) = await GetAnswersAsync(index, size);
-        //    (page.List, page.TotalRows) = await answerHub.GetAnswersAsync(Id, index, size, Answers.Answer.AnswerState.Pass);
-
-        //    Models.QuestionDetail detail = new Models.QuestionDetail
-        //    {
-        //        Id = question.Id,
-        //        Title = question.Title,
-        //        Description = question.Description,
-        //        Tags = question.Tags.Split(','),
-        //        Votes = question.Votes,
-        //        Views = question.Views,
-        //        Actived = question.Actived.ToStandardString(),
-        //        CreateDate = question.CreateDate.ToStandardString(),
-        //        State = Share.KeyValue<int, string>.Create(question.State, question.State.GetDescription<QuestionState>()),
-        //        User = new Clients.Models.UserIntro
-        //        {
-        //            Id = question.Asker.Id,
-        //            Account = question.Asker.Name,
-        //            Avatar = question.Asker.Avatar.Thumbnail
-        //        },
-        //        Page = page
-        //    };
-
-        //    question.Views++;
-        //    question.Actived = DateTimeOffset.Now;
-        //    await db.SaveChangesAsync();
-
-        //    return Resp.Success(detail, "");
-        //}
+            question.Title = model.Title;
+            question.Description = model.Description;
+            question.Tags = string.Join(',', model.Tags);
+            //  如果不是启用的状态，修改后需要审核
+            if (question.State != (int)QuestionState.Enabled)
+                question.State = (int)QuestionState.ToAudit;
+            int count = await db.SaveChangesAsync();
+            if (count != 1)
+                return Resp.Fault(Resp.NONE, "修改失败，请重试");
+            await new Tags.Hub().AddTagsAsync(model.Tags);
+            return Resp.Success();
+        }
 
         /// <summary>
         /// 新回答

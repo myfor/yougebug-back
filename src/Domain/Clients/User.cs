@@ -265,7 +265,7 @@ namespace Domain.Clients
         /// <summary>
         /// 获取用户自己的提问，只获取第一页
         /// </summary>
-        public async Task<List<Questions.Models.QuestionItem_UserSelf>> GetSelfQuestionsByDetailAsync(int currentUserId)
+        public async Task<List<Questions.Results.QuestionItem_UserSelf>> GetSelfQuestionsByDetailAsync(int currentUserId)
         {
             /*
              * currentUserId 为当前查看人的ID
@@ -280,7 +280,7 @@ namespace Domain.Clients
             };
 
             var resultPager = await GetSelfQuestionsAsync(pager);
-            List<Questions.Models.QuestionItem_UserSelf> list = resultPager.GetList<Questions.Models.QuestionItem_UserSelf>();
+            List<Questions.Results.QuestionItem_UserSelf> list = resultPager.GetList<Questions.Results.QuestionItem_UserSelf>();
             return list;
         }
 

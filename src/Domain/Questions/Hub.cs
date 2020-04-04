@@ -104,23 +104,12 @@ namespace Domain.Questions
                 AskerId = questionParams.UserId
             };
 
-            YGBContext db = new YGBContext();
-
             if (questionParams.Tags.Length >= 0)
             {
-                List<DB.Tables.Tag> tagList = new List<DB.Tables.Tag>(questionParams.Tags.Length);
-                foreach (string tag in questionParams.Tags)
-                {
-                    if (Tags.Tag.IsExistTag(tag))
-                        continue;
-                    tagList.Add(new DB.Tables.Tag
-                    {
-                        Name = tag
-                    });
-                }
-                if (tagList.Count > 0)
-                    db.Tags.AddRange(tagList);
+                await new Tags.Hub().AddTagsAsync(questionParams.Tags);
             }
+
+            await using YGBContext db = new YGBContext();
 
             db.Add(question);
             if (await db.SaveChangesAsync() != 0)

@@ -48,7 +48,7 @@ namespace Domain.Questions.List
                                            .Skip(pager.Skip)
                                            .Take(pager.Size)
                                            .Include(q => q.Answers)
-                                           .Select(q => new Models.QuestionItem_UserSelf
+                                           .Select(q => new Results.QuestionItem_UserSelf
                                            { 
                                                Id = q.Id,
                                                IsSelf = isSelf,

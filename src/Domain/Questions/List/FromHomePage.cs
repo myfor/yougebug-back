@@ -24,7 +24,7 @@ namespace Domain.Questions.List
                                             .Include(q => q.Answers)
                                             .Include(q => q.Asker)
                                             .ThenInclude(asker => asker.Avatar)
-                                            .Select(q => new Models.QuentionItem_Client
+                                            .Select(q => new Results.QuentionItem_Client
                                             {
                                                 Id = q.Id,
                                                 Title = q.Title,

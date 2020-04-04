@@ -28,7 +28,7 @@ namespace Domain.Questions.Detail
 
             (page.List, page.TotalRows) = await answerHub.GetAnswersAsync(questionId, index, size, Answers.Answer.StandardStates.NoSelected);
 
-            Models.QuestionDetail detail = new Models.QuestionDetail
+            Results.QuestionDetail detail = new Results.QuestionDetail
             {
                 Id = question.Id,
                 Title = question.Title,

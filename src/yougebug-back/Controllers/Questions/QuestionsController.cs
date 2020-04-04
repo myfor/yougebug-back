@@ -73,11 +73,38 @@ namespace yougebug_back.Controllers.Questions
             Domain.Resp resp = await question.GetDetailAsync(Domain.Share.Platform.Client, index, size);
             if (!resp.IsSuccess)
                 return Redirect(string.Format($"/questions/?{ALERT_WARNING}", "暂时不能查看该答案"));
-            Domain.Questions.Models.QuestionDetail model = resp.GetData<Domain.Questions.Models.QuestionDetail>();
+            Domain.Questions.Results.QuestionDetail model = resp.GetData<Domain.Questions.Results.QuestionDetail>();
             //  是否为本人
             model.IsSelf = CurrentUser.Id == model.User.Id;
 
             return View("QuestionDetail", model);
+        }
+
+        /*
+         * 编辑页
+         */
+        [HttpGet("{id}/edit")]
+        public async Task<IActionResult> EditQuestionAsync(int id)
+        {
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Questions.Results.QuestionEditInfo model = await question.GetEditInfoAsync(id);
+            if (model == default)
+                return NotFound();
+            return View("Edit", model);
+        }
+
+        /// <summary>
+        /// 修改提问
+        /// </summary>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditQuestionAsync(int id, Domain.Questions.Models.EditQuestion model)
+        {
+            if (CurrentUser.IsEmpty())
+                return Pack(Domain.Resp.NeedLogin(Domain.Resp.NONE, "请重新登录"));
+            model.CurrentUserId = CurrentUser.Id;
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            var r = await question.EditAsync(model);
+            return Pack(r);
         }
 
         /// <summary>
