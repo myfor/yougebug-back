@@ -2,8 +2,16 @@
 
 <div class="row">
     <div class="col-12 col-md-9 mb-3">
-        <div class="shadow h-100 w-100 mt-5 rounded">
-            <form action="questions/@Model.Id/edit" method="put" class="d-flex flex-column p-3" onsubmit="return submitAsk()">
+        <div class="d-flex flex-row">
+            <span class="p-2 mt-3 h4">修改提问</span>
+            <div class="flex-grow-1 d-flex flex-row-reverse align-items-end">
+                <span>
+                    <button class="btn btn-outline-danger" onclick="javascript: history.back();">取消修改</button>
+                </span>
+            </div>
+        </div>
+        <div class="shadow h-100 w-100 mt-2 rounded">
+            <div class="d-flex flex-column p-3">
                 <div class="form-group">
                     <label for="txt_title">标题，要求 4 个字以上，简明扼要</label>
                     <input type="text" class="form-control" name="title" id="txt_title" aria-describedby="title" value="@Model.Title" required placeholder="请输入标题" />
@@ -21,15 +29,15 @@
                             <a class="nav-link" id="a_nav_view" href="javascript:;" onclick="navView()">预览</a>
                         </li>
                     </ul>
-                    <textarea class="form-control" id="txt_description" name="description" rows="15" required placeholder="描述内容"></textarea>
+                    <textarea class="form-control" id="txt_description" name="description" rows="15" required placeholder="描述内容">@Model.Content</textarea>
                     <div class="border p-3" id="d_preview" style="display: none;"></div>
                 </div>
                 <div class="form-group">
                     <label for="txt_tags">标签，请写上与问题相关联的标签</label>
-                    <input type="text" class="form-control" id="txt_tags" name="tags" required placeholder="写上合适的标签" />
+                    <input type="text" class="form-control" id="txt_tags" name="tags" value="@string.Join(',', Model.Tags)" required placeholder="写上合适的标签" />
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" id="btn_post">确定修改</button>
-            </form>
+                <button type="button" class="btn btn-primary btn-block" id="btn_edit" onclick="submitEdit()">确定修改</button>
+            </div>
         </div>
     </div>
     <div class="col-12 col-md-3 mb-3 mt-5">
@@ -55,7 +63,6 @@
 </div>
 @section Scripts {
     <script src="~/lib/marked/marked.min.js"></script>
-    <script src="~/lib/axios/axios.min.js"></script>
     <script>
         $(function () {
             //  检查登录
@@ -69,8 +76,8 @@
             })
         })
 
-        function submitAsk() {
-            disabled('btn_post', '提交中...');
+        function submitEdit() {
+            disabled('btn_edit', '修改提交中...');
 
             const DOC = document;
 
@@ -82,41 +89,41 @@
             if (!TITLE.value || TITLE.value.length < 4) {
                 showAlert('标题，要求 4 个字以上');
                 TITLE.focus();
-                enabled('btn_post', '提交问题');
+                enabled('btn_edit', '确定修改');
                 return false;
             }
             DESCRIPTION.value = DESCRIPTION.value.trim();
             if (!DESCRIPTION.value || DESCRIPTION.value.length < 15) {
                 showAlert('请描述具体要提问的内容，至少 15 个字');
                 DESCRIPTION.focus();
-                enabled('btn_post', '提交问题');
+                enabled('btn_edit', '确定修改');
                 return false;
             }
             TAGS.value = TAGS.value.trim();
             if (!TAGS.value) {
                 showAlert('请填写相关的标签');
-                enabled('btn_post', '提交问题');
+                enabled('btn_edit', '确定修改');
                 TAGS.focus();
                 return false;
             }
 
-            axios.post('/ask', {
+            axios.put('/questions/@Model.Id', {
                 title: TITLE.value,
                 description: DESCRIPTION.value,
                 tags: TAGS.value.split(',')
             })
                 .then(function (resp) {
                     if (resp.status === 200) {
-                        showAlert('提问成功');
-                        location.href = 'questions/' + resp.data.data + `/${TITLE.value}`;
+                        //  showAlert('修改成功');
+                        location.href = `questions/@Model.Id/${TITLE.value}`;
                     } else {
                         showAlert(resp.data.message);
                     }
-                    enabled('btn_post', '提交问题');
+                    enabled('btn_edit', '确定修改');
                 })
                 .catch(function (err) {
                     catchErr(err);
-                    enabled('btn_post', '提交问题');
+                    enabled('btn_edit', '确定修改');
                 });
 
             return false;

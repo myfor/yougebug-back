@@ -19,13 +19,12 @@
             @if (Model.IsSelf)
             {
                 <div class="flex-grow-1 d-flex flex-row-reverse">
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            操作
+                    <div class="btn-group">
+                        <a class="btn btn-outline-primary" href="/questions/@Model.Id/edit">修改</a>
+                        <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="/questions/@Model.Id/edit">编辑</a>
-                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item text-danger" href="javascript:;" onclick="deleteQuestion(@Model.Id)">删除</a>
                         </div>
                     </div>

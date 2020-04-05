@@ -214,7 +214,7 @@ namespace Domain.Questions
             { 
                 Id = question.Id,
                 Title = question.Title,
-                Content = question.Description,
+                Content = question.Description.Trim(),
                 Tags = question.Tags.Split(',')
             };
         }

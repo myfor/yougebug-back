@@ -86,6 +86,8 @@ namespace yougebug_back.Controllers.Questions
         [HttpGet("{id}/edit")]
         public async Task<IActionResult> EditQuestionAsync(int id)
         {
+            SetTitle("修改提问");
+
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
             Domain.Questions.Results.QuestionEditInfo model = await question.GetEditInfoAsync(id);
             if (model == default)
@@ -97,7 +99,7 @@ namespace yougebug_back.Controllers.Questions
         /// 修改提问
         /// </summary>
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditQuestionAsync(int id, Domain.Questions.Models.EditQuestion model)
+        public async Task<IActionResult> EditQuestionAsync(int id, [FromBody]Domain.Questions.Models.EditQuestion model)
         {
             if (CurrentUser.IsEmpty())
                 return Pack(Domain.Resp.NeedLogin(Domain.Resp.NONE, "请重新登录"));
