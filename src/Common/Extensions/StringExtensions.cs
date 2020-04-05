@@ -48,7 +48,7 @@ namespace System
             {
                 result.AddRange(item.Split(separator, StringSplitOptions.RemoveEmptyEntries));
             }
-            return result.ToArray()
+            return result.ToArray();
         }
     }
 }

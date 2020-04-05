@@ -237,9 +237,14 @@ namespace Domain.Questions
             if (question.AskerId != model.CurrentUserId)
                 return Resp.Fault(Resp.NONE, "不能修改其他人的答案");
 
+            string tags = string.Join(',', model.Tags);
+
+            if (question.Title == model.Title && question.Description == model.Description && question.Tags == tags)
+                return Resp.Fault(Resp.NONE, "您还没有进行任何修改");
+
             question.Title = model.Title;
             question.Description = model.Description;
-            question.Tags = string.Join(',', model.Tags);
+            question.Tags = tags;
             //  如果不是启用的状态，修改后需要审核
             if (question.State != (int)QuestionState.Enabled)
                 question.State = (int)QuestionState.ToAudit;
