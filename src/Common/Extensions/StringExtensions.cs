@@ -32,5 +32,23 @@ namespace System
         {
             return value.Split(separator);
         }
+
+        /// <summary>
+        /// 在原来数组上重新分割
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="separator"></param>
+        /// <returns></returns>
+        public static string[] ReSplit(this string[] value, params char[] separator)
+        {
+            if (value.Length == 0)
+                return value;
+            List<string> result = new List<string>(value.Length);
+            foreach (string item in value)
+            {
+                result.AddRange(item.Split(separator, StringSplitOptions.RemoveEmptyEntries));
+            }
+            return result.ToArray()
+        }
     }
 }

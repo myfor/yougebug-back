@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Domain.Questions
 {
@@ -40,10 +40,7 @@ namespace Domain.Questions
                 if (Tags.Length <= 0)
                     return (false, "请输入至少一个问题标签");
 
-                for (int i = 0; i < Tags.Length; i++)
-                {
-                    Tags[i] = Tags[i].Trim();
-                }
+                Tags = Tags.ReSplit(',', '，');
 
                 return (true, "");
             }
@@ -81,10 +78,7 @@ namespace Domain.Questions
                 if (Tags.Length <= 0)
                     return (false, "请输入至少一个问题标签");
 
-                for (int i = 0; i < Tags.Length; i++)
-                {
-                    Tags[i] = Tags[i].Trim();
-                }
+                Tags = Tags.ReSplit(',', '，');
 
                 return (true, "");
             }
