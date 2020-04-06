@@ -20,9 +20,9 @@ namespace Domain.Questions.List
 
             //  获取的列表默认不包括移除的
             if (int.TryParse(pager.Params["state"] ?? "", out int state))
-                where.And(q => q.State == state);
+                where = where.And(q => q.State == state);
             else
-                where.And(q => q.State != (int)Question.QuestionState.Remove);
+                where = where.And(q => q.State != (int)Question.QuestionState.Remove);
 
             await using var db = new YGBContext();
 
