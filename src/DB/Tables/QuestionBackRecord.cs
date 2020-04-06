@@ -8,6 +8,7 @@ namespace DB.Tables
     public class QuestionBackRecord : Entity
     {
         public int QuestionId { get; set; }
+        public Question Question { get; set; }
         /// <summary>
         /// 描述
         /// </summary>

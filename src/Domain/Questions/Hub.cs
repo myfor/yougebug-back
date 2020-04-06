@@ -43,7 +43,7 @@ namespace Domain.Questions
         public async Task<Resp> GetListAsync(Paginator page, QuestionListSource source)
         {
             Domain.Questions.List.IGetQuestionListAsync questionList = source switch
-            { 
+            {
                 QuestionListSource.Admin => new List.FromAdmin(),
                 QuestionListSource.Client => new List.FromClient(),
                 QuestionListSource.ClientUserDetailPage => new List.FromUserSelf(),
@@ -126,22 +126,41 @@ namespace Domain.Questions
         /// <returns></returns>
         public async Task<Resp> DeleteQuestionAsync(int id, bool deep = false)
         {
-            using var db = new YGBContext();
+            await using var db = new YGBContext();
             var question = await db.Questions.FirstOrDefaultAsync(q => q.Id == id);
             if (question is null)
                 return Resp.Fault(Resp.NONE, "该问题不存在");
 
             if (deep)
             {
+                List<DB.Tables.Answer> answers = await db.Answers.AsNoTracking().Where(a => a.QuestionId == id).ToListAsync();
+                List<int> answersId = answers.Select(a => a.Id).ToList();
+                var backRecords = await db.AnswerBackRecords.AsNoTracking().Where(a => answersId.Contains(a.AnswerId)).ToListAsync();
+                var reportRecords = await db.AnswerReportRecords.AsNoTracking().Where(a => answersId.Contains(a.AnswerId)).ToListAsync();
+
+                db.AnswerBackRecords.RemoveRange(backRecords);
+                db.AnswerReportRecords.RemoveRange(reportRecords);
+                db.Answers.RemoveRange(answers);
+
+                var backQuestion = await db.QuestionBackRecords.AsNoTracking().Where(q => q.QuestionId == id).ToListAsync();
+                var reportQuestion = await db.QuestionReportRecords.AsNoTracking().Where(q => q.QuestionId == id).ToListAsync();
+
+                db.QuestionBackRecords.RemoveRange(backQuestion);
+                db.QuestionReportRecords.RemoveRange(reportQuestion);
                 db.Questions.Remove(question);
+
+                int changeCount = await db.SaveChangesAsync();
+                if (changeCount == answers.Count + 1 + backRecords.Count + reportRecords.Count + backQuestion.Count + reportQuestion.Count)
+                    return Resp.Success();
             }
             else
             {
                 question.State = (int)Question.QuestionState.Remove;
+                int changeCount = await db.SaveChangesAsync();
+                if (changeCount == 1)
+                    return Resp.Success(Resp.NONE);
             }
-            int changeCount = await db.SaveChangesAsync();
-            if (changeCount == 1)
-                return Resp.Success(Resp.NONE);
+
             return Resp.Fault(Resp.NONE, "删除失败");
         }
     }

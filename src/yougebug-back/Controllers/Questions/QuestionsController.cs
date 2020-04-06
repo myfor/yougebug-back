@@ -72,7 +72,7 @@ namespace yougebug_back.Controllers.Questions
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
             Domain.Resp resp = await question.GetDetailAsync(Domain.Share.Platform.Client, index, size);
             if (!resp.IsSuccess)
-                return Redirect(string.Format($"/questions/?{ALERT_WARNING}", "暂时不能查看该答案"));
+                return Redirect(string.Format($"/questions/?{ALERT_WARNING}", resp.Message));
             Domain.Questions.Results.QuestionDetail model = resp.GetData<Domain.Questions.Results.QuestionDetail>();
             //  是否为本人
             model.IsSelf = CurrentUser.Id == model.User.Id;
@@ -106,6 +106,17 @@ namespace yougebug_back.Controllers.Questions
             model.CurrentUserId = CurrentUser.Id;
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
             var r = await question.EditAsync(model);
+            return Pack(r);
+        }
+
+        /// <summary>
+        /// 删除一个提问
+        /// </summary>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var questionHub = new Domain.Questions.Hub();
+            Domain.Resp r = await questionHub.DeleteQuestionAsync(id, true);
             return Pack(r);
         }
 

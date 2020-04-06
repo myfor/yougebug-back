@@ -46,7 +46,7 @@ namespace System
             List<string> result = new List<string>(value.Length);
             foreach (string item in value)
             {
-                result.AddRange(item.Split(separator, StringSplitOptions.RemoveEmptyEntries));
+                result.AddRange(item.Trim().Split(separator, StringSplitOptions.RemoveEmptyEntries));
             }
             return result.ToArray();
         }
