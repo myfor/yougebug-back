@@ -16,6 +16,19 @@
         }
 
         /// <summary>
+        /// 所有答案列表的单项，只在管理员后台用
+        /// </summary>
+        public struct AnswerItem_All
+        {
+            public int Id { get; set; }
+            public string Content { get; set; }
+            public int Votes { get; set; }
+            public string CreateDate { get; set; }
+            public string AnswererName { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
+        }
+
+        /// <summary>
         /// 新的答案
         /// </summary>
         public struct PostAnswer

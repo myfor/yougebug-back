@@ -50,6 +50,7 @@ namespace Domain.Questions
             public string Description { get; set; }
             public string CreateDate { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
+            public int AnswersCount { get; set; }
         }
         /// <summary>
         /// 获取用户详情下的提问列表

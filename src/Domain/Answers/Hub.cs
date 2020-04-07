@@ -27,13 +27,13 @@ namespace Domain.Answers
             if (answerState != Answer.StandardStates.NoSelected)
                 whereStatement = whereStatement.And(a => a.State == (int)answerState);
 
-            using var db = new YGBContext();
+            await using var db = new YGBContext();
 
             int totalSize = await db.Answers.CountAsync(whereStatement);
             var list = await db.Answers.AsNoTracking()
                                          .Where(whereStatement)
                                          .Skip((index - 1) * size)
-                                                                    .Take(size)
+                                         .Take(size)
                                          .Include(a => a.Answerer)
                                          .ThenInclude(a => a.Avatar)
                                          .OrderByDescending(a => a.Votes)
@@ -58,6 +58,38 @@ namespace Domain.Answers
                                          })
                                          .ToListAsync();
             return (list, totalSize);
+        }
+
+        /// <summary>
+        /// 获取所有答案列表
+        /// </summary>
+        /// <param name="pager"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public async Task<Resp> GetAnswersList(Paginator pager, Answer.AnswerState state)
+        {
+            Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.State == (int)state;
+
+            await using var db = new YGBContext();
+
+            int totalSize = await db.Answers.CountAsync(whereStatement);
+            List<Models.AnswerItem_All> list = await db.Answers.AsNoTracking()
+                                                               .Where(whereStatement)
+                                                               .Skip(pager.Skip)
+                                                               .Take(pager.Size)
+                                                               .Include(a => a.Answerer)
+                                                               .OrderByDescending(a => a.CreateDate)
+                                                               .Select(a => new Models.AnswerItem_All
+                                                               {
+                                                                   Id = a.Id,
+                                                                   Content = a.Content.Overflow(10),
+                                                                   Votes = a.Votes,
+                                                                   CreateDate = a.CreateDate.ToStandardDateString(),
+                                                                   AnswererName = a.Answerer.Name,
+                                                                   State = Share.KeyValue<int, string>.Create(a.State, a.State.GetDescription<Answers.Answer.AnswerState>())
+                                                               })
+                                                               .ToListAsync();
+            return Resp.Success(list);
         }
 
         /// <summary>

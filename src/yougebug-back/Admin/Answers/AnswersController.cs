@@ -26,6 +26,19 @@ namespace yougebug_back.Admin.Answers
             return Pack(r);
         }
 
+        /*
+         * 获取被禁用的答案列表
+         */
+        [HttpGet("disabled")]
+        public async Task<IActionResult> GetDisabledListAsync(int index, int size)
+        {
+            Domain.Paginator pager = Domain.Paginator.New(index, size);
+
+            Domain.Answers.Hub answerHub = new Domain.Answers.Hub();
+            var r = await answerHub.GetAnswersList(pager, Domain.Answers.Answer.AnswerState.Disabled);
+            return Pack(r);
+        }
+
         /// <summary>
         /// 启用答案
         /// </summary>

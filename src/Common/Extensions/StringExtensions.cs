@@ -50,5 +50,13 @@ namespace System
             }
             return result.ToArray();
         }
+
+        /// <summary>
+        /// 只选取部分描述
+        /// </summary>
+        public static string Overflow(this string value, int count)
+        {
+            return value.Length > count ? value.Substring(0, count) + "..." : value;
+        }
     }
 }

@@ -32,13 +32,15 @@ namespace Domain.Questions.List
                                            .Take(pager.Size)
                                            .OrderByDescending(q => q.CreateDate)
                                            .Where(where)
+                                           .Include(q => q.Answers)
                                            .Select(q => new Results.QuestionItem_Admin
                                            {
                                                Id = q.Id,
                                                Title = q.Title,
                                                Description = q.Description.Length > 10 ? q.Description.Substring(0, 10) + "..." : q.Description,
                                                CreateDate = q.CreateDate.ToStandardString(),
-                                               State = Share.KeyValue<int, string>.Create(q.State, q.State.GetDescription<Question.QuestionState>())
+                                               State = Share.KeyValue<int, string>.Create(q.State, q.State.GetDescription<Question.QuestionState>()),
+                                               AnswersCount = q.Answers.Count
                                            })
                                            .ToListAsync();
             return Resp.Success(pager, "");
