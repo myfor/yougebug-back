@@ -68,7 +68,11 @@ namespace Domain.Answers
         /// <returns></returns>
         public async Task<Resp> GetAnswersList(Paginator pager, Answer.AnswerState state)
         {
+            string questionTitle = pager.Params["questionTitle"] ?? "";
+
             Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.State == (int)state;
+            if (!string.IsNullOrWhiteSpace(questionTitle))
+                whereStatement = whereStatement.And(q => q.Question.Title.Contains(questionTitle));
 
             await using var db = new YGBContext();
 
@@ -77,6 +81,7 @@ namespace Domain.Answers
                                                                .Where(whereStatement)
                                                                .Skip(pager.Skip)
                                                                .Take(pager.Size)
+                                                               .Include(a => a.Question)
                                                                .Include(a => a.Answerer)
                                                                .OrderByDescending(a => a.CreateDate)
                                                                .Select(a => new Models.AnswerItem_All

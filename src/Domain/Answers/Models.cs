@@ -21,6 +21,10 @@
         public struct AnswerItem_All
         {
             public int Id { get; set; }
+            /// <summary>
+            /// 所属的提问
+            /// </summary>
+            public string QuestionTitle { get; set; }
             public string Content { get; set; }
             public int Votes { get; set; }
             public string CreateDate { get; set; }

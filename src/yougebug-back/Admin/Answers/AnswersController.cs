@@ -27,15 +27,19 @@ namespace yougebug_back.Admin.Answers
         }
 
         /*
-         * 获取被禁用的答案列表
+         * 获取所有的答案列表
          */
-        [HttpGet("disabled")]
-        public async Task<IActionResult> GetDisabledListAsync(int index, int size)
+        [HttpGet("all")]
+        public async Task<IActionResult> GetDisabledListAsync(int index, int size, string questionTitle, int state)
         {
             Domain.Paginator pager = Domain.Paginator.New(index, size);
+            pager.Params = new Dictionary<string, string>
+            { 
+                ["questionTitle"] = questionTitle
+            };
 
             Domain.Answers.Hub answerHub = new Domain.Answers.Hub();
-            var r = await answerHub.GetAnswersList(pager, Domain.Answers.Answer.AnswerState.Disabled);
+            var r = await answerHub.GetAnswersList(pager, (Domain.Answers.Answer.AnswerState)state);
             return Pack(r);
         }
 

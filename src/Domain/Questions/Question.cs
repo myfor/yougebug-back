@@ -22,7 +22,7 @@ namespace Domain.Questions
             /// <summary>
             /// 退回是退回审核
             /// </summary>
-            [Description("退回")]
+            [Description("禁用")]
             Back = 0,
             [Description("启用")]
             Enabled,
