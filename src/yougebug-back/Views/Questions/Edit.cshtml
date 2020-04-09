@@ -33,7 +33,7 @@
                     <div class="border p-3" id="d_preview" style="display: none;"></div>
                 </div>
                 <div class="form-group">
-                    <label for="txt_tags">标签，请写上与问题相关联的标签</label>
+                    <label for="txt_tags">标签，请写上与问题相关联的标签，<strong>多个标签请使用逗号隔开</strong></label>
                     <input type="text" class="form-control" id="txt_tags" name="tags" value="@string.Join(',', Model.Tags)" required placeholder="写上合适的标签" />
                 </div>
                 <button type="button" class="btn btn-primary btn-block" id="btn_edit" onclick="submitEdit()">确定修改</button>
