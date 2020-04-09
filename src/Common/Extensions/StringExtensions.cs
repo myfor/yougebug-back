@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 
 namespace System
 {
@@ -56,7 +57,13 @@ namespace System
         /// </summary>
         public static string Overflow(this string value, int count)
         {
-            return value.Length > count ? value.Substring(0, count) + "..." : value;
+            if (value.Length <= count)
+                return value;
+
+            ReadOnlySpan<char> str = value.AsSpan(0, count);
+            StringBuilder result = new StringBuilder(count + 3);
+            result.Append(str).Append("...");
+            return result.ToString();
         }
     }
 }
