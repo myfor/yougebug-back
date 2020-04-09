@@ -9,7 +9,7 @@ namespace Domain.Administrators
     /// </summary>
     public class Models
     {
-        public struct LoginInfo
+        public class LoginInfo
         {
             public string Account { get; set; }
             public string Password { get; set; }

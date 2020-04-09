@@ -5,7 +5,7 @@
         /// <summary>
         /// 答案单项
         /// </summary>
-        public struct AnswerItem
+        public class AnswerItem
         {
             public int Id { get; set; }
             public string Content { get; set; }
@@ -18,7 +18,7 @@
         /// <summary>
         /// 所有答案列表的单项，只在管理员后台用
         /// </summary>
-        public struct AnswerItem_All
+        public class AnswerItem_All
         {
             public int Id { get; set; }
             /// <summary>
@@ -35,7 +35,7 @@
         /// <summary>
         /// 新的答案
         /// </summary>
-        public struct PostAnswer
+        public class PostAnswer
         {
             public string Content { get; set; }
             public string NickName { get; set; }

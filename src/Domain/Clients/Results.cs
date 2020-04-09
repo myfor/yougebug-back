@@ -7,7 +7,7 @@ namespace Domain.Clients
         /// <summary>
         /// 登录结果信息
         /// </summary>
-        public struct LoggedInInfo
+        public class LoggedInInfo
         {
             public string Avatar { get; set; }
             public string Name { get; set; }
@@ -26,7 +26,7 @@ namespace Domain.Clients
         /// <summary>
         /// 客户单项
         /// </summary>
-        public struct ClientItem
+        public class ClientItem
         {
             public int Id { get; set; }
             public string UserName { get; set; }
@@ -35,7 +35,7 @@ namespace Domain.Clients
             public Share.KeyValue<int, string> State { get; set; }
         }
 
-        public struct ClientDetail
+        public class ClientDetail
         {
             public string UserName { get; set; }
             public string Email { get; set; }

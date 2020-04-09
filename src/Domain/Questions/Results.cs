@@ -9,7 +9,7 @@ namespace Domain.Questions
         /// <summary>
         /// 客户端的问题列表
         /// </summary>
-        public struct QuentionItem_Client
+        public class QuentionItem_Client
         {
             public int Id { get; set; }
             public string Title { get; set; }
@@ -43,7 +43,7 @@ namespace Domain.Questions
         /// <summary>
         /// 管理端问题列表单项
         /// </summary>
-        public struct QuestionItem_Admin
+        public class QuestionItem_Admin
         {
             public int Id { get; set; }
             public string Title { get; set; }
@@ -55,7 +55,7 @@ namespace Domain.Questions
         /// <summary>
         /// 获取用户详情下的提问列表
         /// </summary>
-        public struct QuestionItem_UserSelf
+        public class QuestionItem_UserSelf
         {
             public int Id { get; set; }
             /// <summary>
@@ -72,7 +72,7 @@ namespace Domain.Questions
         /// <summary>
         /// 问题的详情
         /// </summary>
-        public struct QuestionDetail
+        public class QuestionDetail
         {
             /// <summary>
             /// 是否为本人

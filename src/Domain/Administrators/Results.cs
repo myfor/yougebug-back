@@ -4,7 +4,7 @@ namespace Domain.Administrators
 {
     public class Results
     {
-        public struct LoggedInInfo
+        public class LoggedInInfo
         {
             [System.Text.Json.Serialization.JsonIgnore]
             public int Id { get; set; }

@@ -4,7 +4,7 @@ namespace Domain.Clients
 {
     public class Models
     {
-        public struct LoginInfo
+        public class LoginInfo
         {
             public string Account { get; set; }
             public string Password { get; set; }
@@ -23,7 +23,7 @@ namespace Domain.Clients
             }
         }
 
-        public struct UserIntro
+        public class UserIntro
         {
             public int Id { get; set; }
             public string Account { get; set; }
@@ -32,7 +32,7 @@ namespace Domain.Clients
         /// <summary>
         /// 用户注册
         /// </summary>
-        public struct RegisterInfo
+        public class RegisterInfo
         {
             public string Email { get; set; }
             public string Password { get; set; }
@@ -52,7 +52,7 @@ namespace Domain.Clients
         /// <summary>
         /// 修改用户信息参数
         /// </summary>
-        public struct UserModify
+        public class UserModify
         {
             public string UserName { get; set; }
             public string Email { get; set; }
@@ -83,7 +83,7 @@ namespace Domain.Clients
         /// <summary>
         /// 用户修改密码
         /// </summary>
-        public struct ChangePassword
+        public class ChangePassword
         {
             /// <summary>
             /// 旧密码

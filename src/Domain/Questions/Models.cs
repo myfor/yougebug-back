@@ -8,7 +8,7 @@ namespace Domain.Questions
         /// <summary>
         /// 提一个提问要的参数
         /// </summary>
-        public struct PostQuestion
+        public class PostQuestion
         {
             /// <summary>
             /// 问题标题
@@ -49,7 +49,7 @@ namespace Domain.Questions
         /// <summary>
         /// 修改一个提问要的参数
         /// </summary>
-        public struct EditQuestion
+        public class EditQuestion
         {
             /// <summary>
             /// 问题标题
@@ -87,7 +87,7 @@ namespace Domain.Questions
         /// <summary>
         /// 举报一个问题需要的参数
         /// </summary>
-        public struct NewReport
+        public class NewReport
         {
             public string Reason { get; set; }
             public string Description { get; set; }
