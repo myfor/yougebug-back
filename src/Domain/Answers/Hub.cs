@@ -77,24 +77,26 @@ namespace Domain.Answers
             await using var db = new YGBContext();
 
             int totalSize = await db.Answers.CountAsync(whereStatement);
-            List<Models.AnswerItem_All> list = await db.Answers.AsNoTracking()
-                                                               .Where(whereStatement)
-                                                               .Skip(pager.Skip)
-                                                               .Take(pager.Size)
-                                                               .Include(a => a.Question)
-                                                               .Include(a => a.Answerer)
-                                                               .OrderByDescending(a => a.CreateDate)
-                                                               .Select(a => new Models.AnswerItem_All
-                                                               {
-                                                                   Id = a.Id,
-                                                                   Content = a.Content.Overflow(10),
-                                                                   Votes = a.Votes,
-                                                                   CreateDate = a.CreateDate.ToStandardDateString(),
-                                                                   AnswererName = a.Answerer.Name,
-                                                                   State = Share.KeyValue<int, string>.Create(a.State, a.State.GetDescription<Answers.Answer.AnswerState>())
-                                                               })
-                                                               .ToListAsync();
-            return Resp.Success(list);
+            pager.TotalRows = await db.Answers.CountAsync(whereStatement);
+            pager.List = await db.Answers.AsNoTracking()
+                                         .Where(whereStatement)
+                                         .Skip(pager.Skip)
+                                         .Take(pager.Size)
+                                         .Include(a => a.Question)
+                                         .Include(a => a.Answerer)
+                                         .OrderByDescending(a => a.CreateDate)
+                                         .Select(a => new Models.AnswerItem_All
+                                         {
+                                             Id = a.Id,
+                                             QuestionTitle = a.Question.Title,
+                                             Content = a.Content.Overflow(10),
+                                             Votes = a.Votes,
+                                             CreateDate = a.CreateDate.ToStandardDateString(),
+                                             AnswererName = a.Answerer.Name,
+                                             State = Share.KeyValue<int, string>.Create(a.State, a.State.GetDescription<Answers.Answer.AnswerState>())
+                                         })
+                                         .ToListAsync();
+            return Resp.Success(pager);
         }
 
         /// <summary>
