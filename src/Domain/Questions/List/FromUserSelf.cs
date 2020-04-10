@@ -22,11 +22,11 @@ namespace Domain.Questions.List
 
         public async Task<Resp> GetListAsync(Paginator pager)
         {
-            Expression<Func<DB.Tables.Question, bool>> whereStatement;
+            Expression<Func<DB.Tables.Question, bool>> whereStatement = q => q.State != (int)Question.QuestionState.Remove;
 
             //  要获取的人的ID
             if (int.TryParse(pager.Params["userId"] ?? "", out int userId))
-                whereStatement = q => q.AskerId == userId;
+                whereStatement = whereStatement.And(q => q.AskerId == userId);
             else
                 return Resp.Fault(Resp.NONE, "");
 

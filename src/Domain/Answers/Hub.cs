@@ -21,7 +21,7 @@ namespace Domain.Answers
             return Resp.Success(pager, "");
         }
 
-        internal async Task<(List<Answers.Models.AnswerItem>, int)> GetAnswersAsync(int questionId, int index, int size, Answer.StandardStates answerState = Answer.StandardStates.NoSelected)
+        internal async Task<(List<Answers.Results.AnswerItem>, int)> GetAnswersAsync(int questionId, int index, int size, Answer.StandardStates answerState = Answer.StandardStates.NoSelected)
         {
             Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.QuestionId == questionId;
             if (answerState != Answer.StandardStates.NoSelected)
@@ -37,7 +37,7 @@ namespace Domain.Answers
                                          .Include(a => a.Answerer)
                                          .ThenInclude(a => a.Avatar)
                                          .OrderByDescending(a => a.Votes)
-                                         .Select(a => new Models.AnswerItem
+                                         .Select(a => new Results.AnswerItem
                                          {
                                              Id = a.Id,
                                              Votes = a.Votes,
@@ -85,7 +85,7 @@ namespace Domain.Answers
                                          .Include(a => a.Question)
                                          .Include(a => a.Answerer)
                                          .OrderByDescending(a => a.CreateDate)
-                                         .Select(a => new Models.AnswerItem_All
+                                         .Select(a => new Results.AnswerItem_All
                                          {
                                              Id = a.Id,
                                              QuestionTitle = a.Question.Title,

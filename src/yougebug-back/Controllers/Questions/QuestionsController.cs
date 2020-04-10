@@ -96,6 +96,24 @@ namespace yougebug_back.Controllers.Questions
         }
 
         /// <summary>
+        /// 追问提问
+        /// </summary>
+        [HttpPost("{id}/comment")]
+        public async Task<IActionResult> PostComment(int id, [FromBody]string comment)
+        {
+            //  必须登录
+            if (CurrentUser.IsEmpty())
+                return Pack(Domain.Resp.NeedLogin());
+
+            if (string.IsNullOrWhiteSpace(comment))
+                return Pack(Domain.Resp.Fault(Domain.Resp.NONE, "追问不能未空"));
+
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Resp r = await question.AddCommentAsyns(CurrentUser.Id, comment);
+            return Pack(r);
+        }
+
+        /// <summary>
         /// 修改提问
         /// </summary>
         [HttpPut("{id}")]

@@ -85,6 +85,29 @@ namespace Domain.Answers
         }
 
         /// <summary>
+        /// 追问
+        /// </summary>
+        public async Task<Resp> AddCommentAsync(int commenterId, string content)
+        {
+            await using var db = new YGBContext();
+
+            if (!await db.Answers.AnyAsync(q => q.Id == Id))
+                return Resp.Fault(Resp.NONE, NOT_EXIST_ANSWER);
+
+            DB.Tables.AnswerComment comment = new DB.Tables.AnswerComment
+            {
+                AnswerId = Id,
+                CommenterId = commenterId,
+                Content = content
+            };
+            db.AnswerComments.Add(comment);
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 1)
+                return Resp.Success();
+            return Resp.Fault(Resp.NONE, "追问失败");
+        }
+
+        /// <summary>
         /// 通过一个答案
         /// </summary>
         /// <returns></returns>

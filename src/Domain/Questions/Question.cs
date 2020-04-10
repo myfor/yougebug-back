@@ -100,6 +100,29 @@ namespace Domain.Questions
             return Resp.Fault(Resp.NONE, "操作失败");
         }
 
+        /// <summary>
+        /// 追问
+        /// </summary>
+        public async Task<Resp> AddCommentAsyns(int commenterId, string content)
+        {
+            await using var db = new YGBContext();
+
+            if (!await db.Questions.AnyAsync(q => q.Id == Id))
+                return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
+
+            DB.Tables.QuestionComment comment = new DB.Tables.QuestionComment
+            { 
+                QuestionId = Id,
+                CommenterId = commenterId,
+                Content = content
+            };
+            db.QuestionComments.Add(comment);
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 1)
+                return Resp.Success();
+            return Resp.Fault(Resp.NONE, "追问失败");
+        }
+
         public async Task<Resp> EnabledAsync()
         {
             int enabledValue = (int)QuestionState.Enabled;

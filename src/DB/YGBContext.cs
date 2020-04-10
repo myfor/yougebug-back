@@ -20,5 +20,7 @@ namespace DB
         public DbSet<Tables.AnswerBackRecord> AnswerBackRecords { get; set; }
         public DbSet<Tables.QuestionReportRecord> QuestionReportRecords { get; set; }
         public DbSet<Tables.AnswerReportRecord> AnswerReportRecords { get; set; }
+        public DbSet<Tables.AnswerComment> AnswerComments { get; set; }
+        public DbSet<Tables.QuestionComment> QuestionComments { get; set; }
     }
 }
