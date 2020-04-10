@@ -53,14 +53,14 @@ namespace Domain.Answers
         /// 举报这个回答
         /// </summary>
         /// <returns></returns>
-        public async Task<Resp> ReportAsync(string reason, string description)
+        public async Task<Resp> ReportAsync(string content, string description)
         {
             /*
              * 举报这个回答，变成待审核状态
              * 添加一条回答举报记录
              */
 
-            if (string.IsNullOrWhiteSpace(reason))
+            if (string.IsNullOrWhiteSpace(content))
                 return Resp.Fault(Resp.NONE, "请填写举报原因");
 
             CheckEmpty();
@@ -75,7 +75,7 @@ namespace Domain.Answers
             DB.Tables.AnswerReportRecord record = new DB.Tables.AnswerReportRecord
             {
                 AnswerId = Id,
-                Reason = reason,
+                Content = content,
                 Description = description ?? ""
             };
             db.AnswerReportRecords.Add(record);

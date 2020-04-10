@@ -92,7 +92,8 @@ CREATE TABLE `AnswerReportRecords` (
   `ModifyId` int(11) NOT NULL,
   `ModifyDate` datetime(6) NOT NULL,
   `AnswerId` int(11) NOT NULL,
-  `Reason` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
+  `Content` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+  `IsHandled` tinyint(1) not null,
   `Description` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `IX_AnswerReportRecords_AnswerId` (`AnswerId`)
@@ -225,7 +226,8 @@ CREATE TABLE `QuestionReportRecords` (
   `ModifyId` int(11) NOT NULL,
   `ModifyDate` datetime(6) NOT NULL,
   `QuestionId` int(11) NOT NULL,
-  `Reason` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
+  `Content` varchar(256) CHARACTER SET utf8mb4 NOT NULL,
+  `IsHandled` tinyint(1) not null,
   `Description` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `IX_QuestionReportRecords_QuestionId` (`QuestionId`)

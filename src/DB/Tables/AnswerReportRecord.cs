@@ -13,8 +13,9 @@ namespace DB.Tables
         /// <summary>
         /// 举报原因
         /// </summary>
-        [Required, StringLength(64)]
-        public string Reason { get; set; } = "";
+        [Required, StringLength(256)]
+        public string Content { get; set; } = "";
+        public bool IsHandled { get; set; } = false;
         /// <summary>
         /// 描述
         /// </summary>

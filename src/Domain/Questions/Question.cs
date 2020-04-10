@@ -69,14 +69,14 @@ namespace Domain.Questions
         /// 举报这个提问
         /// </summary>
         /// <returns></returns>
-        public async Task<Resp> ReportAsync(string reason, string description)
+        public async Task<Resp> ReportAsync(string content, string description)
         {
             /*
              * 举报这个提问，变成待审核状态
              * 添加一条提问举报记录
              */
 
-            if (string.IsNullOrWhiteSpace(reason))
+            if (string.IsNullOrWhiteSpace(content))
                 return Resp.Fault(Resp.NONE, "请填写举报原因");
 
             CheckEmpty();
@@ -91,7 +91,7 @@ namespace Domain.Questions
             DB.Tables.QuestionReportRecord record = new DB.Tables.QuestionReportRecord
             {
                 QuestionId = Id,
-                Reason = reason,
+                Content = content,
                 Description = description ?? ""
             };
             db.QuestionReportRecords.Add(record);
