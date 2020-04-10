@@ -7,14 +7,24 @@ namespace Domain
 {
     public class Paginator
     {
-        public static Paginator New(int index, int size)
+        public static Paginator New(int index, int size, int capacity = 0)
         {
             return new Paginator
             {
                 Index = index <= 0 ? 1 : index,
                 Size = size <= 0 ? DEFAULT_SIZE : size,
-                Params = new Dictionary<string, string>(1)
+                Params = new Dictionary<string, string>(capacity)
             };
+        }
+        /// <summary>
+        /// 获取或设置参数
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string this[string key]
+        {
+            get => Params[key];
+            set => Params[key] = value;
         }
         /// <summary>
         /// 当前页码

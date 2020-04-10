@@ -34,7 +34,11 @@ namespace Domain.Questions
             /// <summary>
             /// 首页最新
             /// </summary>
-            HomePageNewest
+            HomePageNewest,
+            /// <summary>
+            /// 后台举报列表
+            /// </summary>
+            Reports
         }
 
         /// <summary>
@@ -48,6 +52,7 @@ namespace Domain.Questions
                 QuestionListSource.Client => new List.FromClient(),
                 QuestionListSource.ClientUserDetailPage => new List.FromUserSelf(),
                 QuestionListSource.HomePageNewest => new List.FromHomePage(),
+                QuestionListSource.Reports => new List.FromReport(),
                 _ => throw new ArgumentException(),
             };
             return await questionList.GetListAsync(page);

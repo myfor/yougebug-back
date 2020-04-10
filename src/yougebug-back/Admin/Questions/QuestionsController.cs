@@ -37,6 +37,18 @@ namespace yougebug_back.Admin.Questions
         }
 
         /// <summary>
+        /// 获取举报列表
+        /// </summary>
+        [HttpGet("reports")]
+        public async Task<IActionResult> GetReportQuestionList(int index, int size, string title)
+        {
+            Paginator pager = Paginator.New(index, size, 1);
+            pager["title"] = string.IsNullOrWhiteSpace(title) ? "" : title;
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// 获取详情
         /// </summary>
         /// <returns></returns>

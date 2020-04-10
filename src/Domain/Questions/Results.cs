@@ -102,5 +102,15 @@ namespace Domain.Questions
             public string Content { get; set; }
             public string[] Tags { get; set; }
         }
+
+        /// <summary>
+        /// 举报列表
+        /// </summary>
+        public class ReportItem
+        {
+            public int QuestionId { get; set; }
+            public string Title { get; set; }
+            public int ReportCount { get; set; }
+        }
     }
 }
