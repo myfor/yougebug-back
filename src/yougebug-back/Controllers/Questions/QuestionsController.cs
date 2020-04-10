@@ -106,10 +106,27 @@ namespace yougebug_back.Controllers.Questions
                 return Pack(Domain.Resp.NeedLogin());
 
             if (string.IsNullOrWhiteSpace(comment))
-                return Pack(Domain.Resp.Fault(Domain.Resp.NONE, "追问不能未空"));
+                return Pack(Domain.Resp.Fault(Domain.Resp.NONE, "追问不能为空"));
 
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
             Domain.Resp r = await question.AddCommentAsyns(CurrentUser.Id, comment);
+            return Pack(r);
+        }
+
+        /// <summary>
+        /// 举报
+        /// </summary>
+        [HttpPost("{id}/report")]
+        public async Task<IActionResult> PostReportAsync(int id, [FromBody]Domain.Questions.Models.NewReport model)
+        {
+            int reporterId;
+            if (CurrentUser.IsEmpty())
+                reporterId = 0;
+            else
+                reporterId = CurrentUser.Id;
+
+            var question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Resp r = await question.ReportAsync(model.Reason, model.Description, reporterId);
             return Pack(r);
         }
 

@@ -69,10 +69,10 @@ namespace Domain.Questions
         /// 举报这个提问
         /// </summary>
         /// <returns></returns>
-        public async Task<Resp> ReportAsync(string content, string description)
+        public async Task<Resp> ReportAsync(string content, string description, int reporterId)
         {
             /*
-             * 举报这个提问，变成待审核状态
+             * 举报这个提问
              * 添加一条提问举报记录
              */
 
@@ -82,20 +82,19 @@ namespace Domain.Questions
             CheckEmpty();
 
             using var db = new YGBContext();
-            DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
+            DB.Tables.Question question = await db.Questions.AsNoTracking().FirstOrDefaultAsync(q => q.Id == Id);
             if (question is null)
                 return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
-            if (question.State != (int)QuestionState.ToAudit)
-                question.State = (int)QuestionState.ToAudit;
 
             DB.Tables.QuestionReportRecord record = new DB.Tables.QuestionReportRecord
             {
                 QuestionId = Id,
                 Content = content,
-                Description = description ?? ""
+                Description = description ?? "",
+                CreatorId = reporterId
             };
             db.QuestionReportRecords.Add(record);
-            if (await db.SaveChangesAsync() > 0)
+            if (await db.SaveChangesAsync() == 1)
                 return Resp.Success(Resp.NONE);
             return Resp.Fault(Resp.NONE, "操作失败");
         }

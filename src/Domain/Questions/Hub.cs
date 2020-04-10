@@ -137,20 +137,24 @@ namespace Domain.Questions
                 List<int> answersId = answers.Select(a => a.Id).ToList();
                 var backRecords = await db.AnswerBackRecords.AsNoTracking().Where(a => answersId.Contains(a.AnswerId)).ToListAsync();
                 var reportRecords = await db.AnswerReportRecords.AsNoTracking().Where(a => answersId.Contains(a.AnswerId)).ToListAsync();
+                var comments = await db.AnswerComments.AsNoTracking().Where(a => answersId.Contains(a.AnswerId)).ToListAsync();
 
                 db.AnswerBackRecords.RemoveRange(backRecords);
+                db.AnswerComments.RemoveRange(comments);
                 db.AnswerReportRecords.RemoveRange(reportRecords);
                 db.Answers.RemoveRange(answers);
 
                 var backQuestion = await db.QuestionBackRecords.AsNoTracking().Where(q => q.QuestionId == id).ToListAsync();
                 var reportQuestion = await db.QuestionReportRecords.AsNoTracking().Where(q => q.QuestionId == id).ToListAsync();
+                var commentQuestion = await db.QuestionComments.AsNoTracking().Where(q => q.QuestionId == id).ToListAsync();
 
+                db.QuestionComments.RemoveRange(commentQuestion);
                 db.QuestionBackRecords.RemoveRange(backQuestion);
                 db.QuestionReportRecords.RemoveRange(reportQuestion);
                 db.Questions.Remove(question);
 
                 int changeCount = await db.SaveChangesAsync();
-                if (changeCount == answers.Count + 1 + backRecords.Count + reportRecords.Count + backQuestion.Count + reportQuestion.Count)
+                if (changeCount == answers.Count + 1 + backRecords.Count + reportRecords.Count + comments.Count + backQuestion.Count + reportQuestion.Count + commentQuestion.Count)
                     return Resp.Success();
             }
             else

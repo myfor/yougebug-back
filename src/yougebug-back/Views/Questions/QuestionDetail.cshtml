@@ -92,14 +92,23 @@
 
         <div class="mb-3 d-flex flex-column">
             <div class="d-flex flex-row-reverse">
-                <button class="btn btn-link text-danger small" type="button" data-toggle="collapse" data-target="#d-reportBox" aria-expanded="false" aria-controls="d-reportBox" onclick="showReportBox()">举报</button>
+                <button class="btn btn-link text-danger small" type="button" id="btn-collapse-report" data-toggle="collapse" data-target="#d-reportBox" aria-expanded="false" aria-controls="d-reportBox" onclick="showReportBox()">举报</button>
                 <button class="btn btn-link text-secondary small" type="button" data-toggle="collapse" data-target="#d-commentBox" aria-expanded="false" aria-controls="d-commentBox" onclick="showCommentBox()">追问</button>
             </div>
 
             <div class="collapse multi-collapse" id="d-reportBox">
                 <!-- 举报框 -->
                 <div class="card card-body">
-                    <textarea class="form-control" rows="3" placeholder="请输入举报理由"></textarea>
+                    <div class="input-group mb-1">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="sel-reportReason">举报理由</label>
+                        </div>
+                        <select class="custom-select" id="sel-reportReason">
+                            <option selected value="提问不明确">提问不明确</option>
+                            <option value="无关内容">无关内容</option>
+                        </select>
+                    </div>
+                    <textarea class="form-control" id="txt-content" rows="2" placeholder="请输入具体举报描述"></textarea>
                     <button class="btn btn-danger" id="btn_report" onclick="report()">提交举报</button>
                 </div>
             </div>
@@ -110,6 +119,11 @@
                     <button class="btn btn-primary" id="btn_comment" onclick="comment()">提交追问</button>
                 </div>
             </div>
+        </div>
+
+        <div>
+            <!-- 追问 -->
+
         </div>
 
         <div class="d-flex flex-column">
@@ -214,10 +228,9 @@
 </div>
 @section Scripts {
     <script src="~/lib/marked/marked.min.js"></script>
-    <script src="~/lib/axios/axios.min.js"></script>
     <script>
         $(function () {
-            if (_isLoggedCache())
+            if (getLoggedCache())
                 document.getElementById('d_nickName').setAttribute('hidden', 'hidden');
 
             document.getElementById('a_login').href = `/login?${GO_TO}=${location.pathname + location.search}`;
@@ -330,7 +343,8 @@
             axios.delete('/questions/' + id)
                 .then(function (resp) {
                     if (resp.status === 200) {
-                        history.back();
+                        //  showAlert('删除成功', '', 'javascript:history.back();');
+                        location.href = `/questions?${ALERT_PRIMARY}=成功删除提问`;
                     } else {
                         showAlert(resp.data.message);
                     }
@@ -359,7 +373,31 @@
         }
 
         function report() {
+            disabled('btn_report', '举报中...');
 
+            const DATA = {
+                reason: $('#sel-reportReason').val().trim(),
+                description: $('#txt-content').val().trim()
+            };
+
+            axios.post('/questions/@Model.Id/report', DATA)
+                .then(function (resp) {
+                    if (resp.status === 200) {
+                        $('#d-reportBox').collapse('hide');
+                        $('#btn-collapse-report').html('举报成功');
+                        disabled('btn-collapse-report');
+                    } else {
+                        showAlert(resp.data.message);
+                    }
+                    enabled('btn_report', '举报');
+                })
+                .catch(function (err) {
+                    if (err.response.status === 401) {
+                        setLogout();
+                        showAlert('登录超时，请重新登录或匿名提交');
+                    }
+                    enabled('btn_report', '举报');
+                });
         }
 
         function comment() {
