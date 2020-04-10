@@ -69,26 +69,33 @@
         <div class="small">联系：mrmyfor@outlook.com</div>
     </blockquote>
 
-    <script src="~/js/common.js"></script>
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/popper.min.js"></script>
     <script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.min.js"></script>
     <script src="~/lib/axios/axios.min.js"></script>
+    <script src="~/js/common.js"></script>
 
     <script>
         $(function () {
             checkAlert();
 
-            const current = isLogged();
-            if (current) {
-                document.getElementById('d-logout').removeAttribute('hidden');
-                const DATA = JSON.parse(current);
-                document.getElementById('a_profile').href = `/${DATA.name}`;
-            }
-            else
-                document.getElementById('d-login').removeAttribute('hidden');
+            isLoggedAsync().then(current => {
+                //  只在这个地方赋值，其他地方直接用 getLoggedCache() 检查登录
+                if (current) {
+                    setLoggedCache(current);
+                    document.getElementById('d-logout').removeAttribute('hidden');
+                    const DATA = JSON.parse(current);
+                    document.getElementById('a_profile').href = `/${DATA.name}`;
+                }
+                else {
+                    setLoggedCache('');
+                    document.getElementById('d-login').removeAttribute('hidden');
+                }
 
-            setUserAvatar(current);
+                setUserAvatar(current);
+            });
+
+
         });
 
         function logout() {

@@ -217,7 +217,7 @@
     <script src="~/lib/axios/axios.min.js"></script>
     <script>
         $(function () {
-            if (isLogged())
+            if (_isLoggedCache())
                 document.getElementById('d_nickName').setAttribute('hidden', 'hidden');
 
             document.getElementById('a_login').href = `/login?${GO_TO}=${location.pathname + location.search}`;
@@ -296,12 +296,11 @@
         }
 
         function newAnswer() {
-            const IS_LOGGED = isLogged() ? true : false;
 
             const NEW_ANSWER = {
                 content: $('#txt_answer').val(),
                 nickName: $('#txt_nickName').val().trim(),
-                isLogin: IS_LOGGED
+                isLogin: getLoggedCache()
             };
 
             disabled('btn_postAnswer', '提交中');

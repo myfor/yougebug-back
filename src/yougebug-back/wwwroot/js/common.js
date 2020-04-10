@@ -73,18 +73,41 @@ function enabled(selector, value) {
         ELE.value = value;
 }
 
+//  当前是否已经登录的缓存
+//  获取当前用户是否登录的缓存
+function getLoggedCache() {
+    return localStorage.getItem('_LoggedCache_');
+}
+//  设置当前用户是否登录的缓存
+function setLoggedCache(loggedCache) {
+    localStorage.setItem('_LoggedCache_', loggedCache);
+}
 const LOGGED_KEY = '____';
 //  当前是否有登录
-function isLogged() {
-    const IS_LOGGED = document.cookie.indexOf('8d0de8f8-61ef-4c56-a23e-de69a5f41681') !== -1;
+async function isLoggedAsync() {
+    let _isLogged;
+
+    await axios.get('/islogged')
+        .then(function (resp) {
+            if (resp.status === 200) {
+                _isLogged = true;
+            } else {
+                _isLogged = false;
+            }
+        })
+        .catch(function (err) {
+            catchErr(err);
+            _isLogged = false;
+        });
+
     const current = localStorage.getItem(LOGGED_KEY);
-    if (IS_LOGGED && current)
+    if (_isLogged && current)
         return current;
     return null;
 }
 //  登出
 function setLogout() {
-    localStorage.removeItem('____');
+    localStorage.removeItem(LOGGED_KEY);
     location.reload();
 }
 //  设置登录状态
@@ -96,7 +119,7 @@ function setLogged(value) {
 //  重设登录状态
 //  name 是名字
 function reSetLogged(name) {
-    const CURRENT = isLogged();
+    const CURRENT = getLoggedCache();
     if (CURRENT) {
         const DATA = JSON.parse(CURRENT);
         DATA.name = name;
@@ -105,7 +128,7 @@ function reSetLogged(name) {
 }
 
 function setUserAvatar(value) {
-    if (!isLogged())
+    if (!getLoggedCache())
         return;
     const INFO = JSON.parse(value);
     const AVATAR = $('#img_avatar');

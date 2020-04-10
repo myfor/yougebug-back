@@ -15,6 +15,18 @@ namespace yougebug_back.Controllers
         }
 
         /// <summary>
+        /// 当前用户是否已登陆
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("islogged")]
+        public IActionResult IsLogged()
+        {
+            if (!CurrentUser.IsEmpty())
+                return Pack(Resp.Success());
+            return Pack(Resp.Fault());
+        }
+
+        /// <summary>
         /// 登录页面
         /// </summary>
         [HttpGet("login")]
