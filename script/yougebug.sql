@@ -133,6 +133,27 @@ CREATE TABLE `Answers` (
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `answercomments`
+--
+
+DROP TABLE IF EXISTS `AnswerComments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `AnswerComments` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `State` int(11) NOT NULL,
+  `CreatorId` int(11) NOT NULL,
+  `CreateDate` datetime(6) NOT NULL,
+  `ModifyId` int(11) NOT NULL,
+  `ModifyDate` datetime(6) NOT NULL,
+  `AnswerId` int(11) NOT NULL,
+  `Content` varchar(1024) CHARACTER SET utf8mb4 NOT NULL,
+  `CommenterId` int(11) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `IX_AnswerComments_AnswerId` (`AnswerId`),
+  KEY `IX_AnswerComments_CommenterId` (`CommenterId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `Files`
@@ -246,6 +267,31 @@ CREATE TABLE `Questions` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
+--
+-- Table structure for table `QuestionComments`
+--
+
+DROP TABLE IF EXISTS `QuestionComments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `QuestionComments`(
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `State` int(11) NOT NULL,
+  `CreatorId` int(11) NOT NULL,
+  `CreateDate` datetime(6) NOT NULL,
+  `ModifyId` int(11) NOT NULL,
+  `ModifyDate` datetime(6) NOT NULL,
+  `QuestionId` int(11) NOT NULL,
+  `Content` varchar(1024) CHARACTER SET utf8mb4 NOT NULL,
+  `CommenterId` int(11) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `IX_QuestionComments_CommenterId` (`CommenterId`),
+  KEY `IX_QuestionComments_QuestionId` (`QuestionId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 
 --
 -- Table structure for table `Tags`

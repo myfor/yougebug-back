@@ -115,6 +115,7 @@ function setLogout() {
 function setLogged(value) {
     localStorage.setItem(LOGGED_KEY, value);
     setUserAvatar(value);
+    setLoggedCache(value);
 }
 //  重设登录状态
 //  name 是名字
