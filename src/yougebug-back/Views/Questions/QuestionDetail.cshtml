@@ -313,7 +313,7 @@
             const NEW_ANSWER = {
                 content: $('#txt_answer').val(),
                 nickName: $('#txt_nickName').val().trim(),
-                isLogin: getLoggedCache()
+                isLogin: getLoggedCache() ? true : false
             };
 
             disabled('btn_postAnswer', '提交中');
