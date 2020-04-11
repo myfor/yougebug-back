@@ -25,12 +25,9 @@ namespace yougebug_back.Admin.Questions
                 管理员获取的问题列表，不包括被移除的，移除的列表在回收站中查看
              */
 
-            Paginator pager = Paginator.New(index, size);
-            pager.Params = new Dictionary<string, string>
-            {
-                ["search"] = search,
-                ["state"] = state.ToString()
-            };
+            Paginator pager = Paginator.New(index, size, 2);
+            pager["search"] = search;
+            pager["state"] = state.ToString();
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
             Resp resp = await hub.GetListAsync(pager, Domain.Questions.Hub.QuestionListSource.Admin);

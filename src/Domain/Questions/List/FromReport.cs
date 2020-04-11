@@ -33,7 +33,7 @@ namespace Domain.Questions.List
                                            .Include(q => q.QuestionReportRecords)
                                            .OrderByDescending(q => q.CreateDate)
                                            .Where(whereStatement)
-                                           .Select(q => new Results.ReportItem 
+                                           .Select(q => new Results.ReportQuestionItem 
                                            {
                                                QuestionId = q.Id,
                                                Title = q.Title,

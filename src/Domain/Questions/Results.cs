@@ -104,14 +104,23 @@ namespace Domain.Questions
         }
 
         /// <summary>
-        /// 举报列表
+        /// 举报的提问列表
         /// </summary>
-        public class ReportItem
+        public class ReportQuestionItem
         {
             public int QuestionId { get; set; }
             public string Title { get; set; }
             public int ReportCount { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
+        }
+        /// <summary>
+        /// 举报列表
+        /// </summary>
+        public class ReportItem
+        {
+            public int Id { get; set; }
+            public string Content { get; set; }
+            public string Description { get; set; }
         }
     }
 }

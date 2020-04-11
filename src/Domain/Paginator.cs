@@ -58,6 +58,7 @@ namespace Domain
         /// <summary>
         /// 参数
         /// </summary>
+        //[Obsolete("应该使用 [key]")]
         [NonSerialized]
         public Dictionary<string, string> Params;
         /// <summary>
