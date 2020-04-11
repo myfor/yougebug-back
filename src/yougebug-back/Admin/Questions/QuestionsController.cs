@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using yougebug_back.Shared;
 
@@ -45,7 +46,9 @@ namespace yougebug_back.Admin.Questions
             Paginator pager = Paginator.New(index, size, 1);
             pager["title"] = string.IsNullOrWhiteSpace(title) ? "" : title;
 
-            throw new NotImplementedException();
+            Domain.Questions.Hub questionHub = new Domain.Questions.Hub();
+            var r = await questionHub.GetListAsync(pager, Domain.Questions.Hub.QuestionListSource.Reports);
+            return Pack(r);
         }
 
         /// <summary>

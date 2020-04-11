@@ -111,6 +111,7 @@ namespace Domain.Questions
             public int QuestionId { get; set; }
             public string Title { get; set; }
             public int ReportCount { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
         }
     }
 }
