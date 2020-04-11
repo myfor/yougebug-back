@@ -23,27 +23,29 @@
                     <img src="~/img/B.png" class="img-fluid" alt="有个bug LOGO" />
                 </a>
             </div>
-            <form action="/questions/search" id="fom_search" method="get" onsubmit="return search()" class="col-7 col-sm-7 col-lg-6 d-flex">
+            <form action="/questions/search" id="fom_search" method="get" onsubmit="return search()" class="col-8 col-sm-8 col-lg-6 d-flex">
                 <label for="txt_search">
                     <img src="~/icons/search.svg" class="mt-2 mr-1" alt="搜索" width="30" height="30" />
                 </label>
                 <input class="form-control search-box" type="search" id="txt_search" placeholder="按回车搜索..." required />
             </form>
-            <div class="col-sm-3 mt-1 text-left">
+            <div class="col-2 col-sm-2 mt-1 text-left">
                 <div id="d-login" hidden="hidden">
                     <div class="d-none d-md-block">
                         <button type="button" class="btn btn-primary" onclick="javascript: location.href = 'login';">登录</button>
                         <button type="button" class="btn btn-outline-primary" onclick="javascript: location.href = 'register';">注册</button>
                     </div>
                     <div class="dropdown d-md-none">
+
                         <a class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="~/icons/list.svg" alt="更多" height="40" />
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="login">登录</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="register">注册</a>
                         </div>
+
                     </div>
                 </div>
                 <div id="d-logout" hidden="hidden">
