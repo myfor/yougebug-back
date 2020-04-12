@@ -47,6 +47,16 @@ namespace yougebug_back.Admin.Questions
             var r = await questionHub.GetListAsync(pager, Domain.Questions.Hub.QuestionListSource.Reports);
             return Pack(r);
         }
+        /// <summary>
+        /// 获取举报列表详情
+        /// </summary>
+        [HttpGet("reports/{id}")]
+        public async Task<IActionResult> GetReportDetailAsync(int id)
+        {
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            var r = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Report);
+            return Pack(r);
+        }
 
         /// <summary>
         /// 获取详情
@@ -56,7 +66,7 @@ namespace yougebug_back.Admin.Questions
         public async Task<IActionResult> GetDetailAsync(int id)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp resp = await question.GetDetailAsync(Share.Platform.Admin);
+            Domain.Resp resp = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Admin);
             return Pack(resp);
         }
 

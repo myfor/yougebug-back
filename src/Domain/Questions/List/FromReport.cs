@@ -31,7 +31,7 @@ namespace Domain.Questions.List
             pager.TotalRows = await db.Questions.Where(whereStatement).CountAsync();
             pager.List = await db.Questions.AsNoTracking()
                                            .Include(q => q.QuestionReportRecords)
-                                           .OrderByDescending(q => q.CreateDate)
+                                           .OrderByDescending(q => q.QuestionReportRecords.Count)
                                            .Where(whereStatement)
                                            .Select(q => new Results.ReportQuestionItem 
                                            {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Domain.Questions
+﻿namespace Domain.Questions
 {
     public class Results
     {
@@ -112,6 +108,12 @@ namespace Domain.Questions
             public string Title { get; set; }
             public int ReportCount { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
+        }
+        public class ReportQuestionDetail
+        {
+            public string Title { get; set; }
+            public string Content { get; set; }
+            public Share.KeyValue<int, string> MyProperty { get; set; }
         }
         /// <summary>
         /// 举报列表

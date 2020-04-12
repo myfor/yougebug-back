@@ -25,6 +25,9 @@ namespace Domain.Questions
             pager.TotalRows = await db.QuestionReportRecords.CountAsync(whereStatement);
             pager.List = await db.QuestionReportRecords.AsNoTracking()
                                                        .Where(whereStatement)
+                                                       .OrderByDescending(q => q.CreateDate)
+                                                       .Skip(pager.Skip)
+                                                       .Take(pager.Size)
                                                        .Select(q => new Results.ReportItem
                                                        { 
                                                            Id = q.Id,

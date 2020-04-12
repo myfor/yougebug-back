@@ -28,10 +28,9 @@ namespace Domain.Questions.List
 
             pager.TotalRows = await db.Questions.CountAsync(where);
             pager.List = await db.Questions.AsNoTracking()
+                                           .Where(where)
                                            .Skip(pager.Skip)
                                            .Take(pager.Size)
-                                           .OrderByDescending(q => q.CreateDate)
-                                           .Where(where)
                                            .Include(q => q.Answers)
                                            .Select(q => new Results.QuestionItem_Admin
                                            {

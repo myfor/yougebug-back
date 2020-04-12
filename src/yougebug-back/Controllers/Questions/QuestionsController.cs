@@ -70,7 +70,7 @@ namespace yougebug_back.Controllers.Questions
             size = size == 0 ? 10 : size;
 
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp resp = await question.GetDetailAsync(Domain.Share.Platform.Client, index, size);
+            Domain.Resp resp = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Client, index, size);
             if (!resp.IsSuccess)
                 return Redirect(string.Format($"/questions/?{ALERT_WARNING}", resp.Message));
             Domain.Questions.Results.QuestionDetail model = resp.GetData<Domain.Questions.Results.QuestionDetail>();

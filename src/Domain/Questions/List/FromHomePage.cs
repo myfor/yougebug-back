@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Questions.List
 {
+    /// <summary>
+    /// 首页的问题列表
+    /// </summary>
     public class FromHomePage : IGetQuestionListAsync
     {
         public async Task<Resp> GetListAsync(Paginator pager)

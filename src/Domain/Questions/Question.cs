@@ -36,6 +36,15 @@ namespace Domain.Questions
             ToAudit,
             All
         }
+        /// <summary>
+        /// 提问的详情的源
+        /// </summary>
+        public enum DetailSource
+        {
+            Client,
+            Admin,
+            Report
+        }
 
         public Question(int id) : base(id)
         {
@@ -207,14 +216,15 @@ namespace Domain.Questions
         /// 获取详情
         /// </summary>
         /// <returns></returns>
-        public async Task<Resp> GetDetailAsync(Share.Platform platform, int index = 1, int size = 10)
+        public async Task<Resp> GetDetailAsync(DetailSource source, int index = 1, int size = 10)
         {
             CheckEmpty();
 
-            Detail.IGetQuestionDetail detail = platform switch
+            Detail.IGetQuestionDetail detail = source switch
             {
-                Share.Platform.Admin => new Detail.DetailForAdmin(),
-                Share.Platform.Client => new Detail.DetailForClient(),
+                DetailSource.Admin => new Detail.DetailForAdmin(),
+                DetailSource.Client => new Detail.DetailForClient(),
+                DetailSource.Report => new Detail.DetailForReport(),
                 _ => throw new ArgumentException(),
             };
 

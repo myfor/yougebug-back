@@ -27,10 +27,10 @@ namespace Domain.Questions.List
                                             .Include(q => q.Answers)
                                             .Include(q => q.Asker)
                                             .ThenInclude(asker => asker.Avatar)
+                                            .Where(where)
                                             .Skip(pager.Skip)
                                             .Take(pager.Size)
-                                            .OrderByDescending(q => q.CreateDate)
-                                            .Where(where)
+                                            .OrderByDescending(q => q.Votes)
                                             .Select(q => new Results.QuentionItem_Client
                                             {
                                                 Id = q.Id,
