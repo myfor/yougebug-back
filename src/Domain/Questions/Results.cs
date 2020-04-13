@@ -109,11 +109,14 @@
             public int ReportCount { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
         }
+        /// <summary>
+        /// 举报的提问详情
+        /// </summary>
         public class ReportQuestionDetail
         {
             public string Title { get; set; }
             public string Content { get; set; }
-            public Share.KeyValue<int, string> MyProperty { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
         }
         /// <summary>
         /// 举报列表
@@ -122,7 +125,7 @@
         {
             public int Id { get; set; }
             public string Content { get; set; }
-            public string Description { get; set; }
+            public string Reason { get; set; }
         }
     }
 }

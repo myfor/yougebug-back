@@ -50,10 +50,10 @@ namespace yougebug_back.Admin.Questions
         /// <summary>
         /// 获取举报列表详情
         /// </summary>
-        [HttpGet("reports/{id}")]
-        public async Task<IActionResult> GetReportDetailAsync(int id)
+        [HttpGet("reports/{questionId}")]
+        public async Task<IActionResult> GetReportDetailAsync(int questionId)
         {
-            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
+            Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(questionId);
             var r = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Report);
             return Pack(r);
         }

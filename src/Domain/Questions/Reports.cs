@@ -31,8 +31,8 @@ namespace Domain.Questions
                                                        .Select(q => new Results.ReportItem
                                                        { 
                                                            Id = q.Id,
-                                                           Content = q.Content,
-                                                           Description = q.Description
+                                                           Content = q.Description,
+                                                           Reason = q.Content
                                                        })
                                                        .ToListAsync();
             return Resp.Success(pager); ;
