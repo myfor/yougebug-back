@@ -34,6 +34,11 @@ namespace Domain.Questions
             Remove,
             [Description("待审核")]
             ToAudit,
+            /// <summary>
+            /// 代表提问被删除，违规的言论会被删除，内容会被屏蔽，不可恢复
+            /// </summary>
+            [Description("删除")]
+            Delete,
             All
         }
         /// <summary>
@@ -165,27 +170,6 @@ namespace Domain.Questions
 
             if (string.IsNullOrWhiteSpace(description))
                 return Resp.Fault(Resp.NONE, "需要退回理由");
-
-            //int value = (int)QuestionState.Back;
-            //string backDescription = QuestionState.Back.GetDescription();
-
-            //await using var db = new YGBContext();
-            //DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
-            //if (question is null)
-            //    return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
-            //if (question.State == value)
-            //    return Resp.Fault(Resp.NONE, $"已经是{backDescription}的状态，不能再次{backDescription}");
-            //else
-            //    question.State = value;
-
-            //DB.Tables.QuestionBackRecord record = new DB.Tables.QuestionBackRecord
-            //{
-            //    QuestionId = Id,
-            //    Description = description
-            //};
-            //db.QuestionBackRecords.Add(record);
-            //int changeCount = await db.SaveChangesAsync();
-            //if (changeCount == 2)
 
             bool success = await BackQuestionAsync(description);
             if (success)

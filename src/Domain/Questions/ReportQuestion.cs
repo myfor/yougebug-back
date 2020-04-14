@@ -100,8 +100,8 @@ namespace Domain.Questions
         /// <returns></returns>
         public async Task<Resp> DeleteAsync()
         {
-            Hub questionHub = new Hub();
-            return await questionHub.DeleteQuestionAsync(_id, true);
+            Reports questionHub = new Reports();
+            return await questionHub.DeleteAsync(_id);
         }
     }
 }
