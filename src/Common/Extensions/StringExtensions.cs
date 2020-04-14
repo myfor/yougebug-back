@@ -55,14 +55,14 @@ namespace System
         /// <summary>
         /// 只选取部分描述
         /// </summary>
-        public static string Overflow(this string value, int count)
+        public static string Overflow(this string value, int count, string suffix = "...")
         {
             if (value.Length <= count)
                 return value;
 
             ReadOnlySpan<char> str = value.AsSpan(0, count);
             StringBuilder result = new StringBuilder(count + 3);
-            result.Append(str).Append("...");
+            result.Append(str).Append(suffix);
             return result.ToString();
         }
     }

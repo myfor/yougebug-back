@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace Domain.Questions.Detail
             using var db = new YGBContext();
             DB.Tables.Question question = await db.Questions.Include(q => q.Asker)
                                                             .ThenInclude(asker => asker.Avatar)
+                                                            .Include(q => q.QuestionComments)
                                                             .FirstOrDefaultAsync(q => q.Id == questionId);
 
             if (question is null)
@@ -48,7 +50,8 @@ namespace Domain.Questions.Detail
                     Account = question.Asker.Name,
                     Avatar = question.Asker.Avatar.Thumbnail
                 },
-                Page = page
+                Page = page,
+                Comments = question.QuestionComments.Take(5).Select(c => c.Content.Overflow(10)).ToArray()
             };
 
             question.Views++;

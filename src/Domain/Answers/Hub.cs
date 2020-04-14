@@ -89,7 +89,7 @@ namespace Domain.Answers
                                          {
                                              Id = a.Id,
                                              QuestionTitle = a.Question.Title,
-                                             Content = a.Content.Overflow(10),
+                                             Content = a.Content.Overflow(10, "..."),
                                              Votes = a.Votes,
                                              CreateDate = a.CreateDate.ToStandardDateString(),
                                              AnswererName = a.Answerer.Name,

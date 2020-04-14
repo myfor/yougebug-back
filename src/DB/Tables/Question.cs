@@ -50,5 +50,9 @@ namespace DB.Tables
         /// </summary>
         public List<Answer> Answers { get; set; }
         public List<QuestionReportRecord> QuestionReportRecords { get; set; }
+        /// <summary>
+        /// 追问
+        /// </summary>
+        public List<QuestionComment> QuestionComments { get; set; }
     }
 }

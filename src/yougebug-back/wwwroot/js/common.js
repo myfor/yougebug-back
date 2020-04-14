@@ -8,28 +8,27 @@ function showAlert(content, title, click) {
     MOD.setAttribute('role', 'role');
     MOD.setAttribute('aria-labelledby', 'exampleModalLabel');
     MOD.setAttribute('aria-hidden', 'true');
+
+    const BTN = click ? `<button type="button" class="btn btn-primary" onclick="javascript:${click};">确定</button>` : '';
+
     MOD.innerHTML = `
 <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">${title ? title : "提示"}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">${title ? title : "提示"}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
         ${content}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-out-secondary" data-dismiss="modal">关闭</button>    
-`;
-    if (click) {
-        MOD.innerHTML += `<button type="button" class="btn btn-primary" onclick="${click}">提交</button>`;
-    }
-    MOD.innerHTML += `
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-out-secondary" data-dismiss="modal">关闭</button>
+            ${BTN}
         </div>
     </div>
-  </div>
+ </div>
 `;
 
     $(MOD).modal('show');

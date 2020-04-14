@@ -85,6 +85,10 @@
             public string CreateDate { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
             //  public List<Answers.Models.AnswerItem> Answers { get; set; }
+            /// <summary>
+            /// 追问
+            /// </summary>
+            public string[] Comments { get; set; }
             public Paginator Page { get; set; }
         }
 
