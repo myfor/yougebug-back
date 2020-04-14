@@ -92,13 +92,5 @@ namespace Domain.Questions
             public string Reason { get; set; }
             public string Description { get; set; }
         }
-
-        /// <summary>
-        /// 新的追问
-        /// </summary>
-        public class NewComment
-        {
-            public string Comment { get; set; }
-        }
     }
 }

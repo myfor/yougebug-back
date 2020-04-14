@@ -25,6 +25,14 @@ namespace Domain
 
         #region 模型
 
+        /// <summary>
+        /// 给只需要放一个参数的使用
+        /// </summary>
+        public class SingleContent
+        {
+            public string Content { get; set; }
+        }
+
         public class KeyValue<KT, VT>
         {
             public static KeyValue<K, V> Create<K, V>(K key, V value)

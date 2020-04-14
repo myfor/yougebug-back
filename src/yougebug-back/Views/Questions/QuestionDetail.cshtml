@@ -417,7 +417,7 @@
                 return;
             }
 
-            axios.post('/questions/@Model.Id/comment', { comment: COMMENT })
+            axios.post('/questions/@Model.Id/comment', { content: COMMENT })
                 .then(function (resp) {
                     if (resp.status === 200) {
                         $('#d-commentBox').collapse('hide');

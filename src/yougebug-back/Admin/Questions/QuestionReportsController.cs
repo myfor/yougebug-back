@@ -40,10 +40,10 @@ namespace yougebug_back.Admin.Questions
         /// 退回这次举报
         /// </summary>
         [HttpPut("{questionId}/back")]
-        public async Task<IActionResult> BackAsync(int questionId, [FromBody]string reason)
+        public async Task<IActionResult> BackAsync(int questionId, [FromBody]Domain.Share.SingleContent model)
         {
             var reportQuestion = Domain.Questions.Reports.GetReportQuestion(questionId);
-            var r = await reportQuestion.BackAsync(reason);
+            var r = await reportQuestion.BackAsync(model.Content);
             return Pack(r);
         }
 

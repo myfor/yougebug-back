@@ -99,17 +99,17 @@ namespace yougebug_back.Controllers.Questions
         /// 追问提问
         /// </summary>
         [HttpPost("{id}/comment")]
-        public async Task<IActionResult> PostComment(int id, [FromBody]Domain.Questions.Models.NewComment model)
+        public async Task<IActionResult> PostComment(int id, [FromBody]Domain.Share.SingleContent model)
         {
             //  必须登录
             if (CurrentUser.IsEmpty())
                 return Pack(Domain.Resp.NeedLogin());
 
-            if (string.IsNullOrWhiteSpace(model.Comment))
+            if (string.IsNullOrWhiteSpace(model.Content))
                 return Pack(Domain.Resp.Fault(Domain.Resp.NONE, "追问内容不能为空"));
 
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp r = await question.AddCommentAsyns(CurrentUser.Id, model.Comment);
+            Domain.Resp r = await question.AddCommentAsyns(CurrentUser.Id, model.Content);
             return Pack(r);
         }
 
