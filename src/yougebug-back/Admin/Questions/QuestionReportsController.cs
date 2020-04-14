@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using yougebug_back.Shared;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace yougebug_back.Admin.Questions
 {
@@ -25,8 +20,41 @@ namespace yougebug_back.Admin.Questions
             Domain.Paginator pager = Domain.Paginator.New(index, 20, 1);
             pager["questionId"] = questionId.ToString();
 
-            Domain.Questions.Reports reports = new Domain.Questions.Reports();
-            var r = await reports.GetReportsListAsync(pager);
+            var reportQuestion = Domain.Questions.Reports.GetReportQuestion(questionId);
+            var r = await reportQuestion.GetReportsListAsync(pager);
+            return Pack(r);
+        }
+
+        /// <summary>
+        /// 忽略这次举报
+        /// </summary>
+        [HttpPut("{questionId}/ignore")]
+        public async Task<IActionResult> IgnoreAsync(int questionId)
+        {
+            var reportQuestion = Domain.Questions.Reports.GetReportQuestion(questionId);
+            var r = await reportQuestion.IgnoreAsync();
+            return Pack(r);
+        }
+
+        /// <summary>
+        /// 退回这次举报
+        /// </summary>
+        [HttpPut("{questionId}/back")]
+        public async Task<IActionResult> BackAsync(int questionId, [FromBody]string reason)
+        {
+            var reportQuestion = Domain.Questions.Reports.GetReportQuestion(questionId);
+            var r = await reportQuestion.BackAsync(reason);
+            return Pack(r);
+        }
+
+        /// <summary>
+        /// 删除这个答案
+        /// </summary>
+        [HttpPut("{questionId}/delete")]
+        public async Task<IActionResult> DeleteAsync(int questionId)
+        {
+            var reportQuestion = Domain.Questions.Reports.GetReportQuestion(questionId);
+            var r = await reportQuestion.DeleteAsync();
             return Pack(r);
         }
     }

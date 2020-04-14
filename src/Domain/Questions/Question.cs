@@ -164,30 +164,57 @@ namespace Domain.Questions
             CheckEmpty();
 
             if (string.IsNullOrWhiteSpace(description))
-                description = "";
+                return Resp.Fault(Resp.NONE, "需要退回理由");
 
-            int value = (int)QuestionState.Back;
-            string backDescription = QuestionState.Back.GetDescription();
+            //int value = (int)QuestionState.Back;
+            //string backDescription = QuestionState.Back.GetDescription();
 
-            using var db = new YGBContext();
+            //await using var db = new YGBContext();
+            //DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
+            //if (question is null)
+            //    return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
+            //if (question.State == value)
+            //    return Resp.Fault(Resp.NONE, $"已经是{backDescription}的状态，不能再次{backDescription}");
+            //else
+            //    question.State = value;
+
+            //DB.Tables.QuestionBackRecord record = new DB.Tables.QuestionBackRecord
+            //{
+            //    QuestionId = Id,
+            //    Description = description
+            //};
+            //db.QuestionBackRecords.Add(record);
+            //int changeCount = await db.SaveChangesAsync();
+            //if (changeCount == 2)
+
+            bool success = await BackQuestionAsync(description);
+            if (success)
+                return Resp.Success(Resp.NONE);
+            return Resp.Fault(Resp.NONE, "退回失败");
+        }
+
+        /// <summary>
+        /// 回退提问
+        /// </summary>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        internal async Task<bool> BackQuestionAsync(string reason)
+        {
+            await using var db = new YGBContext();
             DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
             if (question is null)
-                return Resp.Fault(Resp.NONE, QUESTION_NO_EXIST);
-            if (question.State == value)
-                return Resp.Fault(Resp.NONE, $"已经是{backDescription}的状态，不能再次{backDescription}");
-            else
-                question.State = value;
-
+                return false;
+            if (question.State == (int)QuestionState.Back)
+                return false;
+            question.State = (int)QuestionState.Back;
             DB.Tables.QuestionBackRecord record = new DB.Tables.QuestionBackRecord
             {
                 QuestionId = Id,
-                Description = description
+                Description = reason
             };
             db.QuestionBackRecords.Add(record);
             int changeCount = await db.SaveChangesAsync();
-            if (changeCount == 2)
-                return Resp.Success(Resp.NONE);
-            return Resp.Fault(Resp.NONE, "退回失败");
+            return changeCount == 2;
         }
 
         /// <summary>
