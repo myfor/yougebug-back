@@ -53,23 +53,31 @@ function checkEmail(email) {
 }
 
 //  设置元素 disabled
-function disabled(selector, value) {
+function disabled(selector, value, elementType) {
     const DISABLED = 'disabled';
     const ELE = document.getElementById(selector);
     if (ELE.hasAttribute(DISABLED))
         return;
     ELE.setAttribute(DISABLED, DISABLED);
-    if (value)
-        ELE.value = value;
+    if (value) {
+        switch (elementType) {
+            case 'button': ELE.innerHTML = value; break;
+            default: ELE.value = value; break;
+        }
+    }
 }
 
 //  设置元素 enabled
-function enabled(selector, value) {
+function enabled(selector, value, elementType) {
     const DISABLED = 'disabled';
     const ELE = document.getElementById(selector);
     ELE.removeAttribute(DISABLED);
-    if (value)
-        ELE.value = value;
+    if (value) {
+        switch (elementType) {
+            case 'button': ELE.innerHTML = value; break;
+            default: ELE.value = value; break;
+        }
+    }
 }
 
 //  当前是否已经登录的缓存

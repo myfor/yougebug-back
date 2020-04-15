@@ -88,7 +88,7 @@ namespace Domain.Questions
                 return Resp.Fault(Resp.NONE, "需要退回理由");
 
             var question = Hub.GetQuestion(_id);
-            bool success = await question.BackQuestionAsync(reason);
+            bool success = await question.BackQuestionAsync(reason, true);
             if (success)
                 return Resp.Success(Resp.NONE);
             return Resp.Fault(Resp.NONE, "退回失败");

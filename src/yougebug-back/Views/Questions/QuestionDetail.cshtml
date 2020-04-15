@@ -121,12 +121,21 @@
             </div>
         </div>
 
-        <div>
-            <!-- 追问 -->
-            @foreach (var comment in Model.Comments)
-            {
-                <p>@comment</p>
-            }
+        <div class="d-flex justify-content-end">
+            <div class="border border-primary rounded p-2 w-50" id="d-comment-box" data-children=".item" style="min-width: 400px;">
+                <!-- 追问 -->
+                <p class="h6 text-primary">
+                    <a data-toggle="collapse" data-parent="#d-comment-box" href="#comment-box" aria-expanded="true" aria-controls="comment-box">
+                        追问
+                    </a>
+                </p>
+                <div id="comment-box" class="collapse show" role="tabpanel">
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <p class="border-primary border-bottom mb-1">@comment</p>
+                    }
+                </div>
+            </div>
         </div>
 
         <div class="d-flex flex-column">
@@ -421,6 +430,9 @@
                 .then(function (resp) {
                     if (resp.status === 200) {
                         $('#d-commentBox').collapse('hide');
+                        let commentlist = document.getElementById('d-comment-box');
+                        commentlist.innerHTML += `<p class="border-primary border-bottom mb-1">${COMMENT}</p>`;
+
                     } else {
                         showAlert(resp.data.message);
                     }

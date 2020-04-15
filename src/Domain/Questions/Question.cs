@@ -181,8 +181,9 @@ namespace Domain.Questions
         /// 回退提问
         /// </summary>
         /// <param name="reason"></param>
+        /// <param name="isClearReport">是否清除举报记录</param>
         /// <returns></returns>
-        internal async Task<bool> BackQuestionAsync(string reason)
+        internal async Task<bool> BackQuestionAsync(string reason, bool isClearReport = false)
         {
             await using var db = new YGBContext();
             DB.Tables.Question question = await db.Questions.FirstOrDefaultAsync(q => q.Id == Id);
@@ -197,8 +198,16 @@ namespace Domain.Questions
                 Description = reason
             };
             db.QuestionBackRecords.Add(record);
+            int shouldChangeCount = 2;
+            if (isClearReport)
+            {
+                var qrList = await db.QuestionReportRecords.AsNoTracking().Where(qr => qr.QuestionId == Id && !qr.IsHandled).ToListAsync();
+                db.QuestionReportRecords.RemoveRange(qrList);
+                shouldChangeCount += qrList.Count;
+            }
+
             int changeCount = await db.SaveChangesAsync();
-            return changeCount == 2;
+            return changeCount == shouldChangeCount;
         }
 
         /// <summary>

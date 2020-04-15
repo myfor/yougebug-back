@@ -103,7 +103,7 @@
                 {
                     @foreach (var question in Model.UserAsks)
                     {
-                        <div class="d-flex flex-column border rounded mt-2 mb-2 p-3">
+                        <div class="d-flex flex-column border rounded mt-2 mb-2 p-3" id="d-question-box-@question.Id">
                             <span>
                                 <a href="questions/@question.Id/@question.Title">@question.Title</a>
                             </span>
@@ -124,6 +124,8 @@
                                                 <span class="ml-3 badge badge-danger">@question.State.Value</span>; break;
                                             case (int)Domain.Questions.Question.QuestionState.ToAudit:
                                                 <span class="ml-3 badge badge-warning">@question.State.Value</span>; break;
+                                            case (int)Domain.Questions.Question.QuestionState.Delete:
+                                                <button class="btn btn-danger btn-sm" id="btn_deleteQuestion" onclick="deleteQuestion(@question.Id)">删除</button>; break;
                                             default:
                                                 <span class="ml-3 badge">@question.State.Value</span>
                                                 break;
@@ -251,5 +253,25 @@
                 });
 
         }
+
+        function deleteQuestion(questionId) {
+            disabled('btn_deleteQuestion', '删除中', 'button');
+            axios.delete(`/questions/${questionId}`)
+                .then(function (resp) {
+                    if (resp.status === 200) {
+                        const THIS_QUESTION_BOX = document.getElementById('d-question-box-8')
+                        const _parent = THIS_QUESTION_BOX.parentNode;
+                        _parent.removeChild(THIS_QUESTION_BOX);
+                    } else {
+                        showAlert(resp.data.message);
+                        enabled('btn_deleteQuestion', '已删除', 'button');
+                    }
+                })
+                .catch(function (err) {
+                    catchErr(err);
+                    enabled('btn_deleteQuestion', '已删除', 'button');
+                })
+        }
+
     </script>
 }
