@@ -101,10 +101,10 @@ namespace yougebug_back.Admin.Questions
         /// <param name="description">原因</param>
         /// <returns></returns>
         [HttpPatch("{id}/back")]
-        public async Task<IActionResult> BackAsync(int id, string descpiption)
+        public async Task<IActionResult> BackAsync(int id, [FromBody]Share.SingleContent model)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp resp = await question.BackAsync(descpiption);
+            Domain.Resp resp = await question.BackAsync(model.Content);
             return Pack(resp);
         }
 
