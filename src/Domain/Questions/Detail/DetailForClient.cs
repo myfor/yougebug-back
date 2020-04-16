@@ -51,7 +51,7 @@ namespace Domain.Questions.Detail
                     Avatar = question.Asker.Avatar.Thumbnail
                 },
                 Page = page,
-                Comments = question.QuestionComments.Take(5).Select(c => c.Content.Overflow(10)).ToArray()
+                Comments = question.QuestionComments.Take(5).Select(c => c.Content).ToArray()
             };
 
             question.Views++;

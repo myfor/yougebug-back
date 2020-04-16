@@ -124,7 +124,7 @@
             <div class="collapse multi-collapse" id="d-commentBox">
                 <!-- 追问框 -->
                 <div class="card card-body">
-                    <textarea class="form-control" id="txt_comment" rows="5" placeholder="请输入追问内容"></textarea>
+                    <textarea class="form-control" id="txt_comment" rows="5" placeholder="请输入追问内容，不超过 128 个字"></textarea>
                     <button class="btn btn-primary" id="btn_comment" onclick="comment()">提交追问</button>
                 </div>
             </div>
@@ -425,6 +425,7 @@
         }
 
         function comment() {
+            const COMMENT_MAX_LENGTH = 128;
             disabled('btn_comment');
 
             const COMMENT = $('#txt_comment').val().trim();
@@ -432,6 +433,10 @@
                 showAlert('请填入追问内容');
                 $('#txt_comment').focus();
                 enabled('btn_comment');
+                return;
+            }
+            if (COMMENT.length > COMMENT_MAX_LENGTH) {
+                showAlert(`追问内容不能超过${COMMENT_MAX_LENGTH}个字`);
                 return;
             }
 

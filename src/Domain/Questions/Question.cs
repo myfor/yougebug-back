@@ -118,6 +118,11 @@ namespace Domain.Questions
         /// </summary>
         public async Task<Resp> AddCommentAsyns(int commenterId, string content)
         {
+            if (string.IsNullOrWhiteSpace(content))
+                return Resp.Fault(Resp.NONE, "追问内容不能为空");
+            if (content.Length > Comments.COMMENT_MAX_LENGTH)
+                return Resp.Fault(Resp.NONE, $"追问内容不得超过{Comments.COMMENT_MAX_LENGTH}个字");
+
             await using var db = new YGBContext();
 
             if (!await db.Questions.AnyAsync(q => q.Id == Id))

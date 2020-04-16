@@ -9,6 +9,8 @@ namespace Domain.Questions
 {
     public class Comments
     {
+        public const int COMMENT_MAX_LENGTH = 128;
+
         /// <summary>
         /// 删除一个评论
         /// </summary>

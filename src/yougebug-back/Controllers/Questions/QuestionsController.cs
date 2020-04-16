@@ -105,9 +105,6 @@ namespace yougebug_back.Controllers.Questions
             if (CurrentUser.IsEmpty())
                 return Pack(Domain.Resp.NeedLogin());
 
-            if (string.IsNullOrWhiteSpace(model.Content))
-                return Pack(Domain.Resp.Fault(Domain.Resp.NONE, "追问内容不能为空"));
-
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
             Domain.Resp r = await question.AddCommentAsyns(CurrentUser.Id, model.Content);
             return Pack(r);
