@@ -1,4 +1,6 @@
-﻿namespace Domain.Questions
+﻿using static Domain.Share;
+
+namespace Domain.Questions
 {
     public class Results
     {
@@ -66,9 +68,9 @@
         }
 
         /// <summary>
-        /// 问题的详情
+        /// 客户端问题的详情
         /// </summary>
-        public class QuestionDetail
+        public class QuestionDetailForClient
         {
             /// <summary>
             /// 是否为本人
@@ -89,6 +91,28 @@
             /// 追问
             /// </summary>
             public string[] Comments { get; set; }
+            public Paginator Page { get; set; }
+        }
+
+        /// <summary>
+        /// 管理员问题的详情
+        /// </summary>
+        public class QuestionDetailForAdmin
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string[] Tags { get; set; }
+            public int Votes { get; set; }
+            public int Views { get; set; }
+            public string Actived { get; set; }
+            public Clients.Models.UserIntro User { get; set; }
+            public string CreateDate { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
+            /// <summary>
+            /// 追问
+            /// </summary>
+            public KeyValue<int, string>[] Comments { get; set; }
             public Paginator Page { get; set; }
         }
 

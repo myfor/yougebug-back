@@ -73,7 +73,7 @@ namespace yougebug_back.Controllers.Questions
             Domain.Resp resp = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Client, index, size);
             if (!resp.IsSuccess)
                 return Redirect(string.Format($"/questions/?{ALERT_WARNING}", resp.Message));
-            Domain.Questions.Results.QuestionDetail model = resp.GetData<Domain.Questions.Results.QuestionDetail>();
+            Domain.Questions.Results.QuestionDetailForClient model = resp.GetData<Domain.Questions.Results.QuestionDetailForClient>();
             //  是否为本人
             model.IsSelf = CurrentUser.Id == model.User.Id;
 

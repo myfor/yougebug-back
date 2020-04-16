@@ -1,4 +1,13 @@
-@model Domain.Questions.Results.QuestionDetail;
+@model Domain.Questions.Results.QuestionDetailForClient;
+
+@section Style {
+    <style>
+        .comment-box {
+            min-width: 400px;
+            border-left: 3px solid #0064d0;
+        }
+    </style>
+}
 
 <div class="row">
     <div class="col-2 d-none d-lg-block" style="width: 150px;">
@@ -122,14 +131,14 @@
         </div>
 
         <div class="d-flex justify-content-end">
-            <div class="border border-primary rounded p-2 w-50" id="d-comment-box" data-children=".item" style="min-width: 400px;">
+            <div class="comment-box border-primary rounded p-2 w-50" id="d-comment-box" data-children=".item">
                 <!-- 追问 -->
                 <p class="h6 text-primary">
                     <a data-toggle="collapse" data-parent="#d-comment-box" href="#comment-box" aria-expanded="true" aria-controls="comment-box">
-                        追问
+                        @Model.Comments.Length 条追问
                     </a>
                 </p>
-                <div id="comment-box" class="collapse show" role="tabpanel">
+                <div id="comment-box" class="collapse" role="tabpanel">
                     @foreach (var comment in Model.Comments)
                     {
                         <p class="border-primary border-bottom mb-1">@comment</p>

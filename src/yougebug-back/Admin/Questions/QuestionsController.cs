@@ -83,21 +83,16 @@ namespace yougebug_back.Admin.Questions
             return Pack(r);
         }
 
-        ///// <summary>
-        ///// 获取答案列表
-        ///// </summary>
-        //[HttpGet("answers")]
-        //public async Task<IActionResult> GetAnswersAsync(int questionId, int index)
-        //{
-        //    Domain.Paginator pager = new Domain.Paginator
-        //    {
-        //        Index = index
-        //    };
-
-        //    Domain.Answers.Hub hub = new Domain.Answers.Hub();
-        //    Domain.Resp resp = await hub.GetAnswersAsync(pager, questionId);
-        //    return Pack(resp);
-        //}
+        /// <summary>
+        /// 删除一个追问
+        /// </summary>
+        [HttpDelete("comments/{commentId}")]
+        public async Task<IActionResult> DeleteCommentAsync(int commentId)
+        {
+            Domain.Questions.Comments comment = new Domain.Questions.Comments();
+            var r = await comment.DeleteAsync(commentId);
+            return Pack(r);
+        }
 
         /// <summary>
         /// 退回一个问题

@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Domain.Share;
 
 namespace Domain.Questions.Detail
 {
@@ -17,6 +19,7 @@ namespace Domain.Questions.Detail
             using var db = new YGBContext();
             DB.Tables.Question question = await db.Questions.Include(q => q.Asker)
                                                             .ThenInclude(asker => asker.Avatar)
+                                                            .Include(q => q.QuestionComments)
                                                             .FirstOrDefaultAsync(q => q.Id == questionId);
 
             if (question is null)
@@ -28,7 +31,7 @@ namespace Domain.Questions.Detail
 
             (page.List, page.TotalRows) = await answerHub.GetAnswersAsync(questionId, index, size, Answers.Answer.StandardStates.NoSelected);
 
-            Results.QuestionDetail detail = new Results.QuestionDetail
+            Results.QuestionDetailForAdmin detail = new Results.QuestionDetailForAdmin
             {
                 Id = question.Id,
                 Title = question.Title,
@@ -38,7 +41,8 @@ namespace Domain.Questions.Detail
                 Views = question.Views,
                 Actived = question.Actived.ToStandardString(),
                 CreateDate = question.CreateDate.ToStandardString(),
-                State = Share.KeyValue<int, string>.Create(question.State, question.State.GetDescription<Question.QuestionState>()),
+                State = KeyValue<int, string>.Create(question.State, question.State.GetDescription<Question.QuestionState>()),
+                Comments = question.QuestionComments.Select(q => KeyValue<int, string>.Create(q.Id, q.Content)).ToArray(),
                 User = new Clients.Models.UserIntro
                 {
                     Id = question.Asker.Id,
