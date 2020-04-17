@@ -11,53 +11,42 @@ namespace Domain.Answers
 {
     public class Hub
     {
+        public enum AnswerSource
+        {
+            /// <summary>
+            /// 提问详情
+            /// </summary>
+            Question,
+            /// <summary>
+            /// 管理端所有回答列表
+            /// </summary>
+            AllAnswersOfAdmin
+        }
+
+        /// <summary>
+        /// 获取一个用户返回答案列表的对象
+        /// </summary>
+        internal List.AnswerList GetAnswers(AnswerSource source)
+        {
+            List.AnswerList answers = source switch
+            { 
+                AnswerSource.Question => new List.FromQuestion(),
+                AnswerSource.AllAnswersOfAdmin => new List.FromAllOfAdmin(),
+                _ => throw new ArgumentException()
+            };
+            return answers;
+        }
+
         /// <summary>
         /// 获取问题的回答，分页
         /// </summary>
         public async Task<Resp> GetAnswersAsync(Paginator pager, int questionId, Answer.StandardStates answerState = Answer.StandardStates.NoSelected)
         {
-            (pager.List, pager.TotalRows) = await GetAnswersAsync(questionId, pager.Index, pager.Size, answerState);
-
-            return Resp.Success(pager, "");
-        }
-
-        internal async Task<(List<Answers.Results.AnswerItem>, int)> GetAnswersAsync(int questionId, int index, int size, Answer.StandardStates answerState = Answer.StandardStates.NoSelected)
-        {
-            Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.QuestionId == questionId;
-            if (answerState != Answer.StandardStates.NoSelected)
-                whereStatement = whereStatement.And(a => a.State == (int)answerState);
-
-            await using var db = new YGBContext();
-
-            int totalSize = await db.Answers.CountAsync(whereStatement);
-            var list = await db.Answers.AsNoTracking()
-                                         .Where(whereStatement)
-                                         .Skip((index - 1) * size)
-                                         .Take(size)
-                                         .Include(a => a.Answerer)
-                                         .ThenInclude(a => a.Avatar)
-                                         .OrderByDescending(a => a.Votes)
-                                         .Select(a => new Results.AnswerItem
-                                         {
-                                             Id = a.Id,
-                                             Votes = a.Votes,
-                                             Content = a.Content,
-                                             CreateDate = a.CreateDate.ToStandardString(),
-                                             State = Share.KeyValue<int, string>.Create(a.State, a.State.GetDescription<Answers.Answer.AnswerState>()),
-                                             User = a.AnswererId.HasValue ? new Clients.Models.UserIntro
-                                             {
-                                                 Id = a.Id,
-                                                 Account = a.Answerer.Name,
-                                                 Avatar = a.Answerer.Avatar.Thumbnail
-                                             } : new Clients.Models.UserIntro
-                                             {
-                                                 Id = 0,
-                                                 Account = a.NickName,
-                                                 Avatar = File.DEFAULT_AVATAR
-                                             }
-                                         })
-                                         .ToListAsync();
-            return (list, totalSize);
+            pager["questionId"] = questionId.ToString();
+            pager["answerState"] = ((int)answerState).ToString();
+            var answers = GetAnswers(AnswerSource.Question);
+            var r = await answers.GetListAsync(pager);
+            return r;
         }
 
         /// <summary>
@@ -68,35 +57,10 @@ namespace Domain.Answers
         /// <returns></returns>
         public async Task<Resp> GetAnswersList(Paginator pager, Answer.AnswerState state)
         {
-            string questionTitle = pager.Params["questionTitle"] ?? "";
-
-            Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.State == (int)state;
-            if (!string.IsNullOrWhiteSpace(questionTitle))
-                whereStatement = whereStatement.And(q => q.Question.Title.Contains(questionTitle));
-
-            await using var db = new YGBContext();
-
-            int totalSize = await db.Answers.CountAsync(whereStatement);
-            pager.TotalRows = await db.Answers.CountAsync(whereStatement);
-            pager.List = await db.Answers.AsNoTracking()
-                                         .Where(whereStatement)
-                                         .Skip(pager.Skip)
-                                         .Take(pager.Size)
-                                         .Include(a => a.Question)
-                                         .Include(a => a.Answerer)
-                                         .OrderByDescending(a => a.CreateDate)
-                                         .Select(a => new Results.AnswerItem_All
-                                         {
-                                             Id = a.Id,
-                                             QuestionTitle = a.Question.Title,
-                                             Content = a.Content.Overflow(10, "..."),
-                                             Votes = a.Votes,
-                                             CreateDate = a.CreateDate.ToStandardDateString(),
-                                             AnswererName = a.Answerer.Name,
-                                             State = Share.KeyValue<int, string>.Create(a.State, a.State.GetDescription<Answers.Answer.AnswerState>())
-                                         })
-                                         .ToListAsync();
-            return Resp.Success(pager);
+            pager["state"] = ((int)state).ToString();
+            var answers = GetAnswers(AnswerSource.AllAnswersOfAdmin);
+            var r = await answers.GetListAsync(pager);
+            return r;
         }
 
         /// <summary>

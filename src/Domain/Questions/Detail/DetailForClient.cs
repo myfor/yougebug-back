@@ -30,8 +30,10 @@ namespace Domain.Questions.Detail
             Answers.Hub answerHub = new Answers.Hub();
             //  获取第一页的答案分页
             Paginator page = Paginator.New(index, size);
-            //(page.List, page.TotalRows) = await GetAnswersAsync(index, size);
-            (page.List, page.TotalRows) = await answerHub.GetAnswersAsync(questionId, index, size, Answers.Answer.StandardStates.Enabled);
+
+            Answers.List.AnswerList answers = answerHub.GetAnswers(Answers.Hub.AnswerSource.Question);
+
+            (page.List, page.TotalRows) = await answers.GetAnswersAsync(questionId, index, size, Answers.Answer.AnswerState.Enabled);
 
             Results.QuestionDetailForClient detail = new Results.QuestionDetailForClient
             {

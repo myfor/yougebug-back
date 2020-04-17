@@ -29,7 +29,10 @@ namespace Domain.Questions.Detail
             //  获取第一页的答案分页
             Paginator page = Paginator.New(index, size);
 
-            (page.List, page.TotalRows) = await answerHub.GetAnswersAsync(questionId, index, size, Answers.Answer.StandardStates.NoSelected);
+            //  获取提问下的答案分页
+            Answers.List.AnswerList answers = answerHub.GetAnswers(Answers.Hub.AnswerSource.Question);
+
+            (page.List, page.TotalRows) = await answers.GetAnswersAsync(questionId, index, size, Answers.Answer.AnswerState.NoSelected);
 
             Results.QuestionDetailForAdmin detail = new Results.QuestionDetailForAdmin
             {
