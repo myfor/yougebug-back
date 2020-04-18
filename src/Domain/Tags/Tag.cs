@@ -10,6 +10,11 @@ namespace Domain.Tags
     public class Tag
     {
         /// <summary>
+        /// 标签最大长度
+        /// </summary>
+        public const int TAG_MAX_LENGTH = 32;
+
+        /// <summary>
         /// 该标签是否已存在
         /// </summary>
         /// <param name="tag"></param>

@@ -42,6 +42,12 @@ namespace Domain.Questions
 
                 Tags = Tags.ReSplit(',', '，');
 
+                foreach (string tag in Tags)
+                {
+                    if (tag.Length > Domain.Tags.Tag.TAG_MAX_LENGTH)
+                        return (false, $"标签：{tag} 太长了，请保持在 {Domain.Tags.Tag.TAG_MAX_LENGTH} 位以内");
+                }
+
                 return (true, "");
             }
         }

@@ -7,7 +7,7 @@ namespace DB.Tables
         /// <summary>
         /// 
         /// </summary>
-        [Required, StringLength(16)]
+        [Required, StringLength(32)]
         public string Name { get; set; } = "";
     }
 }
