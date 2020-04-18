@@ -13,7 +13,7 @@ namespace Domain
             {
                 Index = index <= 0 ? 1 : index,
                 Size = size <= 0 ? DEFAULT_SIZE : size,
-                Params = new Dictionary<string, string>(capacity)
+                _params = new Dictionary<string, string>(capacity)
             };
         }
         /// <summary>
@@ -23,8 +23,8 @@ namespace Domain
         /// <returns></returns>
         public string this[string key]
         {
-            get => Params[key];
-            set => Params[key] = value;
+            get => _params[key];
+            set => _params[key] = value;
         }
         /// <summary>
         /// 当前页码
@@ -60,7 +60,7 @@ namespace Domain
         /// </summary>
         //[Obsolete("应该使用 [key]")]
         [NonSerialized]
-        public Dictionary<string, string> Params;
+        private Dictionary<string, string> _params;
         /// <summary>
         /// 获取跳过的条数
         /// </summary>

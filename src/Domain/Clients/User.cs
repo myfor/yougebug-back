@@ -272,12 +272,9 @@ namespace Domain.Clients
              * userName 为获取的用户名
              */
 
-            Paginator pager = Paginator.New(1, 4);
-            pager.Params = new Dictionary<string, string>
-            {
-                ["userId"] = Id.ToString(),
-                ["currentUserId"] = currentUserId.ToString()
-            };
+            Paginator pager = Paginator.New(1, 4, 2);
+            pager["userId"] = Id.ToString();
+            pager["currentUserId"] = currentUserId.ToString();
 
             var resultPager = await GetSelfQuestionsAsync(pager);
             List<Questions.Results.QuestionItem_UserSelf> list = resultPager.GetList<Questions.Results.QuestionItem_UserSelf>();

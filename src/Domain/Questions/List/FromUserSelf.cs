@@ -25,13 +25,13 @@ namespace Domain.Questions.List
             Expression<Func<DB.Tables.Question, bool>> whereStatement = q => q.State != (int)Question.QuestionState.Remove;
 
             //  要获取的人的ID
-            if (int.TryParse(pager.Params["userId"] ?? "", out int userId))
+            if (int.TryParse(pager["userId"] ?? "", out int userId))
                 whereStatement = whereStatement.And(q => q.AskerId == userId);
             else
                 return Resp.Fault(Resp.NONE, "");
 
             //  当前登录人ID
-            if (!int.TryParse(pager.Params["currentUserId"] ?? "", out int currentUserId))
+            if (!int.TryParse(pager["currentUserId"] ?? "", out int currentUserId))
                 currentUserId = 0;
             //  如果不是用户本人，只能看到通过的提问
             bool isSelf = currentUserId == userId;

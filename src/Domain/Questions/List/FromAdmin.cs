@@ -14,12 +14,12 @@ namespace Domain.Questions.List
     {
         public async Task<Resp> GetListAsync(Paginator pager)
         {
-            string title = pager.Params["search"] ?? "";
+            string title = pager["search"] ?? "";
 
             Expression<Func<DB.Tables.Question, bool>> where = q => q.Title.Contains(title, StringComparison.OrdinalIgnoreCase);
 
             //  获取的列表默认不包括移除的
-            if (int.TryParse(pager.Params["state"] ?? "", out int state))
+            if (int.TryParse(pager["state"] ?? "", out int state))
                 where = where.And(q => q.State == state);
             else
                 where = where.And(q => q.State != (int)Question.QuestionState.Remove);

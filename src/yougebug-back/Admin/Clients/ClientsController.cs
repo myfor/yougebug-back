@@ -19,7 +19,7 @@ namespace yougebug_back.Admin.Clients
         public async Task<IActionResult> GetListAsync(int index, int size, string search)
         {
             Paginator pager = Paginator.New(index, size);
-            pager.Params = new Dictionary<string, string>
+            pager._params = new Dictionary<string, string>
             { 
                 ["search"] = search
             };

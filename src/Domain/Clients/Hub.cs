@@ -111,7 +111,7 @@ namespace Domain.Clients
         /// <returns></returns>
         public async Task<Resp> GetClientsListAysnc(Paginator pager)
         {
-            string search = pager.Params["search"] ?? "";
+            string search = pager["search"] ?? "";
             using var db = new YGBContext();
 
             Expression<Func<DB.Tables.User, bool>> whereStatement = u => u.Name.Contains(search) || u.Email.Contains(search);

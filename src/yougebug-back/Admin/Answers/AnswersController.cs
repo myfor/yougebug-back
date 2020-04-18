@@ -33,7 +33,7 @@ namespace yougebug_back.Admin.Answers
         public async Task<IActionResult> GetDisabledListAsync(int index, int size, string questionTitle, int state)
         {
             Domain.Paginator pager = Domain.Paginator.New(index, size);
-            pager.Params = new Dictionary<string, string>
+            pager._params = new Dictionary<string, string>
             { 
                 ["questionTitle"] = questionTitle
             };

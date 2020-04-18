@@ -15,7 +15,7 @@ namespace Domain.Questions.List
     {
         public async Task<Resp> GetListAsync(Paginator pager)
         {
-            string search = pager.Params?["search"] ?? "";
+            string search = pager?["search"] ?? "";
 
             Expression<Func<DB.Tables.Question, bool>> where = q => q.State == (int)Question.QuestionState.Enabled;
             where = where.And(WhereExpression(search));

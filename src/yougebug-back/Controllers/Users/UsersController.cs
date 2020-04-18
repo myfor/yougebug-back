@@ -60,7 +60,7 @@ namespace yougebug_back.Controllers.Users
             Domain.Clients.User user = Domain.Clients.Hub.GetUserByUserName(userName);
 
             Paginator pager = Paginator.New(index, 10);
-            pager.Params = new Dictionary<string, string>
+            pager._params = new Dictionary<string, string>
             {
                 ["userId"] = user.Id.ToString(),
                 ["currentUserId"] = CurrentUser.Id.ToString()

@@ -45,7 +45,7 @@ namespace yougebug_back.Controllers.Questions
             SetTitle(s);
 
             Domain.Paginator page = Domain.Paginator.New(index, size);
-            page.Params.Add("search", s);
+            page._params.Add("search", s);
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
             page = await hub.GetClientQuestionPager(page);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace yougebug_back.Controllers.Answers
@@ -6,12 +7,19 @@ namespace yougebug_back.Controllers.Answers
     [Route("[controller]")]
     public class AnswersController : ClientsContorller
     {
+        /*
+         * 回答列表，在用户主页使用
+         */
+        public async Task<IActionResult> GetAnswersListAsync(int index, int size, string questionTitle)
+        {
+            Paginator pager = Paginator.New(index, size, 1);
+            throw new System.NotImplementedException();
+        }
+
         /// <summary>
         /// 答案详情页
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> AnswerDetailPageAsync(int id)
         {
             var answer = Domain.Answers.Hub.GetAnswer(id);
