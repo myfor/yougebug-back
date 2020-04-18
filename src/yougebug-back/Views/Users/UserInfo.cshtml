@@ -92,7 +92,7 @@
                     </span>
                 </div>
 
-                @if (Model.UserAsks == null || Model.UserAsks.Count == 0)
+                @if (Model.IsSelf && (Model.UserAsks == null || Model.UserAsks.Count == 0))
                 {
                     <div class="text-center">
                         您还没有提问，
@@ -159,6 +159,9 @@
         }
 
         function update() {
+            const USERNAME_MAX_LENGTH = 20;
+            const USERNAME_MIN_LENGTH = 1;
+
             disabled('d_edit');
 
             const USER_NAME = $('#txt_userName');
@@ -166,8 +169,8 @@
             const USER_NAME_VALUE = USER_NAME.val().trim();
             const EMAIL_VALUE = EMAIL.val().trim();
 
-            if (USER_NAME_VALUE.length < 4) {
-                showAlert('用户名不能小于4位');
+            if (USER_NAME_VALUE.length < USERNAME_MIN_LENGTH || USER_NAME_VALUE.length > USERNAME_MAX_LENGTH) {
+                showAlert(`用户名不能小于${USERNAME_MIN_LENGTH}位大于${USERNAME_MAX_LENGTH}位`);
                 USER_NAME.focus();
                 enabled('d_edit');
                 return;

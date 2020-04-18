@@ -10,15 +10,27 @@ using System.Threading.Tasks;
 namespace Domain.Answers
 {
     /// <summary>
-    /// 答案
+    /// 回答
     /// </summary>
     public class Answer : BaseEntity
     {
         public const string NOT_EXIST_ANSWER = "该回答不存在";
-        public Answer(int id) : base(id) { }
+        internal Answer(int id) : base(id) { }
+
+        public enum DetailSource
+        {
+            /// <summary>
+            /// 管理者側
+            /// </summary>
+            Admin,
+            /// <summary>
+            /// クライアント側
+            /// </summary>
+            Client
+        }
 
         /// <summary>
-        /// 答案状态
+        /// 回答状態
         /// </summary>
         public enum AnswerState
         {
@@ -47,6 +59,18 @@ namespace Domain.Answers
             /// </summary>
             [Description("待审核")]
             ToAudit = 3
+        }
+
+        public async Task<Resp> GetDetailAsync(DetailSource source)
+        {
+            Detail.IGetDetail detail = source switch
+            { 
+                DetailSource.Admin => new Detail.FromAdmin(),
+                DetailSource.Client => new Detail.FromClient(),
+                _ => throw new ArgumentException(),
+            };
+            var r = await detail.GetAnswerDetailAsync(Id);
+            return r;
         }
 
         /// <summary>

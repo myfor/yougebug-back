@@ -43,5 +43,18 @@ namespace Domain.Clients
             public string Avatar { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
         }
+
+        public class UserIntro
+        {
+            public int Id { get; set; }
+            /// <summary>
+            /// 用户名
+            /// </summary>
+            public string Account { get; set; }
+            /// <summary>
+            /// 头像，缩略图
+            /// </summary>
+            public string Avatar { get; set; }
+        }
     }
 }

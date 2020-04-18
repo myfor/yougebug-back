@@ -7,6 +7,33 @@ namespace yougebug_back.Controllers.Answers
     public class AnswersController : ClientsContorller
     {
         /// <summary>
+        /// 答案详情页
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> AnswerDetailPageAsync(int id)
+        {
+            var answer = Domain.Answers.Hub.GetAnswer(id);
+            var r = await answer.GetDetailAsync(Domain.Answers.Answer.DetailSource.Client);
+            var data = r.GetData<Domain.Answers.Results.AnswerDetailForClient>();
+            ViewModels.Answers.AnswerDetail model = new ViewModels.Answers.AnswerDetail
+            {
+                QuestionTitle = data.QuestionTitle,
+                QuestionContent = data.QuestionContent,
+                AnswerContent = data.AnswerContent,
+                State = data.State,
+                AnswererId = data.User.Id,
+                AnswererName = data.User.Account,
+                AnswererAvatar = data.User.Avatar,
+                CreateDate = data.CreateDate,
+                IsSelf = data.IsSelf
+            };
+
+            return View("AnswerDetail", model);
+        }
+
+        /// <summary>
         /// 追问
         /// </summary>
         [HttpPost("{id}/comment")]

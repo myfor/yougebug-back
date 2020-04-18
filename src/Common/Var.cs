@@ -10,7 +10,11 @@
         /// <summary>
         /// 用户名最短长度
         /// </summary>
-        public int UserNameMinLength { get; set; } = 2;
+        public int UserNameMinLength { get; set; }
+        /// <summary>
+        /// 用户名最长长度
+        /// </summary>
+        public int UserNameMaxLength { get; set; }
         /// <summary>
         /// 不允许的用户名
         /// </summary>

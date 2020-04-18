@@ -1,4 +1,7 @@
 @model Domain.Questions.Results.QuestionDetailForClient;
+@{
+    const int ENABLED_STATE = (int)Domain.Questions.Question.QuestionState.Enabled;
+}
 
 @section Style {
     <style>
@@ -16,7 +19,24 @@
 
     <div class="col-sm-12 col-lg-8 pb-3 h-100" style="max-width: 1300px">
         <div class="d-flex pt-4 pb-4">
-            <h3 class="flex-grow-1 pl-4">@Model.Title</h3>
+            <div class="w-100">
+                <span class="h3 flex-grow-1">@Model.Title</span>
+                @if (Model.IsSelf)
+                {
+                    @switch (Model.State.Key)
+                    {
+                        case ENABLED_STATE:
+                            <span class="ml-3 badge badge-primary">@Model.State.Value</span>; break;
+                        case (int)Domain.Questions.Question.QuestionState.Back:
+                            <span class="ml-3 badge badge-danger">@Model.State.Value</span>; break;
+                        case (int)Domain.Questions.Question.QuestionState.ToAudit:
+                            <span class="ml-3 badge badge-warning">@Model.State.Value</span>; break;
+                        default:
+                            <span class="ml-3 badge">@Model.State.Value</span>
+                            break;
+                    }
+                }
+            </div>
             <div style="min-width: 90px;">
                 <a class="btn btn-primary" href="/ask">我要提问</a>
             </div>
@@ -160,7 +180,7 @@
                     @await Html.PartialAsync("_Paginator", Model.Page)
                 </div>
 
-                @if (Model.Page.TotalRows == 0)
+                @if (Model.State.Key == ENABLED_STATE && Model.Page.TotalRows == 0)
                 {
                     <div class="ml-3">
                         当前还没有回答，您可以
@@ -220,28 +240,29 @@
                 </div>
             </div>
         </div>
+        @if (Model.State.Key == (int)Domain.Questions.Question.QuestionState.Enabled)
+        {
+            <div>
+                <form>
+                    <div id="d_nickName">
+                        <label>
+                            您当前没有登录，可以
+                            <a href="javascript:;" id="a_login">登录</a>
+                            或匿名写下答案，但需要审核后才能显示
+                        </label>
+                        <input type="text" class="form-control" id="txt_nickName" value="匿名" placeholder="昵称或登录" />
+                    </div>
+                    <label for="txt_answer">你的回答</label>
+                    <small class="small">支持 <a href="https://github.com/younghz/Markdown" target="_blank" data-toggle="tooltip" data-placement="bottom" title="什么是 markdown?">markdown</a> 语法</small>
+                    <textarea class="form-control" id="txt_answer" rows="10" required placeholder="写下你的答案"></textarea>
+                    <div class="d-flex flex-row-reverse">
+                        <span class="flex-grow-1 text-right"><strong>认真对待您的答案，请不要写不关联的文字</strong></span>
+                        <button type="button" class="btn btn-primary mt-3" id="btn_postAnswer" onclick="newAnswer()">提交</button>
+                    </div>
 
-        <div>
-            <form>
-                <div id="d_nickName">
-                    <label>
-                        您当前没有登录，可以
-                        <a href="javascript:;" id="a_login">登录</a>
-                        或匿名写下答案，但需要审核后才能显示
-                    </label>
-                    <input type="text" class="form-control" id="txt_nickName" value="匿名" placeholder="昵称或登录" />
-                </div>
-                <label for="txt_answer">你的回答</label>
-                <small class="small">支持 <a href="https://github.com/younghz/Markdown" target="_blank" data-toggle="tooltip" data-placement="bottom" title="什么是 markdown?">markdown</a> 语法</small>
-                <textarea class="form-control" id="txt_answer" rows="10" required placeholder="写下你的答案"></textarea>
-                <div class="d-flex flex-row-reverse">
-                    <span class="flex-grow-1 text-right"><strong>认真对待您的答案，请不要写不关联的文字</strong></span>
-                    <button type="button" class="btn btn-primary mt-3" id="btn_postAnswer" onclick="newAnswer()">提交</button>
-                </div>
-
-            </form>
-        </div>
-
+                </form>
+            </div>
+        }
     </div>
 
     <div class="col-2 d-none d-lg-block">

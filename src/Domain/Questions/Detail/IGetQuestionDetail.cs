@@ -12,6 +12,6 @@ namespace Domain.Questions.Detail
         /// </summary>
         /// <param name="questionId"></param>
         /// <returns></returns>
-        Task<Resp> GetDetailAsync(int questionId, int index, int size);
+        Task<Resp> GetDetailAsync(int questionId, Paginator pager);
     }
 }

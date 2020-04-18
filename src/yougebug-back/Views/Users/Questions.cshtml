@@ -55,6 +55,8 @@
                                         <span class="ml-3 badge badge-danger">@question.State.Value</span>; break;
                                     case (int)Domain.Questions.Question.QuestionState.ToAudit:
                                         <span class="ml-3 badge badge-warning">@question.State.Value</span>; break;
+                                    case (int)Domain.Questions.Question.QuestionState.Delete:
+                                        <button class="btn btn-danger btn-sm" id="btn_deleteQuestion" onclick="deleteQuestion(@question.Id)">删除</button>; break;
                                     default:
                                         <span class="ml-3 badge">@question.State.Value</span>
                                         break;

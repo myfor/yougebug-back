@@ -66,16 +66,14 @@ namespace yougebug_back.Controllers.Questions
         public async Task<IActionResult> GetQuestionDetailAsync(int id, string title, int index, int size)
         {
             SetTitle(title);
-            index = index == 0 ? 1 : index;
-            size = size == 0 ? 10 : size;
+            Domain.Paginator pager = Domain.Paginator.New(index, size);
+            pager["currentUserId"] = CurrentUser.Id.ToString();
 
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp resp = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Client, index, size);
+            Domain.Resp resp = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Client, pager);
             if (!resp.IsSuccess)
                 return Redirect(string.Format($"/questions/?{ALERT_WARNING}", resp.Message));
             Domain.Questions.Results.QuestionDetailForClient model = resp.GetData<Domain.Questions.Results.QuestionDetailForClient>();
-            //  是否为本人
-            model.IsSelf = CurrentUser.Id == model.User.Id;
 
             return View("QuestionDetail", model);
         }

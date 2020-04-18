@@ -23,12 +23,6 @@ namespace Domain.Clients
             }
         }
 
-        public class UserIntro
-        {
-            public int Id { get; set; }
-            public string Account { get; set; }
-            public string Avatar { get; set; }
-        }
         /// <summary>
         /// 用户注册
         /// </summary>
@@ -62,6 +56,9 @@ namespace Domain.Clients
                 if (string.IsNullOrWhiteSpace(UserName) || UserName.Trim().Length < Common.Config.Var.UserNameMinLength)
                     return (false, $"用户名长度不能小于{Common.Config.Var.UserNameMinLength}位");
                 UserName = UserName.Trim();
+
+                if (UserName.Length > Common.Config.Var.UserNameMaxLength)
+                    return (false, $"用户名长度不能大于{Common.Config.Var.UserNameMaxLength}位");
 
                 foreach (string character in Common.Config.Var.NonAllowedContainCharacter)
                 {

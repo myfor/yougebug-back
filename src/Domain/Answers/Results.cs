@@ -11,7 +11,7 @@
             public string Content { get; set; }
             public int Votes { get; set; }
             public string CreateDate { get; set; }
-            public Clients.Models.UserIntro User { get; set; }
+            public Clients.Results.UserIntro User { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
         }
 
@@ -30,6 +30,27 @@
             public string CreateDate { get; set; }
             public string AnswererName { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
+        }
+
+        /// <summary>
+        /// 管理者側の回答の細部
+        /// </summary>
+        public class AnswerDetailForAdmin
+        {
+            public string QuestionTitle { get; set; } = "";
+            public string QuestionContent { get; set; } = "";
+            public string AnswerContent { get; set; } = "";
+            public Share.KeyValue<int, string> State { get; set; }
+            public Clients.Results.UserIntro User { get; set; }
+            public string CreateDate { get; set; } = "";
+        }
+
+        /// <summary>
+        /// 管理者側の回答の細部
+        /// </summary>
+        public class AnswerDetailForClient : AnswerDetailForAdmin
+        {
+            public bool IsSelf { get; set; }
         }
     }
 }

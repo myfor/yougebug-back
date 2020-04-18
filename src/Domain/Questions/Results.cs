@@ -83,7 +83,7 @@ namespace Domain.Questions
             public int Votes { get; set; }
             public int Views { get; set; }
             public string Actived { get; set; }
-            public Clients.Models.UserIntro User { get; set; }
+            public Clients.Results.UserIntro User { get; set; }
             public string CreateDate { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
             //  public List<Answers.Models.AnswerItem> Answers { get; set; }
@@ -106,7 +106,7 @@ namespace Domain.Questions
             public int Votes { get; set; }
             public int Views { get; set; }
             public string Actived { get; set; }
-            public Clients.Models.UserIntro User { get; set; }
+            public Clients.Results.UserIntro User { get; set; }
             public string CreateDate { get; set; }
             public Share.KeyValue<int, string> State { get; set; }
             /// <summary>

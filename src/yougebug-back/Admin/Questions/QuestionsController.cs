@@ -54,7 +54,7 @@ namespace yougebug_back.Admin.Questions
         public async Task<IActionResult> GetReportDetailAsync(int questionId)
         {
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(questionId);
-            var r = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Report);
+            var r = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Report, null);
             return Pack(r);
         }
 
@@ -65,8 +65,10 @@ namespace yougebug_back.Admin.Questions
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDetailAsync(int id)
         {
+            Paginator pager = Paginator.New(1, 10);
+
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);
-            Domain.Resp resp = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Admin);
+            Domain.Resp resp = await question.GetDetailAsync(Domain.Questions.Question.DetailSource.Admin, pager);
             return Pack(resp);
         }
 

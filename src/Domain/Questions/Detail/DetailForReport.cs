@@ -14,7 +14,7 @@ namespace Domain.Questions.Detail
         /// <param name="index"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public async Task<Resp> GetDetailAsync(int questionId, int index, int size)
+        public async Task<Resp> GetDetailAsync(int questionId, Paginator page)
         {
             await using var db = new YGBContext();
 

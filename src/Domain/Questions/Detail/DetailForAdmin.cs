@@ -14,7 +14,7 @@ namespace Domain.Questions.Detail
     /// </summary>
     public class DetailForAdmin : IGetQuestionDetail
     {
-        public async Task<Resp> GetDetailAsync(int questionId, int index, int size)
+        public async Task<Resp> GetDetailAsync(int questionId, Paginator page)
         {
             using var db = new YGBContext();
             DB.Tables.Question question = await db.Questions.Include(q => q.Asker)
@@ -27,12 +27,11 @@ namespace Domain.Questions.Detail
 
             Answers.Hub answerHub = new Answers.Hub();
             //  获取第一页的答案分页
-            Paginator page = Paginator.New(index, size);
 
             //  获取提问下的答案分页
             Answers.List.AnswerList answers = answerHub.GetAnswers(Answers.Hub.AnswerSource.Question);
 
-            (page.List, page.TotalRows) = await answers.GetAnswersAsync(questionId, index, size, Answers.Answer.AnswerState.NoSelected);
+            (page.List, page.TotalRows) = await answers.GetAnswersAsync(questionId, page.Index, page.Size, Answers.Answer.AnswerState.NoSelected);
 
             Results.QuestionDetailForAdmin detail = new Results.QuestionDetailForAdmin
             {
@@ -46,7 +45,7 @@ namespace Domain.Questions.Detail
                 CreateDate = question.CreateDate.ToStandardString(),
                 State = KeyValue<int, string>.Create(question.State, question.State.GetDescription<Question.QuestionState>()),
                 Comments = question.QuestionComments.Select(q => KeyValue<int, string>.Create(q.Id, q.Content)).ToArray(),
-                User = new Clients.Models.UserIntro
+                User = new Clients.Results.UserIntro
                 {
                     Id = question.Asker.Id,
                     Account = question.Asker.Name,

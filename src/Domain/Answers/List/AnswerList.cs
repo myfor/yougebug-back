@@ -49,12 +49,12 @@ namespace Domain.Answers.List
                                              Content = a.Content,
                                              CreateDate = a.CreateDate.ToStandardString(),
                                              State = Share.KeyValue<int, string>.Create(a.State, a.State.GetDescription<Answers.Answer.AnswerState>()),
-                                             User = a.AnswererId.HasValue ? new Clients.Models.UserIntro
+                                             User = a.AnswererId.HasValue ? new Clients.Results.UserIntro
                                              {
                                                  Id = a.Id,
                                                  Account = a.Answerer.Name,
                                                  Avatar = a.Answerer.Avatar.Thumbnail
-                                             } : new Clients.Models.UserIntro
+                                             } : new Clients.Results.UserIntro
                                              {
                                                  Id = 0,
                                                  Account = a.NickName,

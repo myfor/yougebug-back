@@ -240,8 +240,10 @@ namespace Domain.Questions
         /// <summary>
         /// 获取详情
         /// </summary>
+        /// <param name="source"></param>
+        /// <param name="page">答案的分页</param>
         /// <returns></returns>
-        public async Task<Resp> GetDetailAsync(DetailSource source, int index = 1, int size = 10)
+        public async Task<Resp> GetDetailAsync(DetailSource source, Paginator page)
         {
             CheckEmpty();
 
@@ -253,7 +255,7 @@ namespace Domain.Questions
                 _ => throw new ArgumentException(),
             };
 
-            return await detail.GetDetailAsync(Id, index, size);
+            return await detail.GetDetailAsync(Id, page);
         }
 
         /// <summary>
