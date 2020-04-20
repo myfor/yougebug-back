@@ -11,7 +11,7 @@ namespace yougebug_back.Admin.Clients
     [Route(Defaults.ADMIN_DEFAULT_ROUTE)]
     public class ClientsController : AdminBaseController
     {
-        
+
         /*
         获取列表
          */
@@ -19,10 +19,8 @@ namespace yougebug_back.Admin.Clients
         public async Task<IActionResult> GetListAsync(int index, int size, string search)
         {
             Paginator pager = Paginator.New(index, size);
-            pager._params = new Dictionary<string, string>
-            { 
-                ["search"] = search
-            };
+
+            pager["search"] = search;
 
             Domain.Clients.Hub clientsHub = new Domain.Clients.Hub();
             Resp r = await clientsHub.GetClientsListAysnc(pager);

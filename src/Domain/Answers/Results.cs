@@ -33,6 +33,20 @@
         }
 
         /// <summary>
+        /// クライアントホームページの回答リストの単一項目
+        /// </summary>
+        public class AnswerItem_UserPage
+        {
+            public int Id { get; set; }
+            public int QuestionId { get; set; }
+            public string QuestionTitle { get; set; }
+            public string AnswerContent { get; set; }
+            public Share.KeyValue<int, string> State { get; set; }
+            public string CreateDate { get; set; }
+            public bool IsSelf { get; set; }
+        }
+
+        /// <summary>
         /// 管理者側の回答の細部
         /// </summary>
         public class AnswerDetailForAdmin

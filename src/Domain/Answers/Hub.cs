@@ -20,7 +20,11 @@ namespace Domain.Answers
             /// <summary>
             /// 管理端所有回答列表
             /// </summary>
-            AllAnswersOfAdmin
+            AllAnswersOfAdmin,
+            /// <summary>
+            /// 用户主页的回答列表
+            /// </summary>
+            UserPage
         }
 
         /// <summary>
@@ -32,6 +36,7 @@ namespace Domain.Answers
             { 
                 AnswerSource.Question => new List.FromQuestion(),
                 AnswerSource.AllAnswersOfAdmin => new List.FromAllOfAdmin(),
+                AnswerSource.UserPage => new List.FromUserPage(),
                 _ => throw new ArgumentException()
             };
             return answers;
@@ -60,6 +65,16 @@ namespace Domain.Answers
             pager["state"] = ((int)state).ToString();
             var answers = GetAnswers(AnswerSource.AllAnswersOfAdmin);
             var r = await answers.GetListAsync(pager);
+            return r;
+        }
+        
+        /// <summary>
+        /// クライアントホームページのカイトをしゅ取得する
+        /// </summary>
+        public async Task<Resp> GetAnswerFormUserPageAsync(Paginator pager)
+        {
+            var answer = GetAnswers(AnswerSource.UserPage);
+            var r = await answer.GetListAsync(pager);
             return r;
         }
 

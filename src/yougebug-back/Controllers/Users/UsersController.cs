@@ -40,8 +40,11 @@ namespace yougebug_back.Controllers.Users
 
             //  获取用户的第一页提问列表
             List<Domain.Questions.Results.QuestionItem_UserSelf> questionsList = await user.GetSelfQuestionsByDetailAsync(currentUser.Id);
+            //  获取用户的第一页的回答列表
+            List<Domain.Answers.Results.AnswerItem_UserPage> answersList = await user.GetSelfAnswersByDetailAsync(currentUser.Id);
 
             model.UserAsks = questionsList;
+            model.UserAnswers = answersList;
 
             SetTitle("用户: " + userName);
 
@@ -60,18 +63,16 @@ namespace yougebug_back.Controllers.Users
             Domain.Clients.User user = Domain.Clients.Hub.GetUserByUserName(userName);
 
             Paginator pager = Paginator.New(index, 10);
-            pager._params = new Dictionary<string, string>
-            {
-                ["userId"] = user.Id.ToString(),
-                ["currentUserId"] = CurrentUser.Id.ToString()
-            };
+
+            pager["userId"] = user.Id.ToString();
+            pager["currentUserId"] = CurrentUser.Id.ToString();
 
             Paginator resultPager = await user.GetSelfQuestionsAsync(pager);
 
             ViewModels.Users.UserQuestions model = new ViewModels.Users.UserQuestions
-            { 
+            {
                 UserIntro = new ViewModels.Shared.UserIntro
-                { 
+                {
                     UserName = userName,
                     Avatar = user.GetAvatar()
                 },

@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace yougebug_back.Controllers.Answers
@@ -10,10 +11,18 @@ namespace yougebug_back.Controllers.Answers
         /*
          * 回答列表，在用户主页使用
          */
-        public async Task<IActionResult> GetAnswersListAsync(int index, int size, string questionTitle)
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetAnswersListAsync(int userId, int index, int size, string questionTitle)
         {
-            Paginator pager = Paginator.New(index, size, 1);
-            throw new System.NotImplementedException();
+            Paginator pager = Paginator.New(index, size, 2);
+            pager["userId"] = userId.ToString();
+            pager["currentUserId"] = CurrentUser.Id.ToString();
+            pager["questionTitle"] = questionTitle;
+
+            Domain.Answers.Hub answerHub = new Domain.Answers.Hub();
+
+            var r = await answerHub.GetAnswerFormUserPageAsync(pager);
+            return Pack(r);
         }
 
         /// <summary>

@@ -13,5 +13,9 @@ namespace yougebug_back.ViewModels.Users
         /// 该用户自己的提问
         /// </summary>
         public List<Domain.Questions.Results.QuestionItem_UserSelf> UserAsks { get; set; }
+        /// <summary>
+        /// 该用户自己的回答
+        /// </summary>
+        public List<Domain.Answers.Results.AnswerItem_UserPage> UserAnswers { get; set; }
     }
 }

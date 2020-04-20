@@ -44,8 +44,8 @@ namespace yougebug_back.Controllers.Questions
 
             SetTitle(s);
 
-            Domain.Paginator page = Domain.Paginator.New(index, size);
-            page._params.Add("search", s);
+            Domain.Paginator page = Domain.Paginator.New(index, size, 1);
+            page["search"] = s;
 
             Domain.Questions.Hub hub = new Domain.Questions.Hub();
             page = await hub.GetClientQuestionPager(page);
@@ -66,7 +66,7 @@ namespace yougebug_back.Controllers.Questions
         public async Task<IActionResult> GetQuestionDetailAsync(int id, string title, int index, int size)
         {
             SetTitle(title);
-            Domain.Paginator pager = Domain.Paginator.New(index, size);
+            Domain.Paginator pager = Domain.Paginator.New(index, size, 1);
             pager["currentUserId"] = CurrentUser.Id.ToString();
 
             Domain.Questions.Question question = Domain.Questions.Hub.GetQuestion(id);

@@ -55,7 +55,15 @@ namespace System
         /// <summary>
         /// 只选取部分描述
         /// </summary>
-        public static string Overflow(this string value, int count, string suffix = "...")
+        public static string Overflow(this string value, int count)
+        {
+            return value.Overflow(count, "...");
+        }
+
+        /// <summary>
+        /// 只选取部分描述
+        /// </summary>
+        public static string Overflow(this string value, int count, string suffix)
         {
             if (value.Length <= count)
                 return value;
