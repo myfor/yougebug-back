@@ -34,7 +34,15 @@
             </span>
 
             <div>
-                @foreach (var question in Model.Paginator.GetList<Domain.Questions.Results.QuestionItem_UserSelf>())
+                @{ var list = Model.Paginator.GetList<Domain.Questions.Results.QuestionItem_UserSelf>(); }
+                @if (list.Count == 0)
+                {
+                    <div class="text-center">
+                        您还没有提问，
+                        <a href="/ask">现在提问</a>
+                    </div>
+                }
+                @foreach (Domain.Questions.Results.QuestionItem_UserSelf question in list)
                 {
                     <div class="d-flex flex-column border rounded mt-2 mb-2 p-3" id="d-question-box-@question.Id">
                         <span>

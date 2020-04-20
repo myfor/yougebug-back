@@ -30,11 +30,16 @@
 
         <div class="mt-5">
             <span class="h4 tag-top">
-                提问列表
+                回答列表
             </span>
 
             <div>
-                @foreach (var answer in Model.Paginator.GetList<Domain.Answers.Results.AnswerItem_UserPage>())
+                @{ var list = Model.Paginator.GetList<Domain.Answers.Results.AnswerItem_UserPage>(); }
+                @if (list.Count == 0)
+                {
+                    <div class="text-center">没有回答</div>
+                }
+                @foreach (Domain.Answers.Results.AnswerItem_UserPage answer in list)
                 {
                     <div class="d-flex flex-column border rounded mt-2 mb-2 p-3" id="d-answer-box-@answer.Id">
                         <span>
@@ -62,9 +67,16 @@
                                     }
                                 }
                             </div>
-                            <span>
-                                <button class="btn btn-danger btn-sm" id="btn_deleteAnswer" onclick="deleteAnswer(@answer.Id)">删除</button>
-                            </span>
+                            <div class="btn-group dropleft">
+                                <button class="btn btn-outline-danger dropdown-toggle btn-sm" id="btn_deleteAnswer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    删除
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item text-danger" href="javascript:;" onclick="deleteAnswer(@answer.Id)" data-toggle="tooltip" data-placement="top" title="删除后无法恢复 ！">
+                                        确认删除
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 }
@@ -82,6 +94,10 @@
 
 @section Scripts {
     <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
         function deleteAnswer(answerId) {
             disabled('btn_deleteAnswer', '删除中', 'button');
             axios.delete(`/answers/${answerId}`)
