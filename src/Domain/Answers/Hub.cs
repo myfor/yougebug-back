@@ -130,5 +130,34 @@ namespace Domain.Answers
         {
             return new Answer(id);
         }
+
+        /// <summary>
+        /// 删除回答，硬删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Resp> DeleteAsync(int id)
+        {
+            await using var db = new YGBContext();
+
+            var answer = await db.Answers.AsNoTracking().FirstOrDefaultAsync(a => a.Id == id);
+            if (answer is null)
+                return Resp.Fault(Resp.NONE, "答案不存在");
+
+            var backList = await db.AnswerBackRecords.AsNoTracking().Where(a => a.AnswerId == id).ToListAsync();
+            var commentList = await db.AnswerComments.AsNoTracking().Where(a => a.AnswerId == id).ToListAsync();
+            var reportList = await db.AnswerReportRecords.AsNoTracking().Where(a => a.AnswerId == id).ToListAsync();
+
+            db.AnswerBackRecords.RemoveRange(backList);
+            db.AnswerComments.RemoveRange(commentList);
+            db.AnswerReportRecords.RemoveRange(reportList);
+            db.Answers.Remove(answer);
+
+            int count = 1 + backList.Count + commentList.Count + reportList.Count;
+            int changeCount = await db.SaveChangesAsync();
+            if (count == changeCount)
+                return Resp.Success();
+            return Resp.Fault(Resp.NONE, "删除失败");
+        }
     }
 }

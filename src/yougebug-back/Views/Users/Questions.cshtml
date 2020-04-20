@@ -36,7 +36,7 @@
             <div>
                 @foreach (var question in Model.Paginator.GetList<Domain.Questions.Results.QuestionItem_UserSelf>())
                 {
-                    <div class="d-flex flex-column border rounded mt-2 mb-2 p-3">
+                    <div class="d-flex flex-column border rounded mt-2 mb-2 p-3" id="d-question-box-@question.Id">
                         <span>
                             <a href="questions/@question.Id/@question.Title">@question.Title</a>
                         </span>
@@ -50,7 +50,7 @@
                                 @switch (question.State.Key)
                                 {
                                     case (int)Domain.Questions.Question.QuestionState.Enabled:
-                                        <span class="ml-3 badge badge-primary">@question.State.Value</span>; break;
+                                        <span class="ml-3 badge badge-success">@question.State.Value</span>; break;
                                     case (int)Domain.Questions.Question.QuestionState.Back:
                                         <span class="ml-3 badge badge-danger">@question.State.Value</span>; break;
                                     case (int)Domain.Questions.Question.QuestionState.ToAudit:
@@ -78,4 +78,26 @@
 </div>
 
 @section Scripts {
+    <script>
+
+        function deleteQuestion(questionId) {
+            disabled('btn_deleteQuestion', '删除中', 'button');
+            axios.delete(`/questions/${questionId}`)
+                .then(function (resp) {
+                    if (resp.status === 200) {
+                        const THIS_QUESTION_BOX = document.getElementById('d-question-box-' + questionId)
+                        const _parent = THIS_QUESTION_BOX.parentNode;
+                        _parent.removeChild(THIS_QUESTION_BOX);
+                    } else {
+                        showAlert(resp.data.message);
+                        enabled('btn_deleteQuestion', '删除', 'button');
+                    }
+                })
+                .catch(function (err) {
+                    catchErr(err);
+                    enabled('btn_deleteQuestion', '删除', 'button');
+                })
+        }
+
+    </script>
 }

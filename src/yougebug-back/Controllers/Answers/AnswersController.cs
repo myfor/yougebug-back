@@ -89,5 +89,18 @@ namespace yougebug_back.Controllers.Answers
             Domain.Resp r = await answer.UnLikeAsync();
             return Pack(r);
         }
+
+        /// <summary>
+        /// 删除回答
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            Domain.Answers.Hub answerHub = new Domain.Answers.Hub();
+            var r = await answerHub.DeleteAsync(id);
+            return Pack(r);
+        }
     }
 }

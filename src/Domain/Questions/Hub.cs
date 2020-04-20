@@ -159,7 +159,8 @@ namespace Domain.Questions
                 db.Questions.Remove(question);
 
                 int changeCount = await db.SaveChangesAsync();
-                if (changeCount == answers.Count + 1 + backRecords.Count + reportRecords.Count + comments.Count + backQuestion.Count + reportQuestion.Count + commentQuestion.Count)
+                int count = answers.Count + 1 + backRecords.Count + reportRecords.Count + comments.Count + backQuestion.Count + reportQuestion.Count + commentQuestion.Count;
+                if (changeCount == count)
                     return Resp.Success();
             }
             else

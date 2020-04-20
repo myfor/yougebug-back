@@ -62,7 +62,7 @@ namespace yougebug_back.Controllers.Users
 
             Domain.Clients.User user = Domain.Clients.Hub.GetUserByUserName(userName);
 
-            Paginator pager = Paginator.New(index, 10);
+            Paginator pager = Paginator.New(index, 10, 2);
 
             pager["userId"] = user.Id.ToString();
             pager["currentUserId"] = CurrentUser.Id.ToString();
@@ -80,6 +80,33 @@ namespace yougebug_back.Controllers.Users
             };
 
             return View("questions", model);
+        }
+
+        /*
+         * 获取用户的回答列表
+         */
+        [HttpGet("/{userName}/answers")]
+        public async Task<IActionResult> GetUserSelfAnswerAsync(string userName, int index)
+        {
+            Domain.Clients.User user = Domain.Clients.Hub.GetUserByUserName(userName);
+
+            Paginator pager = Paginator.New(index, 10, 3);
+            pager["userId"] = user.Id.ToString();
+            pager["currentUserId"] = CurrentUser.Id.ToString();
+            pager["questionTitle"] = "";
+
+            Paginator resultPager = await user.GetSelfAnswersByDetailAsync(pager);
+
+            ViewModels.Users.UserAnswers model = new ViewModels.Users.UserAnswers
+            { 
+                UserIntro = new ViewModels.Shared.UserIntro
+                { 
+                    UserName = userName,
+                    Avatar = user.GetAvatar()
+                },
+                Paginator = resultPager
+            };
+            return View("answers", model);
         }
 
         /// <summary>

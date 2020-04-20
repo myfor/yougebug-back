@@ -280,13 +280,26 @@ namespace Domain.Clients
             List<Questions.Results.QuestionItem_UserSelf> list = resultPager.GetList<Questions.Results.QuestionItem_UserSelf>();
             return list;
         }
+
+        /// <summary>
+        /// 获取自己的回答
+        /// </summary>
+        public async Task<Paginator> GetSelfAnswersByDetailAsync(Domain.Paginator pager)
+        {
+            Answers.Hub answerHub = new Answers.Hub();
+            var r = await answerHub.GetAnswerFormUserPageAsync(pager);
+            Paginator resultPager = r.GetData<Paginator>();
+
+            return resultPager;
+        }
+
         /// <summary>
         /// 获取用户自己的回答，只获取第一页
         /// クライアント自身の回答、最初のページのみを取得する
         /// </summary>
         public async Task<List<Answers.Results.AnswerItem_UserPage>> GetSelfAnswersByDetailAsync(int currentUserId)
         {
-            Paginator pager = Paginator.New(1, 10, 2);
+            Paginator pager = Paginator.New(1, 5, 2);
             pager["userId"] = Id.ToString();
             pager["currentUserId"] = currentUserId.ToString();
             pager["questionTitle"] = "";
