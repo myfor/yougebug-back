@@ -24,7 +24,7 @@ namespace Domain.Answers.List
                 return Resp.Fault(Resp.NONE, "登录用户有有误");
             string questionTitle = pager["questionTitle"] ?? "";
 
-            Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.AnswererId == userId;
+            Expression<Func<DB.Tables.Answer, bool>> whereStatement = a => a.AnswererId == userId && a.State != (int)Answer.AnswerState.Remove;
 
             bool isSelf = userId == currentUserId;
 

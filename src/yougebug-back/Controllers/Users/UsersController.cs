@@ -46,7 +46,7 @@ namespace yougebug_back.Controllers.Users
             model.UserAsks = questionsList;
             model.UserAnswers = answersList;
 
-            SetTitle("用户: " + userName);
+            SetTitle(userName);
 
             return View(model);
         }

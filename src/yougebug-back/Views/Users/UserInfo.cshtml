@@ -119,7 +119,7 @@
                                         @switch (question.State.Key)
                                         {
                                             case (int)Domain.Questions.Question.QuestionState.Enabled:
-                                                <span class="ml-3 badge badge-Success">@question.State.Value</span>; break;
+                                                <span class="ml-3 badge badge-success">@question.State.Value</span>; break;
                                             case (int)Domain.Questions.Question.QuestionState.Back:
                                                 <span class="ml-3 badge badge-danger">@question.State.Value</span>; break;
                                             case (int)Domain.Questions.Question.QuestionState.ToAudit:
@@ -166,25 +166,40 @@
                     @foreach (var answer in Model.UserAnswers)
                     {
                         <div class="d-flex flex-column border rounded mt-2 mb-2 p-3" id="d-answer-box-@answer.Id">
-                            <span>
+                            <span class="border-bottom">
                                 <a href="questions/@answer.QuestionId/@answer.QuestionTitle">@answer.QuestionTitle</a>
                             </span>
                             <div class="p-2">
-                                @answer.AnswerContent
+                                <a href="answers/@answer.Id">@answer.AnswerContent</a>
                             </div>
-
+                            <div>
+                                <span class="mr-3">@answer.CreateDate</span>
+                                @if (answer.IsSelf)
+                                {
+                                    @switch (answer.State.Key)
+                                    {
+                                        case (int)Domain.Answers.Answer.AnswerState.Enabled:
+                                            <span class="ml-3 badge badge-success">@answer.State.Value</span>; break;
+                                        case (int)Domain.Answers.Answer.AnswerState.ToAudit:
+                                            <span class="ml-3 badge badge-warning">@answer.State.Value</span>; break;
+                                        case (int)Domain.Answers.Answer.AnswerState.Disabled:
+                                            <span class="ml-3 badge badge-secondary">@answer.State.Value</span>; break;
+                                        default:
+                                            <span class="ml-3 badge">@answer.State.Value</span>; break;
+                                    }
+                                }
+                                <button class="btn btn-danger btn-sm" id="btn_deleteAnswer" onclick="deleteAnswer(@answer.Id)">删除</button>
+                            </div>
                         </div>
                     }
                 }
-
             </div>
 
         </div>
     </div>
-</div>
-
-<div class="col-2 d-none d-lg-block">
-    @await Html.PartialAsync("_RightNav")
+    <div class="col-2 d-none d-lg-block">
+        @await Html.PartialAsync("_RightNav")
+    </div>
 </div>
 
 @section Scripts {
