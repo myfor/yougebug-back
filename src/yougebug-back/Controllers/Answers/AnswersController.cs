@@ -77,6 +77,17 @@ namespace yougebug_back.Controllers.Answers
         }
 
         /// <summary>
+        /// 修改答案
+        /// </summary>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> ModifyAnswerAsync(int id, [FromBody]Share.SingleContent model)
+        {
+            Domain.Answers.Answer answer = Domain.Answers.Hub.GetAnswer(id);
+            var r = await answer.ModifyAsync(model.Content);
+            return Pack(r);
+        }
+
+        /// <summary>
         /// 同意
         /// </summary>
         [HttpPatch("{id}/like")]

@@ -99,7 +99,7 @@
         })
 
         function deleteAnswer(answerId) {
-            disabled('btn_deleteAnswer', '删除中', 'button');
+            disabled('btn_deleteAnswer', '删除中');
             axios.delete(`/answers/${answerId}`)
                 .then(function (resp) {
                     if (resp.status === 200) {
@@ -108,12 +108,12 @@
                         _parent.removeChild(THIS_ANSWER_BOX);
                     } else {
                         showAlert(resp.data.message);
-                        enabled('btn_deleteAnswer', '删除', 'button');
+                        enabled('btn_deleteAnswer', '删除');
                     }
                 })
                 .catch(function (err) {
                     catchErr(err);
-                    enabled('btn_deleteAnswer', '删除', 'button');
+                    enabled('btn_deleteAnswer', '删除');
                 })
         }
     </script>

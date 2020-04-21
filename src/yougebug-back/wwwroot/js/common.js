@@ -58,28 +58,28 @@ function checkEmail(email) {
 }
 
 //  设置元素 disabled
-function disabled(selector, value, elementType) {
+function disabled(selector, value) {
     const DISABLED = 'disabled';
     const ELE = document.getElementById(selector);
     if (ELE.hasAttribute(DISABLED))
         return;
     ELE.setAttribute(DISABLED, DISABLED);
     if (value) {
-        switch (elementType) {
-            case 'button': ELE.innerHTML = value; break;
+        switch (ELE.nodeName) {
+            case 'BUTTON': ELE.innerHTML = value; break;
             default: ELE.value = value; break;
         }
     }
 }
 
 //  设置元素 enabled
-function enabled(selector, value, elementType) {
+function enabled(selector, value) {
     const DISABLED = 'disabled';
     const ELE = document.getElementById(selector);
     ELE.removeAttribute(DISABLED);
     if (value) {
-        switch (elementType) {
-            case 'button': ELE.innerHTML = value; break;
+        switch (ELE.nodeType) {
+            case 'BUTTON': ELE.innerHTML = value; break;
             default: ELE.value = value; break;
         }
     }

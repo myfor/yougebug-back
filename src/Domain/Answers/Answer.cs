@@ -74,6 +74,29 @@ namespace Domain.Answers
         }
 
         /// <summary>
+        /// 修改答案
+        /// </summary>
+        public async Task<Resp> ModifyAsync(string content)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+                return Resp.Fault(Resp.NONE, "答案不能为空");
+
+            await using var db = new YGBContext();
+
+            var answer = await db.Answers.FirstOrDefaultAsync(a => a.Id == Id);
+            if (answer is null)
+                return Resp.Fault(Resp.NONE, "该答案不存在");
+
+            if (answer.Content == content)
+                return Resp.Fault(Resp.NONE, "您还没有进行修改");
+            answer.Content = content;
+            int changeCount = await db.SaveChangesAsync();
+            if (changeCount == 1)
+                return Resp.Success();
+            return Resp.Fault(Resp.NONE, "修改失败");
+        }
+
+        /// <summary>
         /// 举报这个回答
         /// </summary>
         /// <returns></returns>
