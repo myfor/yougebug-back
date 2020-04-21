@@ -388,7 +388,6 @@
             axios.delete('/questions/' + id)
                 .then(function (resp) {
                     if (resp.status === 200) {
-                        //  showAlert('删除成功', '', 'javascript:history.back();');
                         location.href = `/questions?${ALERT_PRIMARY}=成功删除提问`;
                     } else {
                         showAlert(resp.data.message);
@@ -475,8 +474,10 @@
                 })
                 .catch(function (err) {
                     if (err.response.status === 401) {
-                        //setLogout();
-                        showAlert('登录超时，请重新登录或匿名提交', '', 'setLogout()');
+                        showAlert('登录超时，请重新登录或匿名提交', '',
+                            function () {
+                                setLogout()
+                            });
                     }
                     enabled('btn_comment');
                 });

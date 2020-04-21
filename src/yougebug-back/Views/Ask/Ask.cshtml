@@ -59,7 +59,6 @@
         $(function () {
             //  检查登录
             if (!getLoggedCache()) {
-                //  showAlert('请先登录');
                 location.href = `/login?${GO_TO}=${location.pathname}&${ALERT_WARNING}=请先登录`;
             }
 

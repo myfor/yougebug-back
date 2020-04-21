@@ -3,40 +3,66 @@
  * 提示弹窗
  * @param content 提示内容
  * @param title 提示标题
- * @param click 按钮事件，直接执行的JS代码
+ * @param clickFunction 按钮事件，传入要执行的方法体
  */
-function showAlert(content, title, click) {
-    const MOD = document.createElement('div');
-    MOD.className = 'modal fade';
-    MOD.id = 'mod_alert';
-    MOD.setAttribute('tabindex', '-1');
-    MOD.setAttribute('role', 'role');
-    MOD.setAttribute('aria-labelledby', 'exampleModalLabel');
-    MOD.setAttribute('aria-hidden', 'true');
+function showAlert(content, title, clickFunction) {
+    const DOC = document;
 
-    const BTN = click ? `<button type="button" class="btn btn-primary" onclick="javascript:${click};">确定</button>` : '';
+    const TOP = DOC.createElement('div');
+    TOP.className = 'modal fade';
+    TOP.id = 'mod_alert';
+    TOP.setAttribute('tabindex', '-1');
+    TOP.setAttribute('role', 'role');
+    TOP.setAttribute('aria-labelledby', 'modelLay');
+    TOP.setAttribute('aria-hidden', 'true');
 
-    MOD.innerHTML = `
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        <div class="modal-header">
+    const DIV_1 = DOC.createElement('div');
+    DIV_1.className = 'modal-dialog';
+    DIV_1.setAttribute('role', 'cocument');
+
+    const DIV_2 = DOC.createElement('div');
+    DIV_2.className = 'modal-content';
+
+    const DIV_3 = DOC.createElement('div');
+    DIV_3.className = 'modal-header';
+
+    DIV_3.innerHTML = `
             <h5 class="modal-title" id="exampleModalLabel">${title ? title : "提示"}</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-        </div>
-        <div class="modal-body">
-        ${content}
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-out-secondary" data-dismiss="modal">关闭</button>
-            ${BTN}
-        </div>
-    </div>
- </div>
 `;
+    const DIV_4 = DOC.createElement('div');
+    DIV_4.className = 'modal-body';
+    DIV_4.innerText = content;
 
-    $(MOD).modal('show');
+    const DIV_FOOTER = DOC.createElement('div');
+    DIV_FOOTER.className = `modal-footer`;
+
+    const BTN_CLOSE = DOC.createElement('button');
+    BTN_CLOSE.type = 'button';
+    BTN_CLOSE.className = 'btn btn-out-secondary';
+    BTN_CLOSE.setAttribute("data-dismiss", "modal");
+    BTN_CLOSE.innerText = '关闭';
+
+    DIV_FOOTER.appendChild(BTN_CLOSE);
+    if (clickFunction) {
+        const BTN_CLICK = DOC.createElement('button');
+        BTN_CLICK.type = 'button';
+        BTN_CLICK.className = 'btn btn-primary';
+        BTN_CLICK.innerText = '确定';
+        BTN_CLICK.onclick = clickFunction;
+
+        DIV_FOOTER.appendChild(BTN_CLICK);
+    }
+
+    TOP.appendChild(DIV_1);
+    DIV_1.appendChild(DIV_2);
+    DIV_2.appendChild(DIV_3);
+    DIV_2.appendChild(DIV_4);
+    DIV_2.appendChild(DIV_FOOTER);
+
+    $(TOP).modal('show');
 }
 
 const GO_TO = 'redirect-to';
