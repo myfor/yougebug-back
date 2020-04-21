@@ -51,11 +51,14 @@
         /// </summary>
         public class AnswerDetailForAdmin
         {
+            public int Id { get; set; }
             public string QuestionTitle { get; set; } = "";
             public string QuestionContent { get; set; } = "";
+            public string[] Tags { get; set; }
             public string AnswerContent { get; set; } = "";
             public Share.KeyValue<int, string> State { get; set; }
-            public Clients.Results.UserIntro User { get; set; }
+            public Clients.Results.UserIntro AnswererUser { get; set; }
+            public Clients.Results.UserIntro AskerUser { get; set; }
             public string CreateDate { get; set; } = "";
         }
 

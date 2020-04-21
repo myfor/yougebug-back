@@ -34,18 +34,26 @@ namespace yougebug_back.Controllers.Answers
             var answer = Domain.Answers.Hub.GetAnswer(id);
             var r = await answer.GetDetailAsync(Domain.Answers.Answer.DetailSource.Client);
             var data = r.GetData<Domain.Answers.Results.AnswerDetailForClient>();
+
             ViewModels.Answers.AnswerDetail model = new ViewModels.Answers.AnswerDetail
             {
+                Id = data.Id,
                 QuestionTitle = data.QuestionTitle,
                 QuestionContent = data.QuestionContent,
+                Tags = data.Tags,
                 AnswerContent = data.AnswerContent,
                 State = data.State,
-                AnswererId = data.User.Id,
-                AnswererName = data.User.Account,
-                AnswererAvatar = data.User.Avatar,
+                AnswererId = data.AnswererUser.Id,
+                AnswererName = data.AnswererUser.Account,
+                AnswererAvatar = data.AnswererUser.Avatar,
+                AskerId = data.AskerUser.Id,
+                AskerName = data.AskerUser.Account,
+                AskerAvatar = data.AskerUser.Avatar,
                 CreateDate = data.CreateDate,
-                IsSelf = data.IsSelf
+                IsSelf = CurrentUser.Id == data.AnswererUser.Id
             };
+
+            SetTitle(data.QuestionTitle);
 
             return View("AnswerDetail", model);
         }

@@ -50,7 +50,7 @@ namespace Domain.Questions.Detail
                 Id = question.Id,
                 Title = question.Title,
                 Description = question.Description,
-                Tags = question.Tags.Split(','),
+                Tags = question.Tags.Split(',', '，'),
                 Votes = question.Votes,
                 Views = question.Views,
                 Actived = question.Actived.ToStandardString(),

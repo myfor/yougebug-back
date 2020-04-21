@@ -1,5 +1,10 @@
 
-//  提示弹窗
+/**
+ * 提示弹窗
+ * @param content 提示内容
+ * @param title 提示标题
+ * @param click 按钮事件，直接执行的JS代码
+ */
 function showAlert(content, title, click) {
     const MOD = document.createElement('div');
     MOD.className = 'modal fade';
